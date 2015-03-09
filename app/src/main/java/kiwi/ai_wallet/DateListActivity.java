@@ -1,7 +1,6 @@
 package kiwi.ai_wallet;
 
-import android.app.AlertDialog;
-import android.app.ListActivity;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -11,7 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
-import android.support.v7.app.ActionBarActivity;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,8 +22,9 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
+
 import android.widget.TextView;
+
 
 import static kiwi.ai_wallet.DbConstants.TABLE_NAME;
 import static android.provider.BaseColumns._ID;
@@ -38,8 +38,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+
 
 
 public class DateListActivity extends ChargeActivity {
@@ -84,12 +83,12 @@ public class DateListActivity extends ChargeActivity {
 
     private List<HashMap<String, Object>> getData() {
         /**新建一個集合類，用於存放多條數據，Map的key是一個String類型，Map的value是Object類型*/
-        ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
-        String[] fList = dirFile.list();
+        ArrayList<HashMap<String, Object>> list = new ArrayList<>();
+
 
         Cursor cursor = getCursor();
         Log.d("測試","準備進入for迴圈");
-        for(int i = 0; cursor.moveToNext();i++) {
+        while(cursor.moveToNext()) {
             Log.d("測試","進入迴圈");
             if (DATE.equals(cursor.getString(4).substring(0, 8))) {
                 Log.d("測試","進入比較判斷");
@@ -97,12 +96,13 @@ public class DateListActivity extends ChargeActivity {
                 imgUri = Uri.parse("file://" + dirFile + "/" + cursor.getString(4));
                 /**讀取圖檔內容轉換為Bitmap物件*/
                 Bitmap bmp = BitmapFactory.decodeFile(imgUri.getPath());
-                HashMap<String, Object> item = new HashMap<String, Object>();
+                HashMap<String, Object> item = new HashMap<>();
 
                 int id = cursor.getInt(0);
                 String name = cursor.getString(1);
                 String type = cursor.getString(2);
                 String price = cursor.getString(3);
+                String picname = cursor.getString(4);
 
                 StringBuilder resultData = new StringBuilder();
                 resultData.append("編號：").append(id).append("\n");
@@ -110,8 +110,12 @@ public class DateListActivity extends ChargeActivity {
                 resultData.append("類型：").append(type).append("\n");
                 resultData.append("價錢：").append(price).append("元\n");
 
+
+
                 item.put("itemImageView", bmp);
-                item.put("fname", resultData);
+                item.put("itemdata", resultData);
+                item.put("id",id);
+                item.put("picname",picname);
                 list.add(item);
                 text.setText(DATE + "itemInput已執行" + resultData + imgUri);
             }
@@ -120,12 +124,12 @@ public class DateListActivity extends ChargeActivity {
         return list;
     }
 
-    public void del(int id){
-        text.setText(id);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.delete(TABLE_NAME, _ID + "=" + id,null);
-
-    }
+//    public void del(int id){
+//        text.setText(id);
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//        db.delete(TABLE_NAME, _ID + "=" + id,null);
+//
+//    }
 
     public class MyAdapter extends BaseAdapter {
         private LayoutInflater mInflater;
@@ -155,16 +159,32 @@ public class DateListActivity extends ChargeActivity {
             final ImageView itemImageView = (ImageView)convertView.findViewById(R.id.itemImageView);
             itemImageView.setImageBitmap((Bitmap)itemList.get(position).get("itemImageView"));
             TextView itemView = (TextView)convertView.findViewById(R.id.itemView);
-            itemView.setText(itemList.get(position).get("fname").toString());
+            itemView.setText(itemList.get(position).get("itemdata").toString());
             Button deleBtn = (Button)convertView.findViewById(R.id.deleBtn);
-
+            final String id = itemList.get(position).get("id").toString();
+            final String picname = itemList.get(position).get("picname").toString();
             deleBtn.setTag(position);
             deleBtn.setOnClickListener(new Button.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    itemList.remove(position);
-                    notifyDataSetChanged();
-                    //del();
+
+//                    try{
+                        itemList.remove(position);
+                        notifyDataSetChanged();
+                        //del();
+//                      String id = itemList.get(position).get("id").toString();
+                        SQLiteDatabase db = dbHelper.getWritableDatabase();
+                        db.delete(TABLE_NAME, _ID + "=" + id, null);
+//                    }catch (Exception e){
+//                        Toast.makeText(DateListActivity.this,"當日沒有紀錄",Toast.LENGTH_LONG).show();
+
+                    /**以下刪除功能在android 4.4以上版本不適用*/
+                    File f = new File(String.valueOf(dirFile+"/"+picname));
+
+                    f.delete();
+
+
+//                    }
                 }
             });
 
