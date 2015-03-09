@@ -28,6 +28,10 @@
             android:name=".DateListActivity"
             android:label="@string/title_activity_date_list" >
         </activity>
+        <activity
+            android:name=".SmartbutlerActivity"
+            android:label="@string/title_activity_smartbutler" >
+        </activity>
     </application>
 
 </manifest>

@@ -117,13 +117,14 @@ public class ChargeActivity extends MainActivity {
     private void cleanEditText(){
         name.setText("");
         priceText.setText("");
+        PhotoPic.setImageBitmap(null);
     }
 
     /**
      * Start()用來建立ViewPager及滑動標題*/
-    public void initView(){
+    private void initView(){
         /**建立一個ViewPager*/
-        ViewPager = (ViewPager) findViewById(R.id.pager);
+        ViewPager = (ViewPager) findViewById(R.id.chargePager);
         LayoutInflater vInflater = getLayoutInflater();
 
         /**
@@ -146,16 +147,16 @@ public class ChargeActivity extends MainActivity {
         /**
          * 將要分頁顯示的View裝入數組中*/
         viewList = new ArrayList<View>();
-        viewList.add(vCalender);
         viewList.add(vCamera);
+        viewList.add(vCalender);
         viewList.add(vTest);
 
 
         /**
          * 在初始化階段增加了這麼一段初始化數組的代碼。*/
         titleList = new ArrayList<String>();
-        titleList.add("Calender");
         titleList.add("Camera");
+        titleList.add("Calender");
         titleList.add("Test");
 
         /**
