@@ -258,8 +258,6 @@ public class ChargeActivity extends MainActivity{
     private void setScale(){
         LinearLayout scale_view = (LinearLayout)findViewById(R.id.scaleView);
 
-
-
 //        try{
             vScale = getBarChart();
             scale_view.removeAllViews();
