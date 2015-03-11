@@ -93,8 +93,8 @@ public class ChargeActivity extends MainActivity{
         initView();/**首要步驟，匯入ViewPager及各頁Layout布局資料，不先做後面程式碼會找不到你所指的物件是哪個*/
         openDatabase();
         ChargeTouchListener();/**第三步呼叫方法ChargeTouchListener()架設監聽器*/
-        setScale();
-//        getBarChart();
+//        setScale();
+        getBarChart();
     }
 
     /**
@@ -256,19 +256,19 @@ public class ChargeActivity extends MainActivity{
     }
 
     private void setScale(){
-        LinearLayout scale_view = (LinearLayout)findViewById(R.id.scaleView);
+
 
 //        try{
-            vScale = getBarChart();
-            scale_view.removeAllViews();
-            scale_view.addView(vScale,new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,300));
+//            vScale = getBarChart();
+//            scale_view.removeAllViews();
+//            scale_view.addView(vScale,new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,300));
 //        }catch (Exception e){
 //
 //        }
     }
 
-    private View getBarChart(){
-
+    private void getBarChart(){
+        LinearLayout scale_view = (LinearLayout)vScale.findViewById(R.id.scaleView);
 
         String[] titles = new String[] { "預算額", "已花費" };
         List < double []> values = new ArrayList< double []> ();
@@ -285,15 +285,13 @@ public class ChargeActivity extends MainActivity{
         renderer.setYLabels(10);//設置y軸標籤數
         renderer.setXLabelsAlign(Paint.Align.LEFT);//數據從左到右顯示
         renderer.setYLabelsAlign(Paint.Align.LEFT);//設置y軸標籤對其方式
-        renderer.setPanEnabled(true,false);//圖表移動
+        renderer.setPanEnabled(false,false);//圖表移動  If you want to lock both axis, then use renderer.setPanEnabled(false, false);
         renderer.setZoomEnabled(false);//圖表縮放
         renderer.setZoomRate(1.1f);//放大倍率
-        renderer.setBarSpacing(0.5f);//長條圖的間隔
+        renderer.setBarSpacing(1.5f);//長條圖的間隔
         View view = ChartFactory.getBarChartView(this, buildBarDataset(titles, values), renderer, BarChart.Type.DEFAULT); // Type.STACKED
-
-        return view;
-//        view.setBackgroundColor(Color.BLACK);
-//        setContentView(view);
+        scale_view.addView(view);
+//        setContentView(scale_view);
     }
 
     protected XYMultipleSeriesDataset buildBarDataset(String[] titles, List< double []> values) {
