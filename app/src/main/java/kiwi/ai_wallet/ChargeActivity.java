@@ -6,33 +6,33 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static kiwi.ai_wallet.DbConstants.TABLE_NAME;
-import static android.provider.BaseColumns._ID;
 import static kiwi.ai_wallet.DbConstants.PHNAME;
 import static kiwi.ai_wallet.DbConstants.NAME;
 import static kiwi.ai_wallet.DbConstants.TYPE;
 import static kiwi.ai_wallet.DbConstants.PRICE;
 
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.app.ListActivity;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.view.PagerAdapter;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -45,21 +45,33 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.achartengine.ChartFactory;
+import org.achartengine.chart.BarChart;
+import org.achartengine.model.CategorySeries;
+import org.achartengine.model.XYMultipleSeriesDataset;
+import org.achartengine.renderer.SimpleSeriesRenderer;
+import org.achartengine.renderer.XYMultipleSeriesRenderer;
 
-public class ChargeActivity extends MainActivity {
+
+public class ChargeActivity extends MainActivity{
 
 
 
     private ViewPager ViewPager;/**對應的ViewPager*/
-    private View vCalender,vCamera,vTest;/**替每一頁Layout取代號*/
+    private View vCalender,vCamera,vScale;/**替每一頁Layout取代號*/
     private List<View> viewList;/**準備拿來裝每一頁*/
     private List<String> titleList;/**申請了一個String數組，用來存儲三個頁面所對應的標題的*/
 
     public DBHelper dbHelper = null;
+
+
+
 
     ImageView PhotoPic = null;
     Button TakePic,SaveBtn;
@@ -81,43 +93,8 @@ public class ChargeActivity extends MainActivity {
         initView();/**首要步驟，匯入ViewPager及各頁Layout布局資料，不先做後面程式碼會找不到你所指的物件是哪個*/
         openDatabase();
         ChargeTouchListener();/**第三步呼叫方法ChargeTouchListener()架設監聽器*/
-
-
-    }
-
-    private void openDatabase(){
-        dbHelper = new DBHelper(this);
-    }
-
-    private void closeDatabase(){
-        dbHelper.close();
-    }
-
-    public void add(){
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        if(fname == null)fname = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".jpg";
-        ContentValues values = new ContentValues();
-        values.put(PHNAME,fname);
-        values.put(NAME, name.getText().toString());
-        values.put(TYPE, consumerType.getSelectedItem().toString());
-        values.put(PRICE, priceText.getText().toString());
-        db.insert(TABLE_NAME,null,values);
-
-        TextView dbtest = (TextView)vCamera.findViewById(R.id.dbPath);
-        dbtest.setText("資料庫檔路徑 :" + db.getPath() + "\n" +
-                       "資料庫分頁大小 :" + db.getPageSize() + "Bytes\n" +
-                       "資料量上限 :" + db.getMaximumSize() + "Bytes\n");
-
-        cleanEditText();
-        closeDatabase();
-    }
-
-
-
-    private void cleanEditText(){
-        name.setText("");
-        priceText.setText("");
-        PhotoPic.setImageBitmap(null);
+        setScale();
+//        getBarChart();
     }
 
     /**
@@ -134,7 +111,7 @@ public class ChargeActivity extends MainActivity {
          * 如果!null,則將默認的layout作為View的根。*/
         vCalender = vInflater.inflate(R.layout.calenderview_for_charge,null);
         vCamera = vInflater.inflate(R.layout.camera_for_charge,null);
-        vTest = vInflater.inflate(R.layout.test_for_charge,null);
+        vScale = vInflater.inflate(R.layout.scale_for_charge,null);
 
         calendarDate = (CalendarView)vCalender.findViewById(R.id.calendarView);
         PhotoPic = (ImageView)vCamera.findViewById(R.id.PhotoPic);
@@ -149,7 +126,7 @@ public class ChargeActivity extends MainActivity {
         viewList = new ArrayList<View>();
         viewList.add(vCamera);
         viewList.add(vCalender);
-        viewList.add(vTest);
+        viewList.add(vScale);
 
 
         /**
@@ -157,7 +134,10 @@ public class ChargeActivity extends MainActivity {
         titleList = new ArrayList<String>();
         titleList.add("Camera");
         titleList.add("Calender");
-        titleList.add("Test");
+        titleList.add("Scale");
+
+
+
 
         /**
          * 再來要設置ViewPager的適配器拉
@@ -275,6 +255,124 @@ public class ChargeActivity extends MainActivity {
 
     }
 
+    private void setScale(){
+        LinearLayout scale_view = (LinearLayout)findViewById(R.id.scaleView);
+
+
+
+//        try{
+            vScale = getBarChart();
+            scale_view.removeAllViews();
+            scale_view.addView(vScale,new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,300));
+//        }catch (Exception e){
+//
+//        }
+    }
+
+    private View getBarChart(){
+
+
+        String[] titles = new String[] { "預算額", "已花費" };
+        List < double []> values = new ArrayList< double []> ();
+        values.add( new  double [] { 14230, 12300, 14240, 15244, 15900, 19200, 22030, 21200, 19500, 15500, 12600, 14000 });
+        values.add( new  double [] { 5230, 7300, 9240, 10540, 7900, 9200, 12030, 11200, 9500, 10500, 11600, 13500 });
+        int [] colors = new  int [] { Color.GRAY, Color.RED };
+        XYMultipleSeriesRenderer renderer = buildBarRenderer(colors);//長條圖顏色設置
+
+        /**設置圖形renderer,標題,橫軸,縱軸,橫軸最小值,橫軸最大值,縱軸最大值,縱軸最小值,設定軸色,標籤顏色*/
+        setChartSettings(renderer, "本月花費", "Month", "單位：元", 0.5, 12.5, 0, 24000 , Color.GRAY, Color.LTGRAY);
+        renderer.getSeriesRendererAt(0).setDisplayChartValues(true);//在第1條圖形上顯示數據
+        renderer.getSeriesRendererAt(1).setDisplayChartValues(true);//在第2條圖形上顯示數據
+        renderer.setXLabels(12);//設置x軸標籤數
+        renderer.setYLabels(10);//設置y軸標籤數
+        renderer.setXLabelsAlign(Paint.Align.LEFT);//數據從左到右顯示
+        renderer.setYLabelsAlign(Paint.Align.LEFT);//設置y軸標籤對其方式
+        renderer.setPanEnabled(true,false);//圖表移動
+        renderer.setZoomEnabled(false);//圖表縮放
+        renderer.setZoomRate(1.1f);//放大倍率
+        renderer.setBarSpacing(0.5f);//長條圖的間隔
+        View view = ChartFactory.getBarChartView(this, buildBarDataset(titles, values), renderer, BarChart.Type.DEFAULT); // Type.STACKED
+
+        return view;
+//        view.setBackgroundColor(Color.BLACK);
+//        setContentView(view);
+    }
+
+    protected XYMultipleSeriesDataset buildBarDataset(String[] titles, List< double []> values) {
+        XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
+        int length = titles.length;
+        for ( int i = 0; i < length; i++ ) {
+            CategorySeries series = new CategorySeries(titles[i]);
+            double [] v = values.get(i);
+            int seriesLength = v.length;
+            for ( int k = 0; k < seriesLength; k++ ) {
+                series.add(v[k]);
+            }
+            dataset.addSeries(series.toXYSeries());
+        }
+        return dataset;
+    }
+
+    protected XYMultipleSeriesRenderer buildBarRenderer( int [] colors) {
+        XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer();
+        renderer.setAxisTitleTextSize( 16 );
+        renderer.setChartTitleTextSize( 20 );
+        renderer.setLabelsTextSize( 15 );
+        renderer.setLegendTextSize( 15 );
+        int length = colors.length;
+        for ( int i = 0; i < length; i++ ) {
+            SimpleSeriesRenderer r = new SimpleSeriesRenderer();
+            r.setColor(colors[i]);
+            renderer.addSeriesRenderer(r);
+        }
+        return renderer;
+    }
+    /**設置圖形renderer,標題,橫軸,縱軸,最小伸縮刻度,最大伸縮刻度,縱軸最大值,縱軸最小值,設定軸色,標籤顏色*/
+    protected  void setChartSettings(XYMultipleSeriesRenderer renderer, String title, String xTitle, String yTitle, double xMin, double xMax, double yMin, double yMax, int axesColor, int labelsColor) {
+        renderer.setChartTitle(title);
+        renderer.setXTitle(xTitle);
+        renderer.setYTitle(yTitle);
+        renderer.setXAxisMin(xMin);
+        renderer.setXAxisMax(xMax);
+        renderer.setYAxisMin(yMin);
+        renderer.setYAxisMax(yMax);
+        renderer.setAxesColor(axesColor);
+        renderer.setLabelsColor(labelsColor);
+    }
+
+    private void openDatabase(){
+        dbHelper = new DBHelper(this);
+    }
+
+    private void closeDatabase(){
+        dbHelper.close();
+    }
+
+    public void dbadd(){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        if(fname == null)fname = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".jpg";
+        ContentValues values = new ContentValues();
+        values.put(PHNAME,fname);
+        values.put(NAME, name.getText().toString());
+        values.put(TYPE, consumerType.getSelectedItem().toString());
+        values.put(PRICE, priceText.getText().toString());
+        db.insert(TABLE_NAME,null,values);
+
+        TextView dbtest = (TextView)vCamera.findViewById(R.id.dbPath);
+        dbtest.setText("資料庫檔路徑 :" + db.getPath() + "\n" +
+                       "資料庫分頁大小 :" + db.getPageSize() + "Bytes\n" +
+                       "資料量上限 :" + db.getMaximumSize() + "Bytes\n");
+
+        cleanEditText();
+        closeDatabase();
+    }
+
+    private void cleanEditText(){
+        name.setText("");
+        priceText.setText("");
+        PhotoPic.setImageBitmap(null);
+    }
+
     /**
      * ChargeTouchListener()設置按鍵監聽器*/
     public void ChargeTouchListener(){
@@ -311,7 +409,7 @@ public class ChargeActivity extends MainActivity {
                     fname = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".jpg";
                 }
 
-                add();
+                dbadd();
             }
         };
 
