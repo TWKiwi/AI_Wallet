@@ -32,6 +32,7 @@ public class SmartbutlerActivity extends MainActivity {
         vproposal = vInflater.inflate(R.layout.proposal_for_smartbutler,null);
         vscale = vInflater.inflate(R.layout.scale_for_smartbutler,null);
 
+
     }
 
     @Override

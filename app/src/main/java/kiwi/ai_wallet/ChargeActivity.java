@@ -314,10 +314,11 @@ public class ChargeActivity extends MainActivity {
                 add();
             }
         };
+
+
+    String checkDate = null;
     /**月曆變動監聽器*/
     public CalendarView.OnDateChangeListener DateList = new CalendarView.OnDateChangeListener(){
-
-
 
         public void onSelectedDayChange(CalendarView view, int year, int month,int dayOfMonth) {
             String Smonth,SdayOfMonth;
@@ -336,13 +337,22 @@ public class ChargeActivity extends MainActivity {
                 SdayOfMonth = String.valueOf(dayOfMonth);
             }
 
-            Intent intent = new Intent();
-            intent.setClass(ChargeActivity.this,DateListActivity.class);
+            if(checkDate == null) {
+                checkDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
+            }
+
             String findDate = String.valueOf(year) + Smonth + SdayOfMonth;
-            Bundle bundle = new Bundle();
-            bundle.putString("findDate",findDate);
-            intent.putExtras(bundle);
-            startActivity(intent);
+
+            if(!(findDate.equals(checkDate))) {
+                Intent intent = new Intent();
+                intent.setClass(ChargeActivity.this, DateListActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("findDate", findDate);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+            checkDate = findDate;
+
         }
     };
 
