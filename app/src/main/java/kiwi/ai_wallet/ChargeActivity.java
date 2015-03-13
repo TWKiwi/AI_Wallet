@@ -22,6 +22,7 @@ import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.sqlite.SQLiteDatabase;
@@ -44,6 +45,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SimpleAdapter;
@@ -93,7 +95,7 @@ public class ChargeActivity extends MainActivity{
         initView();/**首要步驟，匯入ViewPager及各頁Layout布局資料，不先做後面程式碼會找不到你所指的物件是哪個*/
         openDatabase();
         ChargeTouchListener();/**第三步呼叫方法ChargeTouchListener()架設監聽器*/
-//        setScale();
+
         getBarChart();
     }
 
@@ -255,43 +257,36 @@ public class ChargeActivity extends MainActivity{
 
     }
 
-    private void setScale(){
-
-
-//        try{
-//            vScale = getBarChart();
-//            scale_view.removeAllViews();
-//            scale_view.addView(vScale,new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,300));
-//        }catch (Exception e){
-//
-//        }
-    }
-
     private void getBarChart(){
-        LinearLayout scale_view = (LinearLayout)vScale.findViewById(R.id.scaleView);
+        FrameLayout scale_view = (FrameLayout)vScale.findViewById(R.id.scaleView);
 
         String[] titles = new String[] { "預算額", "已花費" };
         List < double []> values = new ArrayList< double []> ();
-        values.add( new  double [] { 14230, 12300, 14240, 15244, 15900, 19200, 22030, 21200, 19500, 15500, 12600, 14000 });
-        values.add( new  double [] { 5230, 7300, 9240, 10540, 7900, 9200, 12030, 11200, 9500, 10500, 11600, 13500 });
-        int [] colors = new  int [] { Color.GRAY, Color.RED };
+        values.add( new  double [] { 100 });
+        values.add( new  double [] { 73 });
+        int [] colors = new  int [] { Color.GRAY, Color.RED};
         XYMultipleSeriesRenderer renderer = buildBarRenderer(colors);//長條圖顏色設置
 
-        /**設置圖形renderer,標題,橫軸,縱軸,橫軸最小值,橫軸最大值,縱軸最大值,縱軸最小值,設定軸色,標籤顏色*/
-        setChartSettings(renderer, "本月花費", "Month", "單位：元", 0.5, 12.5, 0, 24000 , Color.GRAY, Color.LTGRAY);
+        /**設置圖形renderer,標題,橫軸,縱軸,橫軸最小值,橫軸最大值,縱軸最大值,縱軸最小值,設定軸寬,設定軸色,標籤顏色*/
+        setChartSettings(renderer, "本月花費(%)", "", "", 0.9, 1.1, 0, 100 , 180f , Color.GRAY, Color.LTGRAY);
         renderer.getSeriesRendererAt(0).setDisplayChartValues(true);//在第1條圖形上顯示數據
         renderer.getSeriesRendererAt(1).setDisplayChartValues(true);//在第2條圖形上顯示數據
-        renderer.setXLabels(12);//設置x軸標籤數
+        renderer.setXLabels(0);//設置x軸標籤數  0為不顯示文字 程式設定文字
         renderer.setYLabels(10);//設置y軸標籤數
-        renderer.setXLabelsAlign(Paint.Align.LEFT);//數據從左到右顯示
-        renderer.setYLabelsAlign(Paint.Align.LEFT);//設置y軸標籤對其方式
-        renderer.setPanEnabled(false,false);//圖表移動  If you want to lock both axis, then use renderer.setPanEnabled(false, false);
-        renderer.setZoomEnabled(false);//圖表縮放
+        renderer.setXLabelsAlign(Paint.Align.CENTER);//設置x軸標籤置中
+        renderer.setYLabelsAlign(Paint.Align.RIGHT);//設置y軸標籤置中
+        renderer.setYLabelsColor(0,Color.BLUE);//設置y軸標籤顏色
+        renderer.setPanEnabled(false, false);//圖表移動  If you want to lock both axis, then use renderer.setPanEnabled(false, false);
+        renderer.setZoomEnabled(false,false);//圖表縮放(x軸,y軸)
         renderer.setZoomRate(1.1f);//放大倍率
-        renderer.setBarSpacing(1.5f);//長條圖的間隔
-        View view = ChartFactory.getBarChartView(this, buildBarDataset(titles, values), renderer, BarChart.Type.DEFAULT); // Type.STACKED
+        renderer.setBarSpacing(0.5f);//長條圖的間隔
+        renderer.setChartValuesTextSize(40);//設置長條圖上面字大小
+        renderer.setMarginsColor(Color.argb(0, 0xff, 0, 0));//這句很重要，不能用transparent代替。
+        renderer.setBackgroundColor(Color.TRANSPARENT);//設置透明色
+        renderer.setApplyBackgroundColor(true);//使背景色生效
+        renderer.setMargins(new int[]{200,100,0,100});
+        View view = ChartFactory.getBarChartView(this, buildBarDataset(titles, values), renderer, BarChart.Type.STACKED); // Type.STACKED
         scale_view.addView(view);
-//        setContentView(scale_view);
     }
 
     protected XYMultipleSeriesDataset buildBarDataset(String[] titles, List< double []> values) {
@@ -302,7 +297,7 @@ public class ChargeActivity extends MainActivity{
             double [] v = values.get(i);
             int seriesLength = v.length;
             for ( int k = 0; k < seriesLength; k++ ) {
-                series.add(v[k]);
+                series.add(v[k]);//加入每筆values資料
             }
             dataset.addSeries(series.toXYSeries());
         }
@@ -311,10 +306,12 @@ public class ChargeActivity extends MainActivity{
 
     protected XYMultipleSeriesRenderer buildBarRenderer( int [] colors) {
         XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer();
-        renderer.setAxisTitleTextSize( 16 );
-        renderer.setChartTitleTextSize( 20 );
-        renderer.setLabelsTextSize( 15 );
-        renderer.setLegendTextSize( 15 );
+        renderer.setAxisTitleTextSize( 60 );
+        renderer.setChartTitleTextSize( 60 );
+        renderer.setLabelsTextSize( 40 );
+        renderer.setLegendTextSize( 40 );
+
+
         int length = colors.length;
         for ( int i = 0; i < length; i++ ) {
             SimpleSeriesRenderer r = new SimpleSeriesRenderer();
@@ -323,8 +320,8 @@ public class ChargeActivity extends MainActivity{
         }
         return renderer;
     }
-    /**設置圖形renderer,標題,橫軸,縱軸,最小伸縮刻度,最大伸縮刻度,縱軸最大值,縱軸最小值,設定軸色,標籤顏色*/
-    protected  void setChartSettings(XYMultipleSeriesRenderer renderer, String title, String xTitle, String yTitle, double xMin, double xMax, double yMin, double yMax, int axesColor, int labelsColor) {
+    /**設置圖形renderer,標題,橫軸,縱軸,最小伸縮刻度,最大伸縮刻度,縱軸最大值,縱軸最小值,設定軸寬,設定軸色,標籤顏色*/
+    protected  void setChartSettings(XYMultipleSeriesRenderer renderer, String title, String xTitle, String yTitle, double xMin, double xMax, double yMin, double yMax,float width, int axesColor, int labelsColor) {
         renderer.setChartTitle(title);
         renderer.setXTitle(xTitle);
         renderer.setYTitle(yTitle);
@@ -332,6 +329,7 @@ public class ChargeActivity extends MainActivity{
         renderer.setXAxisMax(xMax);
         renderer.setYAxisMin(yMin);
         renderer.setYAxisMax(yMax);
+        renderer.setBarWidth(width);
         renderer.setAxesColor(axesColor);
         renderer.setLabelsColor(labelsColor);
     }
