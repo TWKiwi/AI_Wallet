@@ -1,115 +1,134 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
     android:background="#ffcc">
 
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="6"
+    <LinearLayout
         android:orientation="vertical"
-        >
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:id="@+id/PhotoPic"
-            android:background="#ccdd"
-            android:scaleType="centerCrop"/>
-
-
-    </TableRow>
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:orientation="vertical"
-        >
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="TAKEPIC"
-            android:id="@+id/TakePic" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="SaveBtn"
-            android:id="@+id/saveBtn" />
-
-    </TableRow>
-
-
-    <TableRow
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="2">
-
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:id="@+id/spinnerText"
-            android:text="選擇類別"
-            android:layout_width="wrap_content" />
-
-        <Spinner
-
-            android:layout_height="match_parent"
-            android:id="@+id/consumerType"
-            android:entries="@array/Consumer_types"
-            android:spinnerMode="dialog"
-            android:prompt="@string/snipperName"/>
-
-    </TableRow>
-
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="2">
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:id="@+id/nameText"
-            android:text="項目名稱(可不填)"
-            android:layout_width="wrap_content"/>
-        <EditText
+        <LinearLayout
             android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:id="@+id/name"/>
+            android:orientation="vertical"
+            android:layout_weight="1">
 
-    </TableRow>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:id="@+id/PhotoPic"
+                android:background="#ccdd"
+                android:scaleType="centerCrop"/>
+        </LinearLayout>
 
-
-
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="2">
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:id="@+id/priceText"
-            android:text="輸入金額"
-            android:layout_width="wrap_content"/>
-         <EditText
-             android:layout_height="match_parent"
-             android:layout_width="match_parent"
-             android:inputType="number"
-             android:id="@+id/price"/>
-
-    </TableRow>
+        <LinearLayout
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="1">
 
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="TAKEPIC"
+                android:id="@+id/TakePic" />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="SaveBtn"
+                android:id="@+id/saveBtn" />
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2">
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:id="@+id/spinnerText"
+                    android:text="選擇類別"
+                    android:layout_width="wrap_content" />
+
+                <Spinner
+
+                    android:layout_height="match_parent"
+                    android:id="@+id/consumerType"
+                    android:entries="@array/Consumer_types"
+                    android:spinnerMode="dialog"
+                    android:prompt="@string/snipperName"/>
+
+            </TableRow>
+
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2">
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:id="@+id/nameText"
+                    android:text="項目名稱(可不填)"
+                    android:layout_width="wrap_content"/>
+                <EditText
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:id="@+id/name"/>
+
+            </TableRow>
+
+
+
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2">
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:id="@+id/priceText"
+                    android:text="輸入金額"
+                    android:layout_width="wrap_content"/>
+                <EditText
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:inputType="number"
+                    android:id="@+id/price"/>
+
+            </TableRow>
+        </LinearLayout>
+
+
+
+    </LinearLayout>
 
     <TableRow
         android:layout_width="match_parent"
@@ -139,8 +158,4 @@
             android:id="@+id/dbPath" />
 
     </TableRow>
-
-
-</LinearLayout>
-
-
+</RelativeLayout>
