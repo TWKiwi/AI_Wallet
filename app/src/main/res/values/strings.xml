@@ -20,5 +20,6 @@
 
     <string name="snipperName">選擇記錄類別</string>
     <string name="title_activity_smartbutler">SmartbutlerActivity</string>
+    <string name="title_activity_option">OptionActivity</string>
 
 </resources>

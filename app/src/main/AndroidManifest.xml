@@ -32,7 +32,11 @@
             android:name=".SmartbutlerActivity"
             android:label="@string/title_activity_smartbutler" >
         </activity>
-        <activity android:name="org.achartengine.GraphicalActivity"/>
+        <activity android:name="org.achartengine.GraphicalActivity" />
+        <activity
+            android:name=".OptionActivity"
+            android:label="@string/title_activity_option" >
+        </activity>
     </application>
 
 </manifest>

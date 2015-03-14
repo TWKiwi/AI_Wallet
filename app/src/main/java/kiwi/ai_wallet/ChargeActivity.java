@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.provider.BaseColumns._ID;
 import static kiwi.ai_wallet.DbConstants.TABLE_NAME;
 import static kiwi.ai_wallet.DbConstants.PHNAME;
 import static kiwi.ai_wallet.DbConstants.NAME;
@@ -25,6 +27,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -33,6 +36,7 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.renderscript.Sampler;
 import android.support.v4.view.PagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -95,7 +99,6 @@ public class ChargeActivity extends MainActivity{
         initView();/**首要步驟，匯入ViewPager及各頁Layout布局資料，不先做後面程式碼會找不到你所指的物件是哪個*/
         openDatabase();
         ChargeTouchListener();/**第三步呼叫方法ChargeTouchListener()架設監聽器*/
-
         getBarChart();
     }
 
@@ -252,18 +255,21 @@ public class ChargeActivity extends MainActivity{
         if(!dirFile.exists()){
             /**建立資料夾*/
             dirFile.mkdirs();
-            Log.d("奇異果提醒", "尚未建立圖檔目錄，目錄已新增");
+
         }
 
     }
 
     private void getBarChart(){
+
         FrameLayout scale_view = (FrameLayout)vScale.findViewById(R.id.scaleView);
+        double persent = scaleCompute();
+
 
         String[] titles = new String[] { "預算額", "已花費" };
         List < double []> values = new ArrayList< double []> ();
         values.add( new  double [] { 100 });
-        values.add( new  double [] { 73 });
+        values.add( new  double [] { persent });
         int [] colors = new  int [] { Color.GRAY, Color.RED};
         XYMultipleSeriesRenderer renderer = buildBarRenderer(colors);//長條圖顏色設置
 
@@ -272,12 +278,12 @@ public class ChargeActivity extends MainActivity{
         renderer.getSeriesRendererAt(0).setDisplayChartValues(true);//在第1條圖形上顯示數據
         renderer.getSeriesRendererAt(1).setDisplayChartValues(true);//在第2條圖形上顯示數據
         renderer.setXLabels(0);//設置x軸標籤數  0為不顯示文字 程式設定文字
-        renderer.setYLabels(10);//設置y軸標籤數
+        renderer.setYLabels(5);//設置y軸標籤數
         renderer.setXLabelsAlign(Paint.Align.CENTER);//設置x軸標籤置中
         renderer.setYLabelsAlign(Paint.Align.RIGHT);//設置y軸標籤置中
-        renderer.setYLabelsColor(0,Color.BLUE);//設置y軸標籤顏色
+        renderer.setYLabelsColor(0, Color.BLUE);//設置y軸標籤顏色
         renderer.setPanEnabled(false, false);//圖表移動  If you want to lock both axis, then use renderer.setPanEnabled(false, false);
-        renderer.setZoomEnabled(false,false);//圖表縮放(x軸,y軸)
+        renderer.setZoomEnabled(false, false);//圖表縮放(x軸,y軸)
         renderer.setZoomRate(1.1f);//放大倍率
         renderer.setBarSpacing(0.5f);//長條圖的間隔
         renderer.setChartValuesTextSize(40);//設置長條圖上面字大小
@@ -334,6 +340,25 @@ public class ChargeActivity extends MainActivity{
         renderer.setLabelsColor(labelsColor);
     }
 
+    private double scaleCompute(){
+        Cursor cursor = getCursor();
+        String select_month = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        double sum = 0;
+
+        while (cursor.moveToNext()){
+            if(cursor.getString(4).substring(0,6).equals(select_month.substring(0,6))){
+                sum += Integer.parseInt(cursor.getString(3));
+            }
+        }
+
+        double persent = (sum/Budget);//算百分比條小數點弄成百分比整數
+        DecimalFormat df = new DecimalFormat("0.00");
+        persent = Double.parseDouble(df.format(persent));
+        persent = persent*100;
+
+    return persent;
+    }
+
     private void openDatabase(){
         dbHelper = new DBHelper(this);
     }
@@ -359,6 +384,16 @@ public class ChargeActivity extends MainActivity{
 
         cleanEditText();
         closeDatabase();
+    }
+
+    public Cursor getCursor(){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String[] colums = {_ID,NAME,TYPE,PRICE,PHNAME};
+
+        Cursor cursor = db.query(TABLE_NAME,colums,null,null,null,null,null);
+        startManagingCursor(cursor);
+
+        return cursor;
     }
 
     private void cleanEditText(){

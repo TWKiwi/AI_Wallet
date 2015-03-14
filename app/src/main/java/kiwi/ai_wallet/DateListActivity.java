@@ -193,15 +193,7 @@ public class DateListActivity extends ChargeActivity {
         }
     }
 
-    public Cursor getCursor(){
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String[] colums = {_ID,NAME,TYPE,PRICE,PHNAME};
 
-        Cursor cursor = db.query(TABLE_NAME,colums,null,null,null,null,null);
-        startManagingCursor(cursor);
-
-        return cursor;
-    }
 
 
 

@@ -25,7 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends OptionActivity {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
