@@ -43,6 +43,7 @@ public class MainActivity extends OptionActivity {
                 toLoginUI();/**切換UI*/
             }
         });
+        addShortcut();
     }
     /**
      * 轉換到登入UI*/
@@ -72,6 +73,22 @@ public class MainActivity extends OptionActivity {
 
     }
 
+    private void addShortcut() {
+        Intent shortcutIntent = new Intent(this,
+                ChargeActivity.class); // 啟動捷徑入口，一般用MainActivity，有使用其他入口則填入相對名稱，ex:有使用SplashScreen
+        shortcutIntent.setAction(Intent.ACTION_MAIN);
+        Intent addIntent = new Intent();
+        addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent); // shortcutIntent送入
+        addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME,
+                getString(R.string.app_name)); // 捷徑app名稱
+        addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
+                Intent.ShortcutIconResource.fromContext(
+                        getApplicationContext(),// 捷徑app圖
+                        R.drawable.ic_launcher));
+        addIntent.putExtra("duplicate", false); // 只創建一次
+        addIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT"); // 安裝
+        sendBroadcast(addIntent); // 送出廣播
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

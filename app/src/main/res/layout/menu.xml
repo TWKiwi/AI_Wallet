@@ -4,23 +4,29 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.5">
+        android:layout_weight="0.4">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/imageView2"
             android:background="#ffcc"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="4"
+            android:id="@+id/textView2"
+            android:layout_gravity="center" />
     </FrameLayout>
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.2"
-        android:layout_centerVertical="true"
         android:stretchColumns="0,1"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true">
+        android:orientation="horizontal">
 
         <TableRow
             android:layout_width="fill_parent"
@@ -35,12 +41,21 @@
                 android:text="Charge"
                 android:id="@+id/ChargeTextView"/>
 
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="#ccff">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Smart butler"
                 android:id="@+id/FinanceTextView"/>
+
         </TableRow>
 
         <TableRow
@@ -53,15 +68,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Upload"
-                android:id="@+id/UploadTextView"/>
+                android:text="Option"
+                android:id="@+id/OptionView"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Search"
-                android:id="@+id/SearchTextView"/>
         </TableRow>
     </TableLayout>
 </LinearLayout>
