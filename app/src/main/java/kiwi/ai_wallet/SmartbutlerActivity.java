@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 
-public class SmartbutlerActivity extends MainActivity {
+public class SmartbutlerActivity extends OptionActivity {
 
     private ViewPager ViewPager;
     private View vproposal,vscale;

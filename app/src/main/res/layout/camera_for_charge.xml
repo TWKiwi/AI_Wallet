@@ -4,7 +4,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
-    android:background="#ffcc">
+    android:background="@drawable/tackpic_bag">
 
     <LinearLayout
         android:orientation="vertical"
@@ -21,15 +21,20 @@
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:orientation="vertical"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            >
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:id="@+id/PhotoPic"
-                android:background="#ccdd"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -39,21 +44,21 @@
             android:layout_weight="1">
 
 
-            <Button
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
 
                 android:id="@+id/TakePic"
-                android:background="@drawable/tackpic"/>
+               />
 
-            <Button
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
 
                 android:id="@+id/saveBtn"
-                android:background="@drawable/save"/>
+               />
 
         </LinearLayout>
 

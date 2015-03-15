@@ -78,7 +78,7 @@ public class ChargeActivity extends MainActivity{
 
 
     ImageView PhotoPic = null;
-    Button TakePic,SaveBtn;
+    TextView TakePic,SaveBtn;
     CalendarView calendarDate = null;
     Spinner consumerType = null;
     EditText name,priceText;
@@ -118,8 +118,8 @@ public class ChargeActivity extends MainActivity{
 
         calendarDate = (CalendarView)vCalender.findViewById(R.id.calendarView);
         PhotoPic = (ImageView)vCamera.findViewById(R.id.PhotoPic);
-        TakePic = (Button)vCamera.findViewById(R.id.TakePic);
-        SaveBtn = (Button)vCamera.findViewById(R.id.saveBtn);
+        TakePic = (TextView)vCamera.findViewById(R.id.TakePic);
+        SaveBtn = (TextView)vCamera.findViewById(R.id.saveBtn);
         name = (EditText)vCamera.findViewById(R.id.name);
         consumerType = (Spinner)vCamera.findViewById(R.id.consumerType);
         priceText = (EditText)vCamera.findViewById(R.id.price);
@@ -345,7 +345,7 @@ public class ChargeActivity extends MainActivity{
 
         while (cursor.moveToNext()){
             if(cursor.getString(4).substring(0,6).equals(select_month.substring(0,6))){
-                sum += Double.parseDouble(cursor.getString(3));
+                sum += (double)(Integer.parseInt(cursor.getString(3)));
             }
         }
 
