@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#ccff">
+    >
 
     <TableLayout
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
                 android:layout_weight="25"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:text="Slide your finger to the left side of the screen\n To switch the screen..."
+
                 android:id="@+id/textView9" />
 
     </TableLayout>
@@ -33,5 +33,7 @@
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
-        android:id="@+id/calendarView" />
+        android:id="@+id/calendarView"
+        android:dateTextAppearance="@android:style/TextAppearance.Large"
+        />
 </LinearLayout>

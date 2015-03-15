@@ -4,7 +4,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
-    android:background="@drawable/tackpic_bag">
+    >
 
     <LinearLayout
         android:orientation="vertical"
@@ -48,7 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-
+                android:background="@drawable/tackpic"
                 android:id="@+id/TakePic"
                />
 
@@ -56,7 +56,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-
+                android:background="@drawable/save"
                 android:id="@+id/saveBtn"
                />
 
