@@ -1,12 +1,7 @@
-<android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/smartpagerPager"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    tools:context="kiwi.ai_wallet.ChargeActivity">
-
-    <android.support.v4.view.PagerTitleStrip
-        android:id="@+id/PagerTitle"
-        style="@style/pagerTitleStrip"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:background="#ffffcc"/>
-
-</android.support.v4.view.ViewPager>
+    android:paddingLeft="@dimen/activity_horizontal_margin"  android:paddingRight="@dimen/activity_horizontal_margin" android:paddingTop="@dimen/activity_vertical_margin" android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="@drawable/butler_page"
+    tools:context=".MainActivity"></RelativeLayout>
