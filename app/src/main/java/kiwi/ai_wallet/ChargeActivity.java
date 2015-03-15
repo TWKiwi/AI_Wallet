@@ -51,8 +51,6 @@ import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -343,11 +341,11 @@ public class ChargeActivity extends MainActivity{
     private double scaleCompute(){
         Cursor cursor = getCursor();
         String select_month = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        double sum = 0;
+        double sum = 0.0;
 
         while (cursor.moveToNext()){
             if(cursor.getString(4).substring(0,6).equals(select_month.substring(0,6))){
-                sum += Integer.parseInt(cursor.getString(3));
+                sum += Double.parseDouble(cursor.getString(3));
             }
         }
 

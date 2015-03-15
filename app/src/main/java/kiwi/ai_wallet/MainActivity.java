@@ -2,27 +2,12 @@ package kiwi.ai_wallet;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.os.Environment;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CalendarView;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class MainActivity extends OptionActivity {
@@ -62,6 +47,7 @@ public class MainActivity extends OptionActivity {
      * 轉換到記帳UI*/
     public void toMenuUI(){
         setContentView(R.layout.menu);
+
         TextView Charge = (TextView)findViewById(R.id.ChargeTextView);
         Charge.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +56,25 @@ public class MainActivity extends OptionActivity {
                 startActivity(ChargeIntent);
             }
         });
+
+        TextView Smartbutler = (TextView)findViewById(R.id.SmartbutlerView);
+        Smartbutler.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent Smartbutler = new Intent(MainActivity.this,SmartbutlerActivity.class);
+                startActivity(Smartbutler);
+            }
+        });
+
+        TextView Option = (TextView)findViewById(R.id.OptionView);
+        Option.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent Option = new Intent(MainActivity.this,OptionActivity.class);
+                startActivity(Option);
+            }
+        });
+
 
     }
 

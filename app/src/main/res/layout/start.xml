@@ -8,11 +8,13 @@
 
 
 
+
     <TextView
         android:id="@+id/StartText"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:gravity="center"
-        android:text="Touch screen to start your Life"/>
+        android:background="@drawable/start"/>
+    <!--android:text="Touch screen to start your Life"/>-->
 
 </RelativeLayout>

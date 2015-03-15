@@ -2,9 +2,7 @@ package kiwi.ai_wallet;
 
 import android.content.pm.ActivityInfo;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,11 +24,7 @@ public class SmartbutlerActivity extends MainActivity {
     }
 
     private void initView(){
-        ViewPager = (ViewPager)findViewById(R.id.smartpagerPager);
-        LayoutInflater vInflater = getLayoutInflater();
 
-        vproposal = vInflater.inflate(R.layout.proposal_for_smartbutler,null);
-        vscale = vInflater.inflate(R.layout.scale_for_smartbutler,null);
 
 
     }
