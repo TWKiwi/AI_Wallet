@@ -7,11 +7,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-
+import com.ant.liao.*;
 
 
 public class MainActivity extends OptionActivity {
 
+    GifView gif;
 
 
     @Override
@@ -20,28 +21,48 @@ public class MainActivity extends OptionActivity {
         setContentView(R.layout.start);
         /**螢幕不隨手機旋轉*/
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-        /**點選StartText字串進入登入畫面的版面配置*/
+
+        initUI();
+
+
+
+
+
+        /**點選StartText字串進入選單畫面的版面配置*/
         TextView StartText = (TextView) findViewById(R.id.StartText);
         StartText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toLoginUI();/**切換UI*/
+                toMenuUI();/**切換UI*/
             }
         });
         addShortcut();
     }
-    /**
-     * 轉換到登入UI*/
-    public void toLoginUI(){
-        setContentView(R.layout.login);
-        TextView LoginText = (TextView)findViewById(R.id.LoginText);
-        LoginText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toMenuUI();
-            }
-        });
+
+
+    private void initUI()
+    {
+        gif = (GifView)findViewById(R.id.gifview01);
+        gif.setGifImage(R.drawable.pomo_small);
+
+//                gif1.setShowDimension(300, 300);
     }
+
+
+
+
+//    /**
+//     * 轉換到登入UI*/
+//    public void toLoginUI(){
+//        setContentView(R.layout.login);
+//        TextView LoginText = (TextView)findViewById(R.id.LoginText);
+//        LoginText.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                toMenuUI();
+//            }
+//        });
+//    }
 
     /**
      * 轉換到記帳UI*/
