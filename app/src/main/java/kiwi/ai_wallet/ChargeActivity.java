@@ -69,7 +69,7 @@ public class ChargeActivity extends MenuActivity {
 
 
 
-    ImageView PhotoPic,TakePic,SaveBtn;;
+    ImageView PhotoPic,TakePic,SaveBtn;
 
     CalendarView calendarDate = null;
     Spinner consumerType = null;
@@ -119,7 +119,7 @@ public class ChargeActivity extends MenuActivity {
 
         /**
          * 將要分頁顯示的View裝入數組中*/
-        viewList = new ArrayList<View>();
+        viewList = new ArrayList<>();
         viewList.add(vCamera);
         viewList.add(vCalender);
         viewList.add(vScale);
@@ -127,7 +127,7 @@ public class ChargeActivity extends MenuActivity {
 
         /**
          * 在初始化階段增加了這麼一段初始化數組的代碼。*/
-        titleList = new ArrayList<String>();
+        titleList = new ArrayList<>();
         titleList.add("Camera");
         titleList.add("Calender");
         titleList.add("Scale");
@@ -240,7 +240,7 @@ public class ChargeActivity extends MenuActivity {
         ViewPager.setAdapter(pagerAdapter);
 
         /**下拉選單適配器*/
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.charge_spinner_item,buyType);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.charge_spinner_item,buyType);
         consumerType.setAdapter(adapter);
 
 
@@ -262,7 +262,7 @@ public class ChargeActivity extends MenuActivity {
 
 
         String[] titles = new String[] { "預算額", "已花費" };
-        List < double []> values = new ArrayList< double []> ();
+        List < double []> values = new ArrayList<> ();
         values.add( new  double [] { 100 });
         values.add( new  double [] { persent });
         int [] colors = new  int [] { Color.GRAY, Color.RED};

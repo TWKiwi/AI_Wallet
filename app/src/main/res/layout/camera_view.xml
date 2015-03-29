@@ -28,8 +28,7 @@
             android:layout_height="match_parent"
             android:id="@+id/TakePic"
             android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:onClick="onClick" />
+            android:layout_weight="1" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -37,7 +36,7 @@
             android:id="@+id/saveBtn"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:onClick="onClick" />
+ />
 
     </TableRow>
 
