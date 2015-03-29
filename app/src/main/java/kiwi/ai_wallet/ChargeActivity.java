@@ -8,9 +8,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static android.provider.BaseColumns._ID;
 import static kiwi.ai_wallet.DbConstants.TABLE_NAME;
@@ -20,11 +18,8 @@ import static kiwi.ai_wallet.DbConstants.TYPE;
 import static kiwi.ai_wallet.DbConstants.PRICE;
 
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
-import android.app.ListActivity;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
@@ -36,23 +31,20 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.renderscript.Sampler;
 import android.support.v4.view.PagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.achartengine.ChartFactory;
@@ -63,7 +55,7 @@ import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 
 
-public class ChargeActivity extends MainActivity{
+public class ChargeActivity extends MenuActivity {
 
 
 
@@ -77,10 +69,11 @@ public class ChargeActivity extends MainActivity{
 
 
 
-    ImageView PhotoPic = null;
-    TextView TakePic,SaveBtn;
+    ImageView PhotoPic,TakePic,SaveBtn;;
+
     CalendarView calendarDate = null;
     Spinner consumerType = null;
+    String[] buyType = {" 食 "," 衣 "," 住 "," 行 "," 育 "," 樂 "," 其他 "};
     EditText name,priceText;
 
     Uri imgUri;
@@ -91,7 +84,7 @@ public class ChargeActivity extends MainActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_charge);
+        setContentView(R.layout.under_view);
         /**螢幕不隨手機旋轉*/
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         initView();/**首要步驟，匯入ViewPager及各頁Layout布局資料，不先做後面程式碼會找不到你所指的物件是哪個*/
@@ -112,17 +105,17 @@ public class ChargeActivity extends MainActivity{
          * reSource：View的layout的ID
          * root：如果為null，則將此View作為根,此時既可以應用此View中的其他控件了。
          * 如果!null,則將默認的layout作為View的根。*/
-        vCalender = vInflater.inflate(R.layout.calenderview_for_charge,null);
-        vCamera = vInflater.inflate(R.layout.camera_for_charge,null);
+        vCalender = vInflater.inflate(R.layout.calendar_view,null);
+        vCamera = vInflater.inflate(R.layout.camera_view,null);
         vScale = vInflater.inflate(R.layout.scale_for_charge,null);
 
-        calendarDate = (CalendarView)vCalender.findViewById(R.id.calendarView);
+        calendarDate = (CalendarView)vCalender.findViewById(R.id.CalendarView);
         PhotoPic = (ImageView)vCamera.findViewById(R.id.PhotoPic);
-        TakePic = (TextView)vCamera.findViewById(R.id.TakePic);
-        SaveBtn = (TextView)vCamera.findViewById(R.id.saveBtn);
-        name = (EditText)vCamera.findViewById(R.id.name);
-        consumerType = (Spinner)vCamera.findViewById(R.id.consumerType);
-        priceText = (EditText)vCamera.findViewById(R.id.price);
+        TakePic = (ImageView)vCamera.findViewById(R.id.TakePic);
+        SaveBtn = (ImageView)vCamera.findViewById(R.id.saveBtn);
+        name = (EditText)vCamera.findViewById(R.id.buyName);
+        consumerType = (Spinner)vCamera.findViewById(R.id.typeName);
+        priceText = (EditText)vCamera.findViewById(R.id.priceNum);
 
         /**
          * 將要分頁顯示的View裝入數組中*/
@@ -245,6 +238,10 @@ public class ChargeActivity extends MainActivity{
             }
         };
         ViewPager.setAdapter(pagerAdapter);
+
+        /**下拉選單適配器*/
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.charge_spinner_item,buyType);
+        consumerType.setAdapter(adapter);
 
 
         ///**建立APP圖檔公用路徑*/
@@ -375,13 +372,13 @@ public class ChargeActivity extends MainActivity{
         values.put(PRICE, priceText.getText().toString());
         db.insert(TABLE_NAME,null,values);
 
-        TextView dbtest = (TextView)vCamera.findViewById(R.id.dbPath);
-        dbtest.setText("資料庫檔路徑 :" + db.getPath() + "\n" +
-                       "資料庫分頁大小 :" + db.getPageSize() + "Bytes\n" +
-                       "資料量上限 :" + db.getMaximumSize() + "Bytes\n");
+//        TextView dbtest = (TextView)vCamera.findViewById(R.id.dbPath);
+//        dbtest.setText("資料庫檔路徑 :" + db.getPath() + "\n" +
+//                       "資料庫分頁大小 :" + db.getPageSize() + "Bytes\n" +
+//                       "資料量上限 :" + db.getMaximumSize() + "Bytes\n");
 
         cleanEditText();
-        closeDatabase();
+//        closeDatabase();
     }
 
     public Cursor getCursor(){
@@ -498,8 +495,8 @@ public class ChargeActivity extends MainActivity{
 
     void showImg(){
 
-        TextView Test = (TextView)findViewById(R.id.testView);
-        Test.setText("已執行");
+//        TextView Test = (TextView)findViewById(R.id.testView);
+//        Test.setText("已執行");
 
         /**圖片寬高，ImageView元件寬高*/
         int iw,ih,vw,vh;

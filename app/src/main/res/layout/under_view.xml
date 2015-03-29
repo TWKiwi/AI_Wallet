@@ -1,0 +1,14 @@
+<android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/chargePager"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    tools:context="kiwi.ai_wallet.ChargeActivity"
+    android:background="#FFE6D9">
+    <!--android:background="@drawable/charge_bag">-->
+
+    <android.support.v4.view.PagerTitleStrip
+        android:id="@+id/PagerTitle"
+        style="@style/pagerTitleStrip"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:background="#842B00"/>
+
+</android.support.v4.view.ViewPager>

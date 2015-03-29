@@ -28,10 +28,6 @@ import android.widget.TextView;
 
 import static kiwi.ai_wallet.DbConstants.TABLE_NAME;
 import static android.provider.BaseColumns._ID;
-import static kiwi.ai_wallet.DbConstants.PHNAME;
-import static kiwi.ai_wallet.DbConstants.NAME;
-import static kiwi.ai_wallet.DbConstants.TYPE;
-import static kiwi.ai_wallet.DbConstants.PRICE;
 
 
 import java.io.File;
@@ -54,7 +50,7 @@ public class DateListActivity extends ChargeActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_date_list);
+        setContentView(R.layout.activity_charge_list_view);
         /**螢幕不隨手機旋轉*/
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         Log.d("測試","onCreate");
@@ -154,7 +150,7 @@ public class DateListActivity extends ChargeActivity {
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
-            if(convertView == null)convertView = mInflater.inflate(R.layout.list_item,null);
+            if(convertView == null)convertView = mInflater.inflate(R.layout.list_view_object,null);
 
             final ImageView itemImageView = (ImageView)convertView.findViewById(R.id.itemImageView);
             itemImageView.setImageBitmap((Bitmap)itemList.get(position).get("itemImageView"));

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical"
+    android:background="#ffcc">
+    <!--android:background="@drawable/menu_bag"-->
+
+
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:background="#842B00"
+        android:id="@+id/PostView"
+        android:onClick="onClick"></ImageView>
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#FFE6D9"
+        android:id="@+id/ChargeTextView"
+        android:onClick="onClick"></ImageView>
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#FFE6D9"
+        android:id="@+id/SmartbutlerView"
+        android:onClick="onClick"></ImageView>
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#FFE6D9"
+        android:id="@+id/OptionView"
+        android:onClick="onClick"></ImageView>
+
+
+</LinearLayout>
