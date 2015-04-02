@@ -392,9 +392,14 @@ public class ChargeActivity extends MenuActivity {
     }
 
     private void cleanEditText(){
-        name.setText("");
-        priceText.setText("");
-        PhotoPic.setImageBitmap(null);
+
+        Intent restart = new Intent(ChargeActivity.this,ChargeActivity.class);
+        startActivity(restart);
+
+
+//        name.setText("");
+//        priceText.setText("");
+//        PhotoPic.setImageBitmap(null);
     }
 
     /**
