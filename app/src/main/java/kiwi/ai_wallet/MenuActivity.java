@@ -85,6 +85,10 @@ public class MenuActivity extends OptionActivity {
             public void onClick(View v) {
                 Intent ChargeIntent = new Intent(MenuActivity.this,ChargeActivity.class);
                 startActivity(ChargeIntent);
+                onPause();
+                onStop();
+                onDestroy();
+
             }
         });
 
@@ -94,6 +98,7 @@ public class MenuActivity extends OptionActivity {
             public void onClick(View v) {
                 Intent Smartbutler = new Intent(MenuActivity.this,SmartbutlerActivity.class);
                 startActivity(Smartbutler);
+
             }
         });
 
@@ -103,6 +108,7 @@ public class MenuActivity extends OptionActivity {
             public void onClick(View v) {
                 Intent Option = new Intent(MenuActivity.this,OptionActivity.class);
                 startActivity(Option);
+
             }
         });
 
