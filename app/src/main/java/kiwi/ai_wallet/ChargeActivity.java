@@ -21,6 +21,7 @@ import static kiwi.ai_wallet.DbConstants.PRICE;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -345,7 +346,8 @@ public class ChargeActivity extends MenuActivity {
                 sum += (double)(Integer.parseInt(cursor.getString(3)));
             }
         }
-
+//        SharedPreferences option = getPreferences(MODE_PRIVATE);
+        Budget = option.getInt("Budget",20000);
         double persent = (sum/Budget);//算百分比條小數點弄成百分比整數
         DecimalFormat df = new DecimalFormat("0.00");
         persent = Double.parseDouble(df.format(persent));
@@ -409,29 +411,30 @@ public class ChargeActivity extends MenuActivity {
         TakePic.setOnClickListener(CameraBtn);
         SaveBtn.setOnClickListener(SaveData);
     }
-        /**拍照監聽器*/
-        public View.OnClickListener CameraBtn = new View.OnClickListener() {
-            /**
-            * 相同調用startActivityForResult（）在啟動此系統調用的Activity後，在調用完畢返回結果到當前頁面時，返回結果碼“1”
-            * ，對應PHOTO_TAKE_PIC，以便當前頁面知道是從這個按鈕的調用返回的結果；*/
-            @Override
-            public void onClick(View v) {
 
-                ///**取得圖檔路徑*/
-                //File dirFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/" + "WalletPic");
-                /**利用目前時間組合出一個不會重複的檔名*/
-                fname = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".jpg";
-                /**依前面的路徑及檔案名建立Uri物件*/
-                imgUri = Uri.parse("file://" + dirFile + "/" + fname);
-                Intent CameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                /**將Uri加到拍照Intent的額外資料中*/
-                CameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imgUri);
-                startActivityForResult(CameraIntent,0);
+    /**拍照監聽器*/
+    public View.OnClickListener CameraBtn = new View.OnClickListener() {
+        /**
+         * 相同調用startActivityForResult（）在啟動此系統調用的Activity後，在調用完畢返回結果到當前頁面時，返回結果碼“1”
+         * ，對應PHOTO_TAKE_PIC，以便當前頁面知道是從這個按鈕的調用返回的結果；*/
+        @Override
+        public void onClick(View v) {
 
-            }
-        };
+            ///**取得圖檔路徑*/
+            //File dirFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/" + "WalletPic");
+            /**利用目前時間組合出一個不會重複的檔名*/
+            fname = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".jpg";
+            /**依前面的路徑及檔案名建立Uri物件*/
+            imgUri = Uri.parse("file://" + dirFile + "/" + fname);
+            Intent CameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            /**將Uri加到拍照Intent的額外資料中*/
+            CameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imgUri);
+            startActivityForResult(CameraIntent,0);
 
-        public  View.OnClickListener SaveData = new View.OnClickListener() {
+        }
+    };
+
+    public  View.OnClickListener SaveData = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(fname == null){
@@ -440,7 +443,7 @@ public class ChargeActivity extends MenuActivity {
 
                 dbadd();
             }
-        };
+    };
 
 
     String checkDate = null;

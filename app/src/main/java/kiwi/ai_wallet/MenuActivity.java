@@ -1,9 +1,11 @@
 package kiwi.ai_wallet;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,9 +14,11 @@ import android.widget.TextView;
 import com.ant.liao.*;
 
 
-public class MenuActivity extends OptionActivity {
+public class MenuActivity extends ActionBarActivity {
 
     GifView gif;
+    public static SharedPreferences option;
+    public static int Budget;//預算屬性
 
 
     @Override
@@ -26,7 +30,7 @@ public class MenuActivity extends OptionActivity {
 
 //        initUI();
 
-
+        setOption();
 
 
 
@@ -39,6 +43,11 @@ public class MenuActivity extends OptionActivity {
             }
         });
         addShortcut();
+    }
+
+    void setOption(){
+        option = getPreferences(MODE_PRIVATE);
+
     }
 
     public void setImage(){
@@ -85,10 +94,6 @@ public class MenuActivity extends OptionActivity {
             public void onClick(View v) {
                 Intent ChargeIntent = new Intent(MenuActivity.this,ChargeActivity.class);
                 startActivity(ChargeIntent);
-                onPause();
-                onStop();
-                onDestroy();
-
             }
         });
 
@@ -153,4 +158,7 @@ public class MenuActivity extends OptionActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
 }
