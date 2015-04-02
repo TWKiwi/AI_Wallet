@@ -395,7 +395,7 @@ public class ChargeActivity extends MenuActivity {
 
         Intent restart = new Intent(ChargeActivity.this,ChargeActivity.class);
         startActivity(restart);
-
+        finish();
 
 //        name.setText("");
 //        priceText.setText("");
