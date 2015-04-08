@@ -14,6 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/PhotoPic"
+            android:background="#FFCBB3"
             android:layout_gravity="center_vertical" />
     </TableRow>
 
@@ -23,20 +24,29 @@
         android:layout_gravity="center_horizontal"
         android:layout_weight="2">
 
-        <ImageView
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:text="拍照"
+            android:textSize="64sp"
+            android:gravity="center"
+            android:textColor="#842B00"
+            android:background="#FFDAC8"
             android:id="@+id/TakePic"
             android:layout_gravity="center_vertical"
             android:layout_weight="1" />
 
-        <ImageView
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:text="入帳"
+            android:textSize="64sp"
+            android:gravity="center"
+            android:textColor="#842B00"
+            android:background="#FFDAC8"
             android:id="@+id/saveBtn"
             android:layout_gravity="center_vertical"
-            android:layout_weight="1"
- />
+            android:layout_weight="1" />
 
     </TableRow>
 
@@ -114,6 +124,7 @@
                 android:id="@+id/priceNum"
                 android:layout_weight="1"
                 android:inputType="number"
+                android:text=""
                 android:textColor="#842B00"/>
         </TableRow>
 

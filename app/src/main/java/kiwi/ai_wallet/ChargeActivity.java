@@ -35,6 +35,7 @@ import android.provider.MediaStore;
 import android.support.v4.view.PagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,6 +47,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.achartengine.ChartFactory;
@@ -69,8 +71,8 @@ public class ChargeActivity extends MenuActivity {
 
 
 
-
-    ImageView PhotoPic,TakePic,SaveBtn;
+    TextView TakePic,SaveBtn,ScaleNum;
+    ImageView PhotoPic;
 
     CalendarView calendarDate = null;
     Spinner consumerType = null;
@@ -112,11 +114,12 @@ public class ChargeActivity extends MenuActivity {
 
         calendarDate = (CalendarView)vCalender.findViewById(R.id.CalendarView);
         PhotoPic = (ImageView)vCamera.findViewById(R.id.PhotoPic);
-        TakePic = (ImageView)vCamera.findViewById(R.id.TakePic);
-        SaveBtn = (ImageView)vCamera.findViewById(R.id.saveBtn);
+        TakePic = (TextView)vCamera.findViewById(R.id.TakePic);
+        SaveBtn = (TextView)vCamera.findViewById(R.id.saveBtn);
         name = (EditText)vCamera.findViewById(R.id.buyName);
         consumerType = (Spinner)vCamera.findViewById(R.id.typeName);
         priceText = (EditText)vCamera.findViewById(R.id.priceNum);
+        ScaleNum = (TextView)vScale.findViewById(R.id.showScaleNum);
 
         /**
          * 將要分頁顯示的View裝入數組中*/
@@ -258,6 +261,7 @@ public class ChargeActivity extends MenuActivity {
 
     private void getBarChart(){
 
+
         FrameLayout scale_view = (FrameLayout)vScale.findViewById(R.id.scaleView);
         double persent = scaleCompute();
 
@@ -289,6 +293,8 @@ public class ChargeActivity extends MenuActivity {
         renderer.setMargins(new int[]{200,100,0,100});
         View view = ChartFactory.getBarChartView(this, buildBarDataset(titles, values), renderer, BarChart.Type.STACKED); // Type.STACKED
         scale_view.addView(view);
+
+
     }
 
     protected XYMultipleSeriesDataset buildBarDataset(String[] titles, List< double []> values) {
@@ -324,36 +330,38 @@ public class ChargeActivity extends MenuActivity {
     }
     /**設置圖形renderer,標題,橫軸,縱軸,最小伸縮刻度,最大伸縮刻度,縱軸最大值,縱軸最小值,設定軸寬,設定軸色,標籤顏色*/
     protected  void setChartSettings(XYMultipleSeriesRenderer renderer, String title, String xTitle, String yTitle, double xMin, double xMax, double yMin, double yMax,float width, int axesColor, int labelsColor) {
-        renderer.setChartTitle(title);
-        renderer.setXTitle(xTitle);
-        renderer.setYTitle(yTitle);
-        renderer.setXAxisMin(xMin);
-        renderer.setXAxisMax(xMax);
-        renderer.setYAxisMin(yMin);
-        renderer.setYAxisMax(yMax);
-        renderer.setBarWidth(width);
-        renderer.setAxesColor(axesColor);
-        renderer.setLabelsColor(labelsColor);
+            renderer.setChartTitle(title);
+            renderer.setXTitle(xTitle);
+            renderer.setYTitle(yTitle);
+            renderer.setXAxisMin(xMin);
+            renderer.setXAxisMax(xMax);
+            renderer.setYAxisMin(yMin);
+            renderer.setYAxisMax(yMax);
+            renderer.setBarWidth(width);
+            renderer.setAxesColor(axesColor);
+            renderer.setLabelsColor(labelsColor);
     }
 
     private double scaleCompute(){
-        Cursor cursor = getCursor();
-        String select_month = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        double sum = 0.0;
+            Cursor cursor = getCursor();
+            String select_month = new SimpleDateFormat("yyyyMMdd").format(new Date());
+            int sum = 0;
 
-        while (cursor.moveToNext()){
-            if(cursor.getString(4).substring(0,6).equals(select_month.substring(0,6))){
-                sum += (double)(Integer.parseInt(cursor.getString(3)));
+            while (cursor.moveToNext()){
+                if(cursor.getString(4).substring(0,6).equals(select_month.substring(0,6))){
+                    sum += Double.parseDouble(cursor.getString(3));
+                }
             }
-        }
-//        SharedPreferences option = getPreferences(MODE_PRIVATE);
-        Budget = option.getInt("Budget",20000);
-        double persent = (sum/Budget);//算百分比條小數點弄成百分比整數
-        DecimalFormat df = new DecimalFormat("0.00");
-        persent = Double.parseDouble(df.format(persent));
-        persent = persent*100;
+    //        SharedPreferences option = getPreferences(MODE_PRIVATE);
+            Budget = option.getInt("Budget",20000);
+            double persent = (Double.parseDouble(String.valueOf(sum))/Budget);//算百分比條小數點弄成百分比整數
+            DecimalFormat df = new DecimalFormat("0.00");
+            persent = Double.parseDouble(df.format(persent));
+            persent = persent*100;
 
-    return persent;
+            ScaleNum.setText(Html.fromHtml(sum +  "<font color = '#FF0000'><big>/</font>" + Budget));
+    //Html.fromHtml("北京市发布霾黄色预警，<font color='#ff0000'><big><big>外出携带好</big></big></font>口罩")
+        return persent;
     }
 
     private void openDatabase(){
@@ -365,22 +373,32 @@ public class ChargeActivity extends MenuActivity {
     }
 
     public void dbadd(){
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        if(fname == null)fname = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".jpg";
-        ContentValues values = new ContentValues();
-        values.put(PHNAME,fname);
-        values.put(NAME, name.getText().toString());
-        values.put(TYPE, consumerType.getSelectedItem().toString());
-        values.put(PRICE, priceText.getText().toString());
-        db.insert(TABLE_NAME,null,values);
 
-//        TextView dbtest = (TextView)vCamera.findViewById(R.id.dbPath);
-//        dbtest.setText("資料庫檔路徑 :" + db.getPath() + "\n" +
+        if (! priceText.getText().toString().equals("")){
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+            if(fname == null)fname = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".jpg";
+            ContentValues values = new ContentValues();
+            values.put(PHNAME,fname);
+            values.put(NAME, name.getText().toString());
+            values.put(TYPE, consumerType.getSelectedItem().toString());
+            values.put(PRICE, priceText.getText().toString());
+            db.insert(TABLE_NAME,null,values);
+
+//          TextView dbtest = (TextView)vCamera.findViewById(R.id.dbPath);
+//          dbtest.setText("資料庫檔路徑 :" + db.getPath() + "\n" +
 //                       "資料庫分頁大小 :" + db.getPageSize() + "Bytes\n" +
 //                       "資料量上限 :" + db.getMaximumSize() + "Bytes\n");
+            getBarChart();
+            cleanEditText();
+//          closeDatabase();
+        }
 
-        cleanEditText();
-//        closeDatabase();
+        if (priceText.getText().toString().equals("")){
+            Toast.makeText(this,"請確實輸入金額",Toast.LENGTH_SHORT).show();
+
+        }
+
+
     }
 
     public Cursor getCursor(){
@@ -442,6 +460,7 @@ public class ChargeActivity extends MenuActivity {
                 }
 
                 dbadd();
+                getBarChart();
             }
     };
 

@@ -22,6 +22,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/setBudget"
             android:textColor="#842B00"
+            android:inputType="number"
             android:layout_gravity="center_vertical" />
         </TableRow>
     <TableRow

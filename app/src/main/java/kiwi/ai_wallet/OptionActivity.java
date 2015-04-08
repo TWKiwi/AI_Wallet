@@ -16,7 +16,7 @@ import android.widget.TextView;
 public class OptionActivity extends MenuActivity {
 
 
-    EditText setBudget;
+    EditText budgetText;
     Button saveBtn;
 
 
@@ -35,9 +35,11 @@ public class OptionActivity extends MenuActivity {
     }
 
     private void initView(){
-        setBudget = (EditText)findViewById(R.id.setBudget);
+        budgetText = (EditText)findViewById(R.id.setBudget);
         saveBtn = (Button)findViewById(R.id.saveBtn);
 
+        Budget = option.getInt("Budget",20000);
+        budgetText.setHint(String.valueOf(Budget));
 
     }
 
@@ -52,7 +54,7 @@ public class OptionActivity extends MenuActivity {
     private View.OnClickListener saveBtnClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Budget = Integer.parseInt(setBudget.getText().toString());
+            Budget = Integer.parseInt(budgetText.getText().toString());
             setOption();
         }
     };

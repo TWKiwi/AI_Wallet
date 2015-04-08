@@ -88,7 +88,7 @@ public class MenuActivity extends ActionBarActivity {
     public void toMenuUI(){
         setContentView(R.layout.menu_view);
 
-        ImageView Charge = (ImageView)findViewById(R.id.ChargeTextView);
+        TextView Charge = (TextView)findViewById(R.id.ChargeTextView);
         Charge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,7 +97,7 @@ public class MenuActivity extends ActionBarActivity {
             }
         });
 
-        ImageView Smartbutler = (ImageView)findViewById(R.id.SmartbutlerView);
+        TextView Smartbutler = (TextView)findViewById(R.id.SmartbutlerView);
         Smartbutler.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,7 +107,7 @@ public class MenuActivity extends ActionBarActivity {
             }
         });
 
-        ImageView Option = (ImageView)findViewById(R.id.OptionView);
+        TextView Option = (TextView)findViewById(R.id.OptionView);
         Option.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

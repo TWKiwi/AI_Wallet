@@ -1,18 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:paddingLeft="50dp"
-    android:paddingRight="50dp"
-    android:paddingBottom="30dp"
-    android:paddingTop="30dp"
-    android:weightSum="1">
 
-    <FrameLayout
-        android:id="@+id/scaleView"
-        android:orientation="horizontal"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+    android:orientation="vertical">
+
+    <TableRow
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1.54"></FrameLayout>
+        android:layout_height="0dp"
+        android:layout_weight="0.8">
+        <FrameLayout
+            android:id="@+id/scaleView"
+            android:orientation="horizontal"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            </FrameLayout>
+        </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="32sp"
+            android:gravity="center"
+            android:textColor="#842B00"
+            android:text="New Text"
+            android:id="@+id/showScaleNum" />
+    </TableRow>
+
+
 </LinearLayout>
