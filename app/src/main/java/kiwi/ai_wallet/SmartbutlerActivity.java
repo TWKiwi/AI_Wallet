@@ -1,17 +1,18 @@
 package kiwi.ai_wallet;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 
-public class SmartbutlerActivity extends OptionActivity {
+public class SmartbutlerActivity extends OptionActivity implements View.OnClickListener {
 
-    private ViewPager ViewPager;
-    private View vproposal,vscale;
+
 
 
     @Override
@@ -24,11 +25,24 @@ public class SmartbutlerActivity extends OptionActivity {
     }
 
     private void initView(){
-
-
-
+        TextView smartbutlerTxt = (TextView)findViewById(R.id.smartbutlerTxt);
+        TextView ControlTxt = (TextView)findViewById(R.id.ControlTxt);
+        TextView easyCompute = (TextView)findViewById(R.id.easyComputeTxt);
     }
 
+    @Override
+    public void onClick(View v){
+        switch (v.getId()){
+            case R.id.smartbutlerTxt :
+
+            case R.id.ControlTxt :
+
+            case R.id.easyComputeTxt :   Intent intent = new Intent(SmartbutlerActivity.this,ComputerActivity.class);
+                                         startActivity(intent);
+                                         break;
+
+        }
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

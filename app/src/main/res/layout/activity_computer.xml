@@ -1,0 +1,253 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="kiwi.ai_wallet.ComputerActivity">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0sp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="#FFFFFF"
+                android:background="#842B00"
+                android:textSize="24sp"
+                android:id="@+id/computeNumText" />
+
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:textColor="#FFFFFF"
+                android:background="#842B00"
+                android:textSize="36sp"
+                android:id="@+id/totalNumText" />
+            </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0sp"
+        android:layout_weight="4"
+        android:orientation="vertical">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:textSize="25sp"
+                android:text="清除"
+                android:background="#FFBD9D"
+                android:id="@+id/cptTextViewC"
+                android:onClick="onClick" />
+
+            <TextView
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="25sp"
+                android:text="倒退"
+                android:background="#FFAD86"
+                android:id="@+id/cptTextViewＢ"
+                android:onClick="onClick" />
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="25sp"
+                android:text="7"
+                android:background="#FFAD86"
+                android:id="@+id/cptTextView7"
+                android:onClick="onClick" />
+            <TextView
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="25sp"
+                android:text="8"
+                android:background="#FFBD9D"
+                android:id="@+id/cptTextView8"
+                android:onClick="onClick" />
+            <TextView
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="25sp"
+                android:text="9"
+                android:background="#FFAD86"
+                android:id="@+id/cptTextView9"
+                android:onClick="onClick" />
+            <TextView
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="25sp"
+                android:text="/"
+                android:background="#FFBD9D"
+                android:id="@+id/cptTextViewD"
+                android:onClick="onClick" />
+            </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="25sp"
+                android:text="4"
+                android:background="#FFBD9D"
+                android:id="@+id/cptTextView4"
+                android:onClick="onClick" />
+            <TextView
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="25sp"
+                android:text="5"
+                android:background="#FFAD86"
+                android:id="@+id/cptTextView5"
+                android:onClick="onClick" />
+            <TextView
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="25sp"
+                android:text="6"
+                android:background="#FFBD9D"
+                android:id="@+id/cptTextView6"
+                android:onClick="onClick" />
+            <TextView
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="25sp"
+                android:text="X"
+                android:background="#FFAD86"
+                android:id="@+id/cptTextViewM"
+                android:onClick="onClick" />
+            </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="25sp"
+                android:text="1"
+                android:background="#FFAD86"
+                android:id="@+id/cptTextView1"
+                android:onClick="onClick" />
+            <TextView
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="25sp"
+                android:text="2"
+                android:background="#FFBD9D"
+                android:id="@+id/cptTextView2"
+                android:onClick="onClick" />
+            <TextView
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="25sp"
+                android:text="3"
+                android:background="#FFAD86"
+                android:id="@+id/cptTextView3"
+                android:onClick="onClick" />
+            <TextView
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="25sp"
+                android:text="-"
+                android:background="#FFBD9D"
+                android:id="@+id/cptTextViewS"
+                android:onClick="onClick" />
+            </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="25sp"
+                android:text="."
+                android:background="#FFBD9D"
+                android:id="@+id/cptTextViewpoint"
+                android:onClick="onClick" />
+            <TextView
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="25sp"
+                android:text="0"
+                android:background="#FFAD86"
+                android:id="@+id/cptTextView0"
+                android:onClick="onClick" />
+            <TextView
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="25sp"
+                android:text="="
+                android:background="#FFBD9D"
+                android:id="@+id/cptTextViewE"
+                android:onClick="onClick" />
+            <TextView
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="25sp"
+                android:text="+"
+                android:background="#FFAD86"
+                android:id="@+id/cptTextViewA"
+                android:onClick="onClick" />
+            </TableRow>
+
+    </LinearLayout>
+</LinearLayout>

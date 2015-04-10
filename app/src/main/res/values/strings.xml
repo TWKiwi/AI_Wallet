@@ -21,5 +21,6 @@
     <string name="snipperName">選擇記錄類別</string>
     <string name="title_activity_smartbutler">智能管家</string>
     <string name="title_activity_option">設定畫面</string>
+    <string name="title_activity_computer">ComputerActivity</string>
 
 </resources>
