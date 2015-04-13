@@ -101,7 +101,7 @@ public class DateListActivity extends ChargeActivity {
                 String picname = cursor.getString(4);
 
                 StringBuilder resultData = new StringBuilder();
-                resultData.append("編號：").append(id).append("\n");
+//                resultData.append("編號：").append(id).append("\n");
                 resultData.append("品名：").append(name).append("\n");
                 resultData.append("類型：").append(type).append("\n");
                 resultData.append("價錢：").append(price).append("元\n");

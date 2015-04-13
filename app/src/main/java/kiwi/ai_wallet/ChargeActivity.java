@@ -531,7 +531,8 @@ public class ChargeActivity extends MenuActivity {
         /**讀取圖檔資訊而不載入圖檔*/
         option.inJustDecodeBounds = true;
         /**讀取圖檔資訊存入option中*/
-        Bitmap bmp = BitmapFactory.decodeFile(imgUri.getPath(),option);
+        BitmapFactory.decodeFile(imgUri.getPath(),option);
+
         iw = option.outWidth;//由option中讀出圖檔寬度
         ih = option.outHeight;//      ''       高度
         vw = PhotoPic.getWidth();//取得ImageView的寬度
@@ -546,7 +547,7 @@ public class ChargeActivity extends MenuActivity {
         /**設定在記憶體不夠時，允許系統將圖片內容刪除*/
         option.inPurgeable = true;
         /**讀取圖檔內容轉換為Bitmap物件*/
-        bmp = BitmapFactory.decodeFile(imgUri.getPath(),option);
+        Bitmap bmp = BitmapFactory.decodeFile(imgUri.getPath(),option);
         /**顯示*/
         PhotoPic.setImageBitmap(bmp);
 
@@ -555,7 +556,8 @@ public class ChargeActivity extends MenuActivity {
                 .setMessage("圖檔路徑:" + imgUri.getPath() +
                          "\n 原始尺寸:" + iw + "x" + ih +
                          "\n 載入尺寸:" + bmp.getWidth() + "x" + bmp.getHeight() +
-                         "\n 顯示尺寸:" + vw + "x" + vh)
+                         "\n 顯示尺寸:" + vw + "x" + vh +
+                         "\n 縮小倍率為" + scaleFactor + "倍")
                 .setNeutralButton("關閉", null)
                 .show();
 
