@@ -22,5 +22,23 @@
     <string name="title_activity_smartbutler">智能管家</string>
     <string name="title_activity_option">設定畫面</string>
     <string name="title_activity_computer">ComputerActivity</string>
+    <string name="title_activity_my_sql">MySQLActivity</string>
+
+    <string-array name="fClass_spin">
+        <item>早餐</item>
+        <item>早午餐</item>
+        <item>午餐</item>
+        <item>晚餐</item>
+        <item>飲品</item>
+    </string-array>
+    <string-array name="fName_spin">
+        <item>飯</item>
+        <item>麵</item>
+        <item>麵包</item>
+        <item>茶</item>
+        <item/>
+    </string-array>
+
+    <string name="title_activity_test_connect">TestConnect</string>
 
 </resources>

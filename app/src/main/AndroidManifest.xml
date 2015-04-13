@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -58,6 +59,14 @@
             android:label="@string/title_activity_computer"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="stateHidden" >
+        </activity>
+        <activity
+            android:name=".MySQLActivity"
+            android:label="@string/title_activity_my_sql" >
+        </activity>
+        <activity
+            android:name=".TestConnect"
+            android:label="@string/title_activity_test_connect" >
         </activity>
     </application>
 

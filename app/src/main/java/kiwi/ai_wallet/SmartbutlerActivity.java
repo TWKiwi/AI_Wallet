@@ -33,11 +33,15 @@ public class SmartbutlerActivity extends OptionActivity implements View.OnClickL
     @Override
     public void onClick(View v){
         switch (v.getId()){
-            case R.id.smartbutlerTxt :
+            case R.id.smartbutlerTxt :   Intent intent = new Intent(SmartbutlerActivity.this,MySQLActivity.class);
+                                         startActivity(intent);
+                                         break;
 
-            case R.id.ControlTxt :
+            case R.id.ControlTxt :       intent = new Intent(SmartbutlerActivity.this,OptionActivity.class);
+                                         startActivity(intent);
+                                         break;
 
-            case R.id.easyComputeTxt :   Intent intent = new Intent(SmartbutlerActivity.this,ComputerActivity.class);
+            case R.id.easyComputeTxt :   intent = new Intent(SmartbutlerActivity.this, ComputerActivity.class);
                                          startActivity(intent);
                                          break;
 

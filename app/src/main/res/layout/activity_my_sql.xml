@@ -1,0 +1,66 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="kiwi.ai_wallet.MySQLActivity"
+    android:orientation="vertical"
+    android:background="#FFDAC8">
+    <Spinner
+        android:id="@+id/spinner_fclass"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:entries="@array/fClass_spin"
+        android:textColor="#842B00"/>
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginTop="20dp" >
+
+        <Spinner
+            android:id="@+id/spinner_fname"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:entries="@array/fName_spin"
+            android:textColor="#842B00"/>
+
+        <EditText
+            android:id="@+id/editText1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ems="10"
+            android:layout_gravity="center"
+            android:hint="請輸入金額"
+            android:singleLine="true"
+            android:text=""
+            android:inputType="number"
+            android:textColor="#842B00">
+            <requestFocus />
+            </EditText>
+
+    </LinearLayout>
+
+
+
+    <TableLayout
+        android:id="@+id/select_table"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="10"
+        android:textColor="#842B00">
+    </TableLayout>
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="查詢"
+        android:layout_weight="1"
+        android:textColor="#842B00"
+        android:background="#FFBD9D"/>
+
+</LinearLayout>

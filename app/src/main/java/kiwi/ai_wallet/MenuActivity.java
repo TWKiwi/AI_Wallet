@@ -107,15 +107,7 @@ public class MenuActivity extends ActionBarActivity {
             }
         });
 
-        TextView Option = (TextView)findViewById(R.id.OptionView);
-        Option.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent Option = new Intent(MenuActivity.this,OptionActivity.class);
-                startActivity(Option);
 
-            }
-        });
 
 
     }

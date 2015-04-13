@@ -32,16 +32,7 @@
         android:gravity="center"
         android:background="#FFCBB3"
         android:id="@+id/SmartbutlerView"></TextView>
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:text="系統設置"
-        android:textSize="35sp"
-        android:textColor="#842B00"
-        android:gravity="center"
-        android:background="#FFBD9D"
-        android:id="@+id/OptionView"></TextView>
+
 
 
 </LinearLayout>

@@ -138,7 +138,6 @@ public class ChargeActivity extends MenuActivity {
 
 
 
-
         /**
          * 再來要設置ViewPager的適配器拉
          * 很重要關鍵的東西...
@@ -360,7 +359,7 @@ public class ChargeActivity extends MenuActivity {
             persent = persent*100;
 
             ScaleNum.setText(Html.fromHtml(sum +  "<font color = '#FF0000'><big>/</font>" + Budget));
-    //Html.fromHtml("北京市发布霾黄色预警，<font color='#ff0000'><big><big>外出携带好</big></big></font>口罩")
+
         return persent;
     }
 
@@ -531,8 +530,8 @@ public class ChargeActivity extends MenuActivity {
         BitmapFactory.Options option = new BitmapFactory.Options();
         /**讀取圖檔資訊而不載入圖檔*/
         option.inJustDecodeBounds = true;
-        /**讀取圖檔資訊存入Option中*/
-        BitmapFactory.decodeFile(imgUri.getPath(),option);
+        /**讀取圖檔資訊存入option中*/
+        Bitmap bmp = BitmapFactory.decodeFile(imgUri.getPath(),option);
         iw = option.outWidth;//由option中讀出圖檔寬度
         ih = option.outHeight;//      ''       高度
         vw = PhotoPic.getWidth();//取得ImageView的寬度
@@ -547,7 +546,7 @@ public class ChargeActivity extends MenuActivity {
         /**設定在記憶體不夠時，允許系統將圖片內容刪除*/
         option.inPurgeable = true;
         /**讀取圖檔內容轉換為Bitmap物件*/
-        Bitmap bmp = BitmapFactory.decodeFile(imgUri.getPath(),option);
+        bmp = BitmapFactory.decodeFile(imgUri.getPath(),option);
         /**顯示*/
         PhotoPic.setImageBitmap(bmp);
 
@@ -574,6 +573,44 @@ public class ChargeActivity extends MenuActivity {
             e.printStackTrace();
         }
     }
+
+    /**
+     *FrameLayout fr=(FrameLayout)findViewById(R.id.FrameLayout01);
+     * BitmapFactory.Options options =new BitmapFactory.Options();
+     * options.inJustDecodeBounds = true;
+     *
+     * 獲取這個圖片的寬和高
+     * Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/test.jpg", options); //此時返回bm為空
+     * options.inJustDecodeBounds =false;
+     *
+     * 計算縮放比
+     * int be = (int)(options.outHeight/(float)200);
+     * if (be <= 0) be = 1;
+     * options.inSampleSize = be;
+     *
+     * 重新讀入圖片，注意這次要把options.inJustDecodeBounds 設為 false哦
+     * bitmap=BitmapFactory.decodeFile("/sdcard/test.jpg",options);
+     * int w = bitmap.getWidth();
+     * int h = bitmap.getHeight();
+     * System.out.println(w+" "+h);
+     * ImageView iv=new ImageView(this);
+     * iv.setImageBitmap(bitmap);
+     *
+     * 這樣我們就可以讀取較大的圖片而不會記憶體溢出了。
+     * 如果你想把壓縮後的圖片保存在Sdcard上的話就很簡單了：
+     * File file=new File("/sdcard/feng.png");
+     * try { FileOutputStream out=newFileOutputStream(file);
+     *      if(bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)){
+     *          out.flush();
+     *          out.close();
+     *          }
+     * } catch (FileNotFoundException e){
+     *      // TODO Auto-generated catchblock
+     *      e.printStackTrace();
+     * } catch (IOException e) {
+     *      // TODO Auto-generated catchblock
+     *      e.printStackTrace(); }
+     *      */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

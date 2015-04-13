@@ -74,7 +74,7 @@ public class DateListActivity extends ChargeActivity {
         DATE = bundle.getString("findDate");
         /**取得圖檔路徑*/
         dirFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/" + "WalletPic");
-        text.setText("bundleCatch已執行");
+//        text.setText("bundleCatch已執行");
     }
 
     private List<HashMap<String, Object>> getData() {
@@ -113,7 +113,7 @@ public class DateListActivity extends ChargeActivity {
                 item.put("id",id);
                 item.put("picname",picname);
                 list.add(item);
-                text.setText(DATE + "itemInput已執行" + resultData + imgUri);
+//                text.setText(DATE + "itemInput已執行" + resultData + imgUri);
             }
         }
         Log.d("測試","getData()");
