@@ -63,17 +63,17 @@ public class MenuActivity extends ActionBarActivity {
 //        calendar.set(Calendar.YEAR, 2015);
 //        calendar.set(Calendar.DAY_OF_MONTH, 14);
 
-        calendar.set(Calendar.HOUR_OF_DAY, 18);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
+//        calendar.set(Calendar.HOUR_OF_DAY, 18);
+//        calendar.set(Calendar.MINUTE, 0);
+//        calendar.set(Calendar.SECOND, 0);
 //        calendar.set(Calendar.AM_PM,Calendar.PM);
 
         Intent myIntent = new Intent(MenuActivity.this, MyReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(MenuActivity.this, 0, myIntent,0);
 
         AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
-
+//        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+        alarmManager.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), 6*60*60*1000, pendingIntent);
     }
 
 

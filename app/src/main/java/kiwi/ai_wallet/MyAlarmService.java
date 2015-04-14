@@ -39,9 +39,9 @@ public class MyAlarmService extends Service
         Notification notification = new Notification(R.drawable.ic_launcher,"This is a test message!", System.currentTimeMillis());
         intent1.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP| Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        PendingIntent pendingNotificationIntent = PendingIntent.getActivity( this.getApplicationContext(),0, intent1,PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingNotificationIntent = PendingIntent.getActivity( this.getApplicationContext(),0, intent1,0);
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
-        notification.setLatestEventInfo(this.getApplicationContext(), "今天記帳了嘛^^？", "點我記帳", pendingNotificationIntent);
+        notification.setLatestEventInfo(this.getApplicationContext(), "有乖乖記帳嘛^^？", "點我記帳", pendingNotificationIntent);
 
         mManager.notify(0, notification);
     }
