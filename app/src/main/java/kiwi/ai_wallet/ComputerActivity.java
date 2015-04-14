@@ -127,24 +127,29 @@ public class ComputerActivity extends SmartbutlerActivity implements View.OnClic
             case 0 :
                 Nu1 = Cal_Nu;
                 Cal_index = 0;
+                computeNumText.setText(computeNumText.getText().toString() + totalNumText.getText().toString() + "+");
                 totalNumText.setText("");
                 break;
             case 1 :
                 Nu1 = Cal_Nu;
                 Cal_index = 1;
+                computeNumText.setText(computeNumText.getText().toString() + totalNumText.getText().toString() + "-");
                 totalNumText.setText("");
                 break;
             case 2 :
                 Nu1 = Cal_Nu;
                 Cal_index = 2;
+                computeNumText.setText(computeNumText.getText().toString() + totalNumText.getText().toString() + "x");
                 totalNumText.setText("");
                 break;
             case 3 :
                 Nu1 = Cal_Nu;
                 Cal_index = 3;
+                computeNumText.setText(computeNumText.getText().toString() + totalNumText.getText().toString() + "/");
                 totalNumText.setText("");
                 break;
             case 99 :
+                computeNumText.setText("");
                 Nu2 = totalNumText.getText().toString();
                 double i = Double.valueOf(Nu1);
                 double j = Double.valueOf(Nu2);

@@ -20,6 +20,7 @@ import static kiwi.ai_wallet.DbConstants.PRICE;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -31,6 +32,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.view.PagerAdapter;
 import android.os.Bundle;
@@ -258,7 +260,7 @@ public class ChargeActivity extends MenuActivity {
 
     }
 
-    private void getBarChart(){
+    void getBarChart(){
 
 
         FrameLayout scale_view = (FrameLayout)vScale.findViewById(R.id.scaleView);
@@ -373,6 +375,23 @@ public class ChargeActivity extends MenuActivity {
 
     public void dbadd(){
 
+        Cursor cursor = getCursor();
+        String select_month = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        int sum = 0;
+        if (priceText.getText().toString().equals("")){
+            Toast.makeText(this,"請確實輸入金額",Toast.LENGTH_SHORT).show();
+
+        }else {
+            while (cursor.moveToNext()) {
+                if (cursor.getString(4).substring(0, 6).equals(select_month.substring(0, 6))) {
+                    sum += Double.parseDouble(cursor.getString(3));
+                }
+            }
+            Budget = option.getInt("Budget", 20000);
+            if ((Double.parseDouble(String.valueOf(sum)) + Double.parseDouble(String.valueOf(priceText.getText()))) >= Budget) {
+                Toast.makeText(this, "注意！！超出預算！！", Toast.LENGTH_SHORT).show();
+            }
+        }
         if (! priceText.getText().toString().equals("")){
             SQLiteDatabase db = dbHelper.getWritableDatabase();
             if(fname == null)fname = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".jpg";
@@ -383,20 +402,10 @@ public class ChargeActivity extends MenuActivity {
             values.put(PRICE, priceText.getText().toString());
             db.insert(TABLE_NAME,null,values);
 
-//          TextView dbtest = (TextView)vCamera.findViewById(R.id.dbPath);
-//          dbtest.setText("資料庫檔路徑 :" + db.getPath() + "\n" +
-//                       "資料庫分頁大小 :" + db.getPageSize() + "Bytes\n" +
-//                       "資料量上限 :" + db.getMaximumSize() + "Bytes\n");
             getBarChart();
             cleanEditText();
 //          closeDatabase();
         }
-
-        if (priceText.getText().toString().equals("")){
-            Toast.makeText(this,"請確實輸入金額",Toast.LENGTH_SHORT).show();
-
-        }
-
 
     }
 
@@ -498,6 +507,7 @@ public class ChargeActivity extends MenuActivity {
                 bundle.putString("findDate", findDate);
                 intent.putExtras(bundle);
                 startActivity(intent);
+
             }
             checkDate = findDate;
 
@@ -636,5 +646,25 @@ public class ChargeActivity extends MenuActivity {
 
         return super.onOptionsItemSelected(item);
     }
+    protected void onResume() {
+        super.onResume();
+        handler.post(runnable);
+    }
 
+    private Runnable runnable = new Runnable() {
+        public void run() {
+        //做操作
+            handler.sendEmptyMessage(1);
+        }
+
+    };
+    private Handler handler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+            case 1:
+            getBarChart();
+            break;
+            }
+        };
+    };
 }

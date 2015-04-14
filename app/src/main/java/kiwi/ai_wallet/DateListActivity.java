@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Environment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -165,26 +166,19 @@ public class DateListActivity extends ChargeActivity {
                 public void onClick(View v) {
 
 //                    try{
-                        itemList.remove(position);
-                        notifyDataSetChanged();
-                        //del();
-//                      String id = itemList.get(position).get("id").toString();
-                        SQLiteDatabase db = dbHelper.getWritableDatabase();
-                        db.delete(TABLE_NAME, _ID + "=" + id, null);
-//                    }catch (Exception e){
-//                        Toast.makeText(DateListActivity.this,"當日沒有紀錄",Toast.LENGTH_LONG).show();
+                      itemList.remove(position);
+                      notifyDataSetChanged();
+                      SQLiteDatabase db = dbHelper.getWritableDatabase();
+                      db.delete(TABLE_NAME, _ID + "=" + id, null);
 
+//                  }catch (Exception e){
+//                      Toast.makeText(DateListActivity.this,"當日沒有紀錄",Toast.LENGTH_LONG).show();
                     /**以下刪除功能在android 4.4以上版本不適用*/
                     File f = new File(String.valueOf(dirFile+"/"+picname));
-
                     f.delete();
-
-
 //                    }
                 }
             });
-
-
             return convertView;
         }
     }
@@ -214,6 +208,7 @@ public class DateListActivity extends ChargeActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 
 
 }
