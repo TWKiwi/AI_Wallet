@@ -1,11 +1,19 @@
 package kiwi.ai_wallet;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,12 +21,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.ant.liao.*;
 
+import java.util.Calendar;
+
 
 public class MenuActivity extends ActionBarActivity {
 
     GifView gif;
     public static SharedPreferences option;
     public static int Budget;//預算屬性
+    private PendingIntent pendingIntent;
 
 
     @Override
@@ -31,10 +42,10 @@ public class MenuActivity extends ActionBarActivity {
 //        initUI();
 
         setOption();
+        test();
 
 
-
-        /**點選StartText字串進入選單畫面的版面配置*/
+      /**點選StartText字串進入選單畫面的版面配置*/
         TextView StartText = (TextView) findViewById(R.id.StartText);
         StartText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,6 +55,28 @@ public class MenuActivity extends ActionBarActivity {
         });
         addShortcut();
     }
+
+    void test(){
+        Calendar calendar = Calendar.getInstance();
+
+//        calendar.set(Calendar.MONTH, 4);
+//        calendar.set(Calendar.YEAR, 2015);
+//        calendar.set(Calendar.DAY_OF_MONTH, 14);
+
+        calendar.set(Calendar.HOUR_OF_DAY, 18);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+//        calendar.set(Calendar.AM_PM,Calendar.PM);
+
+        Intent myIntent = new Intent(MenuActivity.this, MyReceiver.class);
+        pendingIntent = PendingIntent.getBroadcast(MenuActivity.this, 0, myIntent,0);
+
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+
+    }
+
+
 
     void setOption(){
         option = getPreferences(MODE_PRIVATE);

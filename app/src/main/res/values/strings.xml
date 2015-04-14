@@ -40,5 +40,6 @@
     </string-array>
 
     <string name="title_activity_test_connect">TestConnect</string>
+    <string name="title_activity_test">test</string>
 
 </resources>
