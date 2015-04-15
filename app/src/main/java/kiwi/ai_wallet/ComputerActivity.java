@@ -52,7 +52,7 @@ public class ComputerActivity extends SmartbutlerActivity implements View.OnClic
         cptTextViewE = (TextView)findViewById(R.id.cptTextViewE);
         cptTextViewpoint = (TextView)findViewById(R.id.cptTextViewpoint);
         cptTextViewC = (TextView)findViewById(R.id.cptTextViewC);
-        cptTextViewB = (TextView)findViewById(R.id.cptTextViewＢ);
+        cptTextViewB = (TextView)findViewById(R.id.cptTextViewB);
 
 
     }
@@ -104,6 +104,10 @@ public class ComputerActivity extends SmartbutlerActivity implements View.OnClic
                 case R.id.cptTextViewD : Caculate(3 , Str_Value); break;
                 case R.id.cptTextViewE : Caculate(99 , Str_Value); break;
                 case R.id.cptTextViewC : totalNumText.setText("0"); break;
+                case R.id.cptTextViewB : Intent intent = new Intent(ComputerActivity.this,ChargeActivity.class);
+                                         startActivity(intent);
+                                         finish();
+                                         break;
 
             }
         }
