@@ -150,7 +150,7 @@ public class ChargeActivity extends MenuActivity {
                     ChargeActivity.this.year = year;
                     ChargeActivity.this.month = month;
                     ChargeActivity.this.day = day;
-                    makeToast();
+                    intoDateList();
                     currentArea = getItemArea(upX, upY);
                     isInitialized = true;
                 }
@@ -754,7 +754,7 @@ public class ChargeActivity extends MenuActivity {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-
+        Log.d("TAG", "dispatchTouchEvent(MotionEvent event) ");
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 downX = (int)event.getX();
@@ -776,17 +776,20 @@ public class ChargeActivity extends MenuActivity {
 
                     // on application start up and click the current date, there are stored status.
                     if (currentArea==null || !isInitialized) {
+                        Log.d("TAG", "currentArea==null || !isInitialized");
                         long time = calendar.getDate();
                         Calendar currentCalendar = new GregorianCalendar();
                         currentCalendar.setTimeInMillis(time);
                         year = currentCalendar.get(Calendar.YEAR);
                         month = currentCalendar.get(Calendar.MONTH);
                         day = currentCalendar.get(Calendar.DAY_OF_MONTH);
-                        makeToast();
+//                        intoDateList();
+
                     }
 
                     if (area!=null && area.equals(currentArea)) {
-                        makeToast();
+                        Log.d("TAG", "area!=null && area.equals(currentArea)");
+                        intoDateList();
                     }
                 } else {
                     // FIXME: still have bug when drag/scroll back
@@ -829,11 +832,8 @@ public class ChargeActivity extends MenuActivity {
 
     }
 
-    private void makeToast() {
+    private void intoDateList() {
         Log.d("TAG", "do your job here");
-        lastX = upX;
-        lastY = upY;
-
         String Smonth,SdayOfMonth;
         if(month<10){
             Smonth = "0"+(month + 1);
@@ -856,15 +856,22 @@ public class ChargeActivity extends MenuActivity {
         String findDate = String.valueOf(year) + Smonth + SdayOfMonth;
 
 //        if(!(findDate.equals(checkDate))) {
-            Intent intent = new Intent();
-            intent.setClass(ChargeActivity.this, DateListActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putString("findDate", findDate);
-            intent.putExtras(bundle);
-            startActivity(intent);
+        Intent intent = new Intent();
+        intent.setClass(ChargeActivity.this, DateListActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("findDate", findDate);
+        intent.putExtras(bundle);
+        startActivity(intent);
+
 
 //        }
         checkDate = findDate;
+
+
+        lastX = upX;
+        lastY = upY;
+
+
 
 //        Toast.makeText(this, "" + day + "/" + month + "/" + year, Toast.LENGTH_SHORT).show();
     }
