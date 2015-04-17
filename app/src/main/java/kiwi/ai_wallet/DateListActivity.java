@@ -55,7 +55,7 @@ public class DateListActivity extends ChargeActivity {
         /**螢幕不隨手機旋轉*/
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         Log.d("測試","onCreate");
-        text = (TextView)findViewById(R.id.textView);
+
         Start();
     }
 

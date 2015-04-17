@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import static android.provider.BaseColumns._ID;
@@ -38,9 +40,11 @@ import android.support.v4.view.PagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -48,6 +52,7 @@ import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,10 +78,10 @@ public class ChargeActivity extends MenuActivity {
 
 
 
-    TextView TakePic,SaveBtn,ScaleNum;
+    TextView TakePic,SaveBtn,ScaleNumM,ScaleNumD;
     ImageView PhotoPic;
 
-    CalendarView calendarDate = null;
+    CalendarView calendarDate;
     Spinner consumerType = null;
     String[] buyType = {" 食 "," 衣 "," 住 "," 行 "," 育 "," 樂 "," 其他 "};
     EditText name,priceText;
@@ -86,16 +91,74 @@ public class ChargeActivity extends MenuActivity {
     File dirFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/" + "WalletPic");
     static String fname;
 
+
+    private long lastDate = 0;
+
+    private int downX;
+    private int downY;
+
+    private int upX;
+    private int upY;
+
+    private int lastX=0;
+    private int lastY=0;
+
+    private ItemArea currentArea;
+
+    private int year = -1;
+    private int month;
+    private int day;
+
+    private ListView listView;
+
+    private int[] startPoint = new int[2];
+
+    private int listItemCount = 0;
+    private int listItemWidth = 0;
+    private int listItemHeight = 0;
+
+    ArrayList<ItemArea> areaList = new ArrayList<>();
+
+    private CalendarView calendar;
+
+    private boolean isInitialized = false;
+
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.under_view);
         /**螢幕不隨手機旋轉*/
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+
         initView();/**首要步驟，匯入ViewPager及各頁Layout布局資料，不先做後面程式碼會找不到你所指的物件是哪個*/
         openDatabase();
         ChargeTouchListener();/**第三步呼叫方法ChargeTouchListener()架設監聽器*/
         getBarChart();
+
+        calendar =(CalendarView)vCalender.findViewById(R.id.CalendarView);
+        calendar.setShowWeekNumber(false);
+        calendar.setFirstDayOfWeek(2);
+        calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
+                if(view.getDate() != lastDate) {
+                    lastDate = view.getDate();
+                    ChargeActivity.this.year = year;
+                    ChargeActivity.this.month = month;
+                    ChargeActivity.this.day = day;
+                    makeToast();
+                    currentArea = getItemArea(upX, upY);
+                    isInitialized = true;
+                }
+            }
+        });
+
+        listView = (ListView)calendar.findViewById(android.R.id.list);
+
     }
 
     /**
@@ -114,14 +177,15 @@ public class ChargeActivity extends MenuActivity {
         vCamera = vInflater.inflate(R.layout.camera_view,null);
         vScale = vInflater.inflate(R.layout.scale_for_charge,null);
 
-        calendarDate = (CalendarView)vCalender.findViewById(R.id.CalendarView);
+//        calendarDate = (CalendarView)vCalender.findViewById(R.id.CalendarView);
         PhotoPic = (ImageView)vCamera.findViewById(R.id.PhotoPic);
         TakePic = (TextView)vCamera.findViewById(R.id.TakePic);
         SaveBtn = (TextView)vCamera.findViewById(R.id.saveBtn);
         name = (EditText)vCamera.findViewById(R.id.buyName);
         consumerType = (Spinner)vCamera.findViewById(R.id.typeName);
         priceText = (EditText)vCamera.findViewById(R.id.priceNum);
-        ScaleNum = (TextView)vScale.findViewById(R.id.showScaleNum);
+        ScaleNumM = (TextView)vScale.findViewById(R.id.showScaleNumM);
+        ScaleNumD = (TextView)vScale.findViewById(R.id.showScaleNumD);
 
         /**
          * 將要分頁顯示的View裝入數組中*/
@@ -264,18 +328,18 @@ public class ChargeActivity extends MenuActivity {
 
 
         FrameLayout scale_view = (FrameLayout)vScale.findViewById(R.id.scaleView);
-        double persent = scaleCompute();
-
+        int persentMonth = scaleComputeOfMonth();
+        int persentDay = scaleComputeOfDay();
 
         String[] titles = new String[] { "預算額", "已花費" };
         List < double []> values = new ArrayList<> ();
-        values.add( new  double [] { 100 });
-        values.add( new  double [] { persent });
+        values.add( new  double [] { 100  , 100});
+        values.add( new  double [] { persentMonth , persentDay});
         int [] colors = new  int [] { Color.GRAY, Color.RED};
         XYMultipleSeriesRenderer renderer = buildBarRenderer(colors);//長條圖顏色設置
 
         /**設置圖形renderer,標題,橫軸,縱軸,橫軸最小值,橫軸最大值,縱軸最大值,縱軸最小值,設定軸寬,設定軸色,標籤顏色*/
-        setChartSettings(renderer, "本月花費(%)", "", "", 0.9, 1.1, 0, 100 , 180f , Color.GRAY, Color.LTGRAY);
+        setChartSettings(renderer, "本月/本日花費(%)", "", "", 0.6, 2.6 , 0, 100 , 180f , Color.GRAY, Color.LTGRAY);
         renderer.getSeriesRendererAt(0).setDisplayChartValues(true);//在第1條圖形上顯示數據
         renderer.getSeriesRendererAt(1).setDisplayChartValues(true);//在第2條圖形上顯示數據
         renderer.setXLabels(0);//設置x軸標籤數  0為不顯示文字 程式設定文字
@@ -343,7 +407,7 @@ public class ChargeActivity extends MenuActivity {
             renderer.setLabelsColor(labelsColor);
     }
 
-    private double scaleCompute(){
+    private int scaleComputeOfMonth(){
             Cursor cursor = getCursor();
             String select_month = new SimpleDateFormat("yyyyMMdd").format(new Date());
             int sum = 0;
@@ -355,12 +419,26 @@ public class ChargeActivity extends MenuActivity {
             }
     //        SharedPreferences option = getPreferences(MODE_PRIVATE);
             Budget = option.getInt("Budget",20000);
-            double persent = (Double.parseDouble(String.valueOf(sum))/Budget);//算百分比條小數點弄成百分比整數
-            DecimalFormat df = new DecimalFormat("0.00");
-            persent = Double.parseDouble(df.format(persent));
-            persent = persent*100;
+            int persent = (sum*100)/Budget;//算百分比條小數點弄成百分比整數
+            ScaleNumM.setText(Html.fromHtml("本月額度<br>" + sum +  "<font color = '#FF0000'><big>/</font>" + Budget));
 
-            ScaleNum.setText(Html.fromHtml(sum +  "<font color = '#FF0000'><big>/</font>" + Budget));
+        return persent;
+    }
+
+    private int scaleComputeOfDay(){
+        Cursor cursor = getCursor();
+        String select_month = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        int sum = 0;
+
+        while (cursor.moveToNext()){
+            if(cursor.getString(4).substring(0,8).equals(select_month.substring(0,8))){
+                sum += Double.parseDouble(cursor.getString(3));
+            }
+        }
+        //        SharedPreferences option = getPreferences(MODE_PRIVATE);
+        Budget = option.getInt("Budget",20000);
+        int persent = (sum*100)/(Budget/30);//算百分比條小數點弄成百分比整數
+        ScaleNumD.setText(Html.fromHtml("本日額度<br>" + sum +  "<font color = '#FF0000'><big>/</font>" + (Budget/30)));
 
         return persent;
     }
@@ -379,7 +457,7 @@ public class ChargeActivity extends MenuActivity {
         String select_month = new SimpleDateFormat("yyyyMMdd").format(new Date());
         int sum = 0;
         if (priceText.getText().toString().equals("")){
-            Toast.makeText(this,"請確實輸入金額",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "請確實輸入金額", Toast.LENGTH_SHORT).show();
 
         }else {
             while (cursor.moveToNext()) {
@@ -433,7 +511,8 @@ public class ChargeActivity extends MenuActivity {
     /**
      * ChargeTouchListener()設置按鍵監聽器*/
     public void ChargeTouchListener(){
-        calendarDate.setOnDateChangeListener(DateList);
+//        calendarDate.setOnLongClickListener(LongClick);
+//        calendarDate.setOnDateChangeListener(DateList);
         TakePic.setOnClickListener(CameraBtn);
         SaveBtn.setOnClickListener(SaveData);
     }
@@ -473,46 +552,59 @@ public class ChargeActivity extends MenuActivity {
     };
 
 
+//    public CalendarView.OnLongClickListener LongClick = new CalendarView.OnLongClickListener(){
+//
+//        @Override
+//        public boolean onLongClick(View v) {
+//
+//            Log.d("test","longClick");
+//
+//            return false;
+//        }
+//    };
+//
     String checkDate = null;
-    /**月曆變動監聽器*/
-    public CalendarView.OnDateChangeListener DateList = new CalendarView.OnDateChangeListener(){
-
-        public void onSelectedDayChange(CalendarView view, int year, int month,int dayOfMonth) {
-            String Smonth,SdayOfMonth;
-
-            if(month<10){
-                Smonth = "0"+(month + 1);
-                /**月份記得+1，因為月份是從0開始算*/
-            }
-            else{
-                Smonth = String.valueOf(month + 1);
-            }
-            if(dayOfMonth<10){
-                SdayOfMonth = "0"+ dayOfMonth;
-            }
-            else{
-                SdayOfMonth = String.valueOf(dayOfMonth);
-            }
-
-            if(checkDate == null) {
-                checkDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
-            }
-
-            String findDate = String.valueOf(year) + Smonth + SdayOfMonth;
-
-            if(!(findDate.equals(checkDate))) {
-                Intent intent = new Intent();
-                intent.setClass(ChargeActivity.this, DateListActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("findDate", findDate);
-                intent.putExtras(bundle);
-                startActivity(intent);
-
-            }
-            checkDate = findDate;
-
-        }
-    };
+//    /**月曆變動監聽器*/
+//    public CalendarView.OnDateChangeListener DateList = new CalendarView.OnDateChangeListener(){
+//
+//        public void onSelectedDayChange(CalendarView view, int year, int month,int dayOfMonth) {
+//            String Smonth,SdayOfMonth;
+//
+//            if(month<10){
+//                Smonth = "0"+(month + 1);
+//                /**月份記得+1，因為月份是從0開始算*/
+//            }
+//            else{
+//                Smonth = String.valueOf(month + 1);
+//            }
+//            if(dayOfMonth<10){
+//                SdayOfMonth = "0"+ dayOfMonth;
+//            }
+//            else{
+//                SdayOfMonth = String.valueOf(dayOfMonth);
+//            }
+//
+//            if(checkDate == null) {
+//                checkDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
+//            }
+//
+//            String findDate = String.valueOf(year) + Smonth + SdayOfMonth;
+//
+//            if(!(findDate.equals(checkDate))) {
+//                Intent intent = new Intent();
+//                intent.setClass(ChargeActivity.this, DateListActivity.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putString("findDate", findDate);
+//                intent.putExtras(bundle);
+//                startActivity(intent);
+//
+//            }
+//            checkDate = findDate;
+//
+//        }
+//
+//
+//    };
 
 
     /**這裡是根據不同的標識符判斷是哪個調用返回的結果，然後根據不同的標識符，編寫不同的代碼。*/
@@ -523,7 +615,7 @@ public class ChargeActivity extends MenuActivity {
         if (resulsCode == RESULT_OK) {
            showImg();
         }else{
-            Toast.makeText(this,"沒有拍到照片",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "沒有拍到照片", Toast.LENGTH_LONG).show();
         }
     super.onActivityResult(requestCode,resulsCode,data);
     }
@@ -623,6 +715,196 @@ public class ChargeActivity extends MenuActivity {
      *      // TODO Auto-generated catchblock
      *      e.printStackTrace(); }
      *      */
+
+
+//    void intoDatelist(){
+//        String Smonth,SdayOfMonth;
+//        if(month<10){
+//                Smonth = "0"+(month + 1);
+//                /**月份記得+1，因為月份是從0開始算*/
+//            }
+//            else{
+//                Smonth = String.valueOf(month + 1);
+//            }
+//            if(day<10){
+//                SdayOfMonth = "0"+ day;
+//            }
+//            else{
+//                SdayOfMonth = String.valueOf(day);
+//            }
+//
+//            if(checkDate == null) {
+//                checkDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
+//            }
+//
+//            String findDate = String.valueOf(year) + Smonth + SdayOfMonth;
+//
+//            if(!(findDate.equals(checkDate))) {
+//                Intent intent = new Intent();
+//                intent.setClass(ChargeActivity.this, DateListActivity.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putString("findDate", findDate);
+//                intent.putExtras(bundle);
+//                startActivity(intent);
+//
+//            }
+//            checkDate = findDate;
+//    }
+
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                downX = (int)event.getX();
+                downY = (int)event.getY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                break;
+            case MotionEvent.ACTION_UP:
+                upX = (int)event.getX();
+                upY = (int)event.getY();
+
+                if (areaList.size()==0) {
+                    generateList();
+                }
+
+                // make sure it's not move
+                if (Math.abs(downX-upX)<3 && Math.abs(downY-upY)<3) {
+                    ItemArea area = getItemArea(upX, upY);
+
+                    // on application start up and click the current date, there are stored status.
+                    if (currentArea==null || !isInitialized) {
+                        long time = calendar.getDate();
+                        Calendar currentCalendar = new GregorianCalendar();
+                        currentCalendar.setTimeInMillis(time);
+                        year = currentCalendar.get(Calendar.YEAR);
+                        month = currentCalendar.get(Calendar.MONTH);
+                        day = currentCalendar.get(Calendar.DAY_OF_MONTH);
+                        makeToast();
+                    }
+
+                    if (area!=null && area.equals(currentArea)) {
+                        makeToast();
+                    }
+                } else {
+                    // FIXME: still have bug when drag/scroll back
+                    // it's move event, list view will scroll up/down, and update the y
+                    if (currentArea!=null) {
+                        if (downY<upY) {
+                            // move down
+                            int times = (upY-downY)/listItemHeight;
+                            currentArea.top+=listItemHeight*(times+1);
+                            currentArea.bottom+=listItemHeight*(times+1);
+                        } else {
+                            // move up
+                            int times = (downY-upY)/listItemHeight;
+                            currentArea.top-=listItemHeight*(times+1);
+                            currentArea.bottom-=listItemHeight*(times+1);
+                        }
+                    }
+                }
+                break;
+        }
+
+        return super.dispatchTouchEvent(event);
+    }
+
+    private void generateList() {
+        listItemCount = listView.getChildCount();
+        listItemHeight = listView.getChildAt(0).getHeight();
+        listItemWidth = listView.getChildAt(0).getWidth();
+        listView.getChildAt(0).getLocationOnScreen(startPoint);
+
+        int deltaX = (int)(listItemWidth/7.0);
+
+        for (int i=0; i< listItemCount; i++) {
+            for (int j=0; j<7; j++) {
+                areaList.add(new ItemArea(startPoint[0]+deltaX*j, startPoint[1]+listItemHeight*i,
+                        startPoint[0]+deltaX*(j+1), startPoint[1]+listItemHeight*(i+1)));
+            }
+
+        }
+
+    }
+
+    private void makeToast() {
+        Log.d("TAG", "do your job here");
+        lastX = upX;
+        lastY = upY;
+
+        String Smonth,SdayOfMonth;
+        if(month<10){
+            Smonth = "0"+(month + 1);
+            /**月份記得+1，因為月份是從0開始算*/
+        }
+        else{
+            Smonth = String.valueOf(month + 1);
+        }
+        if(day<10){
+            SdayOfMonth = "0"+ day;
+        }
+        else{
+            SdayOfMonth = String.valueOf(day);
+        }
+
+        if(checkDate == null) {
+            checkDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        }
+
+        String findDate = String.valueOf(year) + Smonth + SdayOfMonth;
+
+//        if(!(findDate.equals(checkDate))) {
+            Intent intent = new Intent();
+            intent.setClass(ChargeActivity.this, DateListActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("findDate", findDate);
+            intent.putExtras(bundle);
+            startActivity(intent);
+
+//        }
+        checkDate = findDate;
+
+//        Toast.makeText(this, "" + day + "/" + month + "/" + year, Toast.LENGTH_SHORT).show();
+    }
+
+    private ItemArea getItemArea(int x, int y) {
+        for (int i=0; i < areaList.size(); i++) {
+            if (areaList.get(i).contains(x, y)) {
+                return areaList.get(i);
+            }
+        }
+        return null;
+    }
+
+    private class ItemArea {
+        int left;
+        int top;
+        int right;
+        int bottom;
+
+        ItemArea(int left, int top, int right, int bottom) {
+            this.left = left;
+            this.top = top;
+            this.right = right;
+            this.bottom = bottom;
+        }
+
+        boolean contains(int x, int y) {
+            return x>=left && x<=right && y>=top && y<=bottom;
+        }
+
+        boolean equals(ItemArea area) {
+            return area!=null &&
+                    this.right==area.right &&
+                    this.left==area.left &&
+                    this.bottom==area.bottom &&
+                    this.top==area.top;
+        }
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -42,7 +42,7 @@ public class MenuActivity extends ActionBarActivity {
 //        initUI();
 
         setOption();
-        test();
+        alarmManager();
 
 
       /**點選StartText字串進入選單畫面的版面配置*/
@@ -56,7 +56,7 @@ public class MenuActivity extends ActionBarActivity {
         addShortcut();
     }
 
-    void test(){
+    void alarmManager(){
         Calendar calendar = Calendar.getInstance();
 
 //        calendar.set(Calendar.MONTH, 4);
