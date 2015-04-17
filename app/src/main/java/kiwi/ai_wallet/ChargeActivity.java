@@ -38,6 +38,7 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.view.PagerAdapter;
 import android.os.Bundle;
+import android.support.v4.view.PagerTitleStrip;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.util.Log;
@@ -65,7 +66,7 @@ import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 
 
-public class ChargeActivity extends MenuActivity {
+public class ChargeActivity extends MenuActivity{
 
 
 
@@ -76,7 +77,7 @@ public class ChargeActivity extends MenuActivity {
 
     public DBHelper dbHelper = null;
 
-
+    PagerTitleStrip titleString;
 
     TextView TakePic,SaveBtn,ScaleNumM,ScaleNumD;
     ImageView PhotoPic;
@@ -127,6 +128,7 @@ public class ChargeActivity extends MenuActivity {
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -150,9 +152,7 @@ public class ChargeActivity extends MenuActivity {
                     ChargeActivity.this.day = day;
                     finish = true;
                     intoDateList();
-
                     currentArea = getItemArea(upX, upY);
-
                 }
             }
         });
@@ -519,6 +519,7 @@ public class ChargeActivity extends MenuActivity {
     public void ChargeTouchListener(){
 //        calendarDate.setOnLongClickListener(LongClick);
 //        calendarDate.setOnDateChangeListener(DateList);
+
         TakePic.setOnClickListener(CameraBtn);
         SaveBtn.setOnClickListener(SaveData);
     }
@@ -759,9 +760,14 @@ public class ChargeActivity extends MenuActivity {
 
 
 
+
+
+
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-        Log.d("TAG", "dispatchTouchEvent(MotionEvent event) ");
+
+
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 downX = (int)event.getX();
@@ -772,6 +778,9 @@ public class ChargeActivity extends MenuActivity {
             case MotionEvent.ACTION_UP:
                 upX = (int)event.getX();
                 upY = (int)event.getY();
+
+                int[] pos = new int[2];
+                calendar.getLocationOnScreen(pos);
 
                 if (areaList.size()==0) {
                     generateList();
@@ -790,13 +799,15 @@ public class ChargeActivity extends MenuActivity {
                         year = currentCalendar.get(Calendar.YEAR);
                         month = currentCalendar.get(Calendar.MONTH);
                         day = currentCalendar.get(Calendar.DAY_OF_MONTH);
-                        intoDateList();
+                        if(pos[0] == 0) intoDateList();
+
 
                     }
 
                     if (area!=null && area.equals(currentArea)) {
                         Log.d("TAG", "area!=null && area.equals(currentArea)");
-                        intoDateList();
+                        if(pos[0] == 0) intoDateList();
+
                     }
                 } else {
                     // FIXME: still have bug when drag/scroll back
@@ -896,6 +907,9 @@ public class ChargeActivity extends MenuActivity {
         return null;
     }
 
+
+
+
     private class ItemArea {
         int left;
         int top;
@@ -964,6 +978,7 @@ public class ChargeActivity extends MenuActivity {
             case 1:
             getBarChart();
             finish = false;
+
             break;
             }
         };
