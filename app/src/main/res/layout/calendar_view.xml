@@ -15,7 +15,8 @@
         android:weekSeparatorLineColor="#C48888"
         android:unfocusedMonthDateColor="#FFCBB3"
         android:weekNumberColor="#C48888"
-        android:selectedWeekBackgroundColor= "#FFE6D9"/>
+        android:selectedWeekBackgroundColor= "#FFE6D9"
+        android:padding="10sp"/>
 
 
 </LinearLayout>

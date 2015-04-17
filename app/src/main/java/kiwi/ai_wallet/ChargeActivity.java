@@ -123,7 +123,7 @@ public class ChargeActivity extends MenuActivity {
 
     private boolean isInitialized = false;
 
-
+    private boolean finish = false;
 
 
 
@@ -135,29 +135,35 @@ public class ChargeActivity extends MenuActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 
         initView();/**首要步驟，匯入ViewPager及各頁Layout布局資料，不先做後面程式碼會找不到你所指的物件是哪個*/
-        openDatabase();
-        ChargeTouchListener();/**第三步呼叫方法ChargeTouchListener()架設監聽器*/
-        getBarChart();
 
-        calendar =(CalendarView)vCalender.findViewById(R.id.CalendarView);
+        calendar = (CalendarView)vCalender.findViewById(R.id.CalendarView);
         calendar.setShowWeekNumber(false);
         calendar.setFirstDayOfWeek(2);
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
                 if(view.getDate() != lastDate) {
+                    Log.d("TAG", "onSelectedDayChange(CalendarView view, int year, int month, int day)" + isInitialized);
                     lastDate = view.getDate();
                     ChargeActivity.this.year = year;
                     ChargeActivity.this.month = month;
                     ChargeActivity.this.day = day;
+                    finish = true;
                     intoDateList();
+
                     currentArea = getItemArea(upX, upY);
-                    isInitialized = true;
+
                 }
             }
         });
 
         listView = (ListView)calendar.findViewById(android.R.id.list);
+
+        openDatabase();
+        ChargeTouchListener();/**第三步呼叫方法ChargeTouchListener()架設監聽器*/
+        getBarChart();
+
+
 
     }
 
@@ -752,6 +758,7 @@ public class ChargeActivity extends MenuActivity {
 //    }
 
 
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         Log.d("TAG", "dispatchTouchEvent(MotionEvent event) ");
@@ -776,14 +783,14 @@ public class ChargeActivity extends MenuActivity {
 
                     // on application start up and click the current date, there are stored status.
                     if (currentArea==null || !isInitialized) {
-                        Log.d("TAG", "currentArea==null || !isInitialized");
+                        Log.d("TAG", "currentArea==null || !isInitialized" + isInitialized);
                         long time = calendar.getDate();
                         Calendar currentCalendar = new GregorianCalendar();
                         currentCalendar.setTimeInMillis(time);
                         year = currentCalendar.get(Calendar.YEAR);
                         month = currentCalendar.get(Calendar.MONTH);
                         day = currentCalendar.get(Calendar.DAY_OF_MONTH);
-//                        intoDateList();
+                        intoDateList();
 
                     }
 
@@ -833,6 +840,7 @@ public class ChargeActivity extends MenuActivity {
     }
 
     private void intoDateList() {
+
         Log.d("TAG", "do your job here");
         String Smonth,SdayOfMonth;
         if(month<10){
@@ -857,12 +865,15 @@ public class ChargeActivity extends MenuActivity {
 
 //        if(!(findDate.equals(checkDate))) {
         Intent intent = new Intent();
-        intent.setClass(ChargeActivity.this, DateListActivity.class);
+        intent.setClass(this, DateListActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         Bundle bundle = new Bundle();
         bundle.putString("findDate", findDate);
         intent.putExtras(bundle);
         startActivity(intent);
-
+        if(!finish){
+           new DateListActivity().finish();
+        }
 
 //        }
         checkDate = findDate;
@@ -952,6 +963,7 @@ public class ChargeActivity extends MenuActivity {
             switch (msg.what) {
             case 1:
             getBarChart();
+            finish = false;
             break;
             }
         };

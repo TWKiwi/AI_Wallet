@@ -48,6 +48,8 @@ public class DateListActivity extends ChargeActivity {
     File dirFile = null;
     Uri imgUri = null;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +59,9 @@ public class DateListActivity extends ChargeActivity {
         Log.d("測試","onCreate");
 
         Start();
+
+
+
     }
 
     void Start(){
