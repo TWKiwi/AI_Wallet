@@ -47,8 +47,8 @@ public class MenuActivity extends ActionBarActivity {
 
 
       /**點選StartText字串進入選單畫面的版面配置*/
-        TextView StartText = (TextView) findViewById(R.id.StartText);
-        StartText.setOnClickListener(new View.OnClickListener() {
+        ImageView StartView = (ImageView) findViewById(R.id.StartText);
+        StartView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 toMenuUI();/**切換UI*/

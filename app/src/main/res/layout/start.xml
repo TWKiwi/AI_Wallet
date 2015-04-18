@@ -14,11 +14,12 @@
         <!--android:layout_centerInParent="true"-->
         <!--/>-->
 
-    <TextView
+    <ImageView
         android:id="@+id/StartText"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:gravity="center"
+        android:background="@drawable/start"
         />
     <!--android:text="Touch screen to start your Life"/>-->
 

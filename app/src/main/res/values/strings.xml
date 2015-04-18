@@ -41,5 +41,6 @@
 
     <string name="title_activity_test_connect">TestConnect</string>
     <string name="title_activity_test">test</string>
+    <string name="title_activity_list_view_show_data">ListViewShowData</string>
 
 </resources>

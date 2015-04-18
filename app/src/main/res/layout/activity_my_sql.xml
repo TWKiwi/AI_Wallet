@@ -1,66 +1,77 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="kiwi.ai_wallet.MySQLActivity"
     android:orientation="vertical"
-    android:background="#FFDAC8">
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+
+    android:textColor="#642100"
+    android:background="#FF8040"
+    tools:context="com.example.dbconnertingsystem.MainActivity" >
+
     <Spinner
         android:id="@+id/spinner_fclass"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
         android:entries="@array/fClass_spin"
-        android:textColor="#842B00"/>
+        android:textColor="#842B00"
+        android:background="#FF8F59"
+        android:layout_weight="1"/>
 
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginTop="20dp" >
 
         <Spinner
             android:id="@+id/spinner_fname"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:entries="@array/fName_spin"
-            android:textColor="#842B00"/>
+            android:layout_marginTop="5dp"
+            android:background="#FF9D6F"/>
 
         <EditText
             android:id="@+id/editText1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
+            android:layout_marginTop="5dp"
             android:ems="10"
-            android:layout_gravity="center"
             android:hint="請輸入金額"
+            android:gravity="center"
+            android:textSize="18sp"
             android:singleLine="true"
             android:text=""
             android:inputType="number"
-            android:textColor="#842B00">
+            android:background="#FFAD86">
+
             <requestFocus />
-            </EditText>
+        </EditText>
 
-    </LinearLayout>
-
-
-
-    <TableLayout
-        android:id="@+id/select_table"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="10"
-        android:textColor="#842B00">
-    </TableLayout>
 
     <Button
         android:id="@+id/button1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="查詢"
-        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="5dp"
+        android:text="熱門查詢"
+        android:textSize="36sp"
         android:textColor="#842B00"
-        android:background="#FFBD9D"/>
+        android:background="#FFBD9D"
+        android:layout_weight="2"/>
+
+
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="5dp"
+            android:text="隨機查詢商品"
+            android:textSize="36sp"
+            android:textColor="#642100"
+            android:background="#FFCBB3"
+            android:layout_weight="2"/>
+
 
 </LinearLayout>
