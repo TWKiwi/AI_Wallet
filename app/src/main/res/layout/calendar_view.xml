@@ -18,11 +18,5 @@
         android:selectedWeekBackgroundColor= "#FFE6D9"
         android:padding="10sp"/>
 
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="1"
-        android:id="@+id/textView" />
-
 
 </LinearLayout>

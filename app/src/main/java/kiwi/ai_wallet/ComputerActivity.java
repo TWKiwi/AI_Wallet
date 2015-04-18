@@ -2,19 +2,23 @@ package kiwi.ai_wallet;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.location.GpsStatus;
 import android.renderscript.Sampler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 
 public class ComputerActivity extends SmartbutlerActivity implements View.OnClickListener{
 
-    TextView totalNumText,computeNumText,cptTextView0,cptTextView1,cptTextView2,cptTextView3,cptTextView4,cptTextView5,
+    TextView totalNumText,computeNumText;
+    Button  cptTextView0,cptTextView1,cptTextView2,cptTextView3,cptTextView4,cptTextView5,
             cptTextView6,cptTextView7,cptTextView8,cptTextView9,cptTextViewD,cptTextViewM,cptTextViewS,cptTextViewA,
             cptTextViewE,cptTextViewpoint,cptTextViewC,cptTextViewB;
     String Nu1 = "0",Nu2 = "0";
@@ -31,28 +35,29 @@ public class ComputerActivity extends SmartbutlerActivity implements View.OnClic
 
     }
 
+
     private void initView(){
 
         totalNumText = (TextView)findViewById(R.id.totalNumText);
         computeNumText = (TextView)findViewById(R.id.computeNumText);
-        cptTextView0 = (TextView)findViewById(R.id.cptTextView0);
-        cptTextView1 = (TextView)findViewById(R.id.cptTextView1);
-        cptTextView2 = (TextView)findViewById(R.id.cptTextView2);
-        cptTextView3 = (TextView)findViewById(R.id.cptTextView3);
-        cptTextView4 = (TextView)findViewById(R.id.cptTextView4);
-        cptTextView5 = (TextView)findViewById(R.id.cptTextView5);
-        cptTextView6 = (TextView)findViewById(R.id.cptTextView6);
-        cptTextView7 = (TextView)findViewById(R.id.cptTextView7);
-        cptTextView8 = (TextView)findViewById(R.id.cptTextView8);
-        cptTextView9 = (TextView)findViewById(R.id.cptTextView9);
-        cptTextViewD = (TextView)findViewById(R.id.cptTextViewD);
-        cptTextViewM = (TextView)findViewById(R.id.cptTextViewM);
-        cptTextViewS = (TextView)findViewById(R.id.cptTextViewS);
-        cptTextViewA = (TextView)findViewById(R.id.cptTextViewA);
-        cptTextViewE = (TextView)findViewById(R.id.cptTextViewE);
-        cptTextViewpoint = (TextView)findViewById(R.id.cptTextViewpoint);
-        cptTextViewC = (TextView)findViewById(R.id.cptTextViewC);
-        cptTextViewB = (TextView)findViewById(R.id.cptTextViewB);
+        cptTextView0 = (Button)findViewById(R.id.cptTextView0);
+        cptTextView1 = (Button)findViewById(R.id.cptTextView1);
+        cptTextView2 = (Button)findViewById(R.id.cptTextView2);
+        cptTextView3 = (Button)findViewById(R.id.cptTextView3);
+        cptTextView4 = (Button)findViewById(R.id.cptTextView4);
+        cptTextView5 = (Button)findViewById(R.id.cptTextView5);
+        cptTextView6 = (Button)findViewById(R.id.cptTextView6);
+        cptTextView7 = (Button)findViewById(R.id.cptTextView7);
+        cptTextView8 = (Button)findViewById(R.id.cptTextView8);
+        cptTextView9 = (Button)findViewById(R.id.cptTextView9);
+        cptTextViewD = (Button)findViewById(R.id.cptTextViewD);
+        cptTextViewM = (Button)findViewById(R.id.cptTextViewM);
+        cptTextViewS = (Button)findViewById(R.id.cptTextViewS);
+        cptTextViewA = (Button)findViewById(R.id.cptTextViewA);
+        cptTextViewE = (Button)findViewById(R.id.cptTextViewE);
+        cptTextViewpoint = (Button)findViewById(R.id.cptTextViewpoint);
+        cptTextViewC = (Button)findViewById(R.id.cptTextViewC);
+        cptTextViewB = (Button)findViewById(R.id.cptTextViewB);
 
 
     }
@@ -204,4 +209,7 @@ public class ComputerActivity extends SmartbutlerActivity implements View.OnClic
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
 }

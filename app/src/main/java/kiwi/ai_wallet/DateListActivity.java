@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import static kiwi.ai_wallet.DbConstants.TABLE_NAME;
@@ -80,7 +81,7 @@ public class DateListActivity extends ChargeActivity {
         DATE = bundle.getString("findDate");
         /**取得圖檔路徑*/
         dirFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/" + "WalletPic");
-//        text.setText("bundleCatch已執行");
+
     }
 
     private List<HashMap<String, Object>> getData() {
@@ -107,7 +108,6 @@ public class DateListActivity extends ChargeActivity {
                 String picname = cursor.getString(4);
 
                 StringBuilder resultData = new StringBuilder();
-//                resultData.append("編號：").append(id).append("\n");
                 resultData.append("品名：").append(name).append("\n");
                 resultData.append("類型：").append(type).append("\n");
                 resultData.append("價錢：").append(price).append("元\n");
@@ -119,19 +119,12 @@ public class DateListActivity extends ChargeActivity {
                 item.put("id",id);
                 item.put("picname",picname);
                 list.add(item);
-//                text.setText(DATE + "itemInput已執行" + resultData + imgUri);
             }
         }
         Log.d("測試","getData()");
         return list;
     }
 
-//    public void del(int id){
-//        text.setText(id);
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
-//        db.delete(TABLE_NAME, _ID + "=" + id,null);
-//
-//    }
 
     public class MyAdapter extends BaseAdapter {
         private LayoutInflater mInflater;
@@ -170,11 +163,14 @@ public class DateListActivity extends ChargeActivity {
                 @Override
                 public void onClick(View v) {
 
+
+
 //                    try{
-                      itemList.remove(position);
-                      notifyDataSetChanged();
-                      SQLiteDatabase db = dbHelper.getWritableDatabase();
-                      db.delete(TABLE_NAME, _ID + "=" + id, null);
+                    itemList.remove(position);
+                    notifyDataSetChanged();
+                    SQLiteDatabase db = dbHelper.getWritableDatabase();
+                    db.delete(TABLE_NAME, _ID + "=" + id, null);
+                    Toast.makeText(DateListActivity.this,"已清除該筆紀錄",Toast.LENGTH_SHORT).show();
 
 //                  }catch (Exception e){
 //                      Toast.makeText(DateListActivity.this,"當日沒有紀錄",Toast.LENGTH_LONG).show();

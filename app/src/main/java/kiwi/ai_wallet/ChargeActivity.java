@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -22,9 +21,7 @@ import static kiwi.ai_wallet.DbConstants.PRICE;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -38,7 +35,6 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.view.PagerAdapter;
 import android.os.Bundle;
-import android.support.v4.view.PagerTitleStrip;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.util.Log;
@@ -77,12 +73,12 @@ public class ChargeActivity extends MenuActivity{
 
     public DBHelper dbHelper = null;
 
-    PagerTitleStrip titleString;
+
 
     TextView TakePic,SaveBtn,ScaleNumM,ScaleNumD;
     ImageView PhotoPic;
 
-    CalendarView calendarDate;
+
     Spinner consumerType = null;
     String[] buyType = {" 食 "," 衣 "," 住 "," 行 "," 育 "," 樂 "," 其他 "};
     EditText name,priceText;
@@ -125,7 +121,7 @@ public class ChargeActivity extends MenuActivity{
     private boolean isInitialized = false;
 
     private boolean finish = false;
-    private boolean isDateList = true;
+
 
 
 
@@ -138,7 +134,7 @@ public class ChargeActivity extends MenuActivity{
 
         initView();/**首要步驟，匯入ViewPager及各頁Layout布局資料，不先做後面程式碼會找不到你所指的物件是哪個*/
 
-        calendar = (CalendarView)vCalender.findViewById(R.id.CalendarView);
+
         calendar.setShowWeekNumber(false);
         calendar.setFirstDayOfWeek(2);
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -162,7 +158,7 @@ public class ChargeActivity extends MenuActivity{
         openDatabase();
         ChargeTouchListener();/**第三步呼叫方法ChargeTouchListener()架設監聽器*/
         getBarChart();
-
+        setOption();
 
 
     }
@@ -183,7 +179,7 @@ public class ChargeActivity extends MenuActivity{
         vCamera = vInflater.inflate(R.layout.camera_view,null);
         vScale = vInflater.inflate(R.layout.scale_for_charge,null);
 
-//        calendarDate = (CalendarView)vCalender.findViewById(R.id.CalendarView);
+        calendar = (CalendarView)vCalender.findViewById(R.id.CalendarView);
         PhotoPic = (ImageView)vCamera.findViewById(R.id.PhotoPic);
         TakePic = (TextView)vCamera.findViewById(R.id.TakePic);
         SaveBtn = (TextView)vCamera.findViewById(R.id.saveBtn);
@@ -319,8 +315,6 @@ public class ChargeActivity extends MenuActivity{
         consumerType.setAdapter(adapter);
 
 
-        ///**建立APP圖檔公用路徑*/
-        //File dirFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/" + "WalletPic");
         /**如果資料夾不存在*/
         if(!dirFile.exists()){
             /**建立資料夾*/
@@ -426,7 +420,12 @@ public class ChargeActivity extends MenuActivity{
     //        SharedPreferences option = getPreferences(MODE_PRIVATE);
             Budget = option.getInt("Budget",20000);
             int persent = (sum*100)/Budget;//算百分比條小數點弄成百分比整數
-            ScaleNumM.setText(Html.fromHtml("本月額度<br>" + sum +  "<font color = '#FF0000'><big>/</font>" + Budget));
+            if(persent <= 100) {
+                ScaleNumM.setText(Html.fromHtml("本月額度<br>" + sum + "<font color = '#FF0000'><big>/</font>" + Budget+ "元"));
+            }else if(persent > 100){
+                ScaleNumM.setText(Html.fromHtml("本月" + "<font color = '#FF0000'><big>超支<br></font>" + (sum - Budget)+ "元"));
+                persent = 100;
+            }
 
         return persent;
     }
@@ -444,7 +443,12 @@ public class ChargeActivity extends MenuActivity{
         //        SharedPreferences option = getPreferences(MODE_PRIVATE);
         Budget = option.getInt("Budget",20000);
         int persent = (sum*100)/(Budget/30);//算百分比條小數點弄成百分比整數
-        ScaleNumD.setText(Html.fromHtml("本日額度<br>" + sum +  "<font color = '#FF0000'><big>/</font>" + (Budget/30)));
+        if(persent <= 100) {
+            ScaleNumD.setText(Html.fromHtml("本日額度<br>" + sum + "<font color = '#FF0000'><big>/</font>" + (Budget/30) + "元"));
+        }else if(persent > 100){
+            ScaleNumD.setText(Html.fromHtml("本日" + "<font color = '#FF0000'><big>超支<br></font>" + (sum - (Budget/30))+ "元"));
+            persent = 100;
+        }
 
         return persent;
     }
@@ -509,16 +513,11 @@ public class ChargeActivity extends MenuActivity{
         startActivity(restart);
         finish();
 
-//        name.setText("");
-//        priceText.setText("");
-//        PhotoPic.setImageBitmap(null);
     }
 
     /**
      * ChargeTouchListener()設置按鍵監聽器*/
     public void ChargeTouchListener(){
-//        calendarDate.setOnLongClickListener(LongClick);
-//        calendarDate.setOnDateChangeListener(DateList);
 
         TakePic.setOnClickListener(CameraBtn);
         SaveBtn.setOnClickListener(SaveData);
@@ -532,8 +531,7 @@ public class ChargeActivity extends MenuActivity{
         @Override
         public void onClick(View v) {
 
-            ///**取得圖檔路徑*/
-            //File dirFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/" + "WalletPic");
+
             /**利用目前時間組合出一個不會重複的檔名*/
             fname = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".jpg";
             /**依前面的路徑及檔案名建立Uri物件*/
@@ -571,47 +569,7 @@ public class ChargeActivity extends MenuActivity{
 //    };
 //
     String checkDate = null;
-//    /**月曆變動監聽器*/
-//    public CalendarView.OnDateChangeListener DateList = new CalendarView.OnDateChangeListener(){
-//
-//        public void onSelectedDayChange(CalendarView view, int year, int month,int dayOfMonth) {
-//            String Smonth,SdayOfMonth;
-//
-//            if(month<10){
-//                Smonth = "0"+(month + 1);
-//                /**月份記得+1，因為月份是從0開始算*/
-//            }
-//            else{
-//                Smonth = String.valueOf(month + 1);
-//            }
-//            if(dayOfMonth<10){
-//                SdayOfMonth = "0"+ dayOfMonth;
-//            }
-//            else{
-//                SdayOfMonth = String.valueOf(dayOfMonth);
-//            }
-//
-//            if(checkDate == null) {
-//                checkDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
-//            }
-//
-//            String findDate = String.valueOf(year) + Smonth + SdayOfMonth;
-//
-//            if(!(findDate.equals(checkDate))) {
-//                Intent intent = new Intent();
-//                intent.setClass(ChargeActivity.this, DateListActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putString("findDate", findDate);
-//                intent.putExtras(bundle);
-//                startActivity(intent);
-//
-//            }
-//            checkDate = findDate;
-//
-//        }
-//
-//
-//    };
+
 
 
     /**這裡是根據不同的標識符判斷是哪個調用返回的結果，然後根據不同的標識符，編寫不同的代碼。*/
@@ -629,9 +587,6 @@ public class ChargeActivity extends MenuActivity{
 
 
     void showImg(){
-
-//        TextView Test = (TextView)findViewById(R.id.testView);
-//        Test.setText("已執行");
 
         /**圖片寬高，ImageView元件寬高*/
         int iw,ih,vw,vh;
@@ -841,7 +796,6 @@ public class ChargeActivity extends MenuActivity{
         Bundle bundle = new Bundle();
         bundle.putString("findDate", findDate);
         intent.putExtras(bundle);
-        isDateList = true;
         startActivity(intent);
         if(!finish){
            new DateListActivity().finish();
@@ -936,7 +890,6 @@ public class ChargeActivity extends MenuActivity{
             case 1:
             getBarChart();
             finish = false;
-            isDateList = false;
             break;
             }
         };

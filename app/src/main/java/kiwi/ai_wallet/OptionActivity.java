@@ -9,13 +9,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
 
 public class OptionActivity extends MenuActivity {
 
-
+    CheckBox alarmCheckBox;
     EditText budgetText;
     Button saveBtn;
 
@@ -37,6 +38,7 @@ public class OptionActivity extends MenuActivity {
     private void initView(){
         budgetText = (EditText)findViewById(R.id.setBudget);
         saveBtn = (Button)findViewById(R.id.saveBtn);
+        alarmCheckBox = (CheckBox)findViewById(R.id.alarmCheckBox);
 
         Budget = option.getInt("Budget",20000);
         budgetText.setHint(String.valueOf(Budget));
@@ -55,6 +57,7 @@ public class OptionActivity extends MenuActivity {
         @Override
         public void onClick(View v) {
             Budget = Integer.parseInt(budgetText.getText().toString());
+            checkBoxBoolean = alarmCheckBox.isChecked();
             setOption();
         }
     };

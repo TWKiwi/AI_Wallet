@@ -29,6 +29,7 @@ public class MenuActivity extends ActionBarActivity {
     GifView gif;
     public static SharedPreferences option;
     public static int Budget;//預算屬性
+    public static boolean checkBoxBoolean;
     private PendingIntent pendingIntent;
 
 
@@ -58,12 +59,12 @@ public class MenuActivity extends ActionBarActivity {
 
     void alarmManager(){
         Calendar calendar = Calendar.getInstance();
-
+        calendar.setTimeInMillis(System.currentTimeMillis());
 //        calendar.set(Calendar.MONTH, 4);
 //        calendar.set(Calendar.YEAR, 2015);
 //        calendar.set(Calendar.DAY_OF_MONTH, 14);
 
-//        calendar.set(Calendar.HOUR_OF_DAY, 18);
+        calendar.set(Calendar.HOUR_OF_DAY, 18);
 //        calendar.set(Calendar.MINUTE, 0);
 //        calendar.set(Calendar.SECOND, 0);
 //        calendar.set(Calendar.AM_PM,Calendar.PM);
@@ -73,7 +74,18 @@ public class MenuActivity extends ActionBarActivity {
 
         AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
 //        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
-        alarmManager.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), 6*60*60*1000, pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        /**
+         * type：表示警报类型，一般可以取的值是AlarmManager.RTC和AlarmManager.RTC_WAKEUP。如果将type参数值设为AlarmManager.RTC，表示是一个正常的定时器，
+         * 如果将type参数值设为AlarmManager.RTC_WAKEUP，除了有定时器的功能外，还会发出警报声（例如，响铃、震动）。
+
+         * triggerAtTime：第1次运行时要等待的时间，也就是执行延迟时间，单位是毫秒。
+
+         * interval：表示执行的时间间隔，单位是毫秒。
+
+         * operation：一个PendingIntent对象，表示到时间后要执行的操作。PendingIntent与Intent类似，可以封装Activity、BroadcastReceiver和Service。但与Intent不同的是，PendingIntent可以脱离应用程序而存在。
+
+         */
     }
 
 
