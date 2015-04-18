@@ -20,13 +20,37 @@ public class SmartbutlerActivity extends OptionActivity implements View.OnClickL
         setContentView(R.layout.activity_smartbutler);
         /**螢幕不隨手機旋轉*/
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-
+        initView();
     }
 
     private void initView(){
         TextView smartbutlerTxt = (TextView)findViewById(R.id.smartbutlerTxt);
         TextView ControlTxt = (TextView)findViewById(R.id.ControlTxt);
         TextView easyCompute = (TextView)findViewById(R.id.easyComputeTxt);
+
+        smartbutlerTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SmartbutlerActivity.this,MySQLActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        ControlTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SmartbutlerActivity.this,OptionActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        easyCompute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SmartbutlerActivity.this, ComputerActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
