@@ -125,7 +125,7 @@ public class ChargeActivity extends MenuActivity{
     private boolean isInitialized = false;
 
     private boolean finish = false;
-
+    private boolean isDateList = true;
 
 
 
@@ -724,45 +724,6 @@ public class ChargeActivity extends MenuActivity{
      *      */
 
 
-//    void intoDatelist(){
-//        String Smonth,SdayOfMonth;
-//        if(month<10){
-//                Smonth = "0"+(month + 1);
-//                /**月份記得+1，因為月份是從0開始算*/
-//            }
-//            else{
-//                Smonth = String.valueOf(month + 1);
-//            }
-//            if(day<10){
-//                SdayOfMonth = "0"+ day;
-//            }
-//            else{
-//                SdayOfMonth = String.valueOf(day);
-//            }
-//
-//            if(checkDate == null) {
-//                checkDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
-//            }
-//
-//            String findDate = String.valueOf(year) + Smonth + SdayOfMonth;
-//
-//            if(!(findDate.equals(checkDate))) {
-//                Intent intent = new Intent();
-//                intent.setClass(ChargeActivity.this, DateListActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putString("findDate", findDate);
-//                intent.putExtras(bundle);
-//                startActivity(intent);
-//
-//            }
-//            checkDate = findDate;
-//    }
-
-
-
-
-
-
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
@@ -799,14 +760,14 @@ public class ChargeActivity extends MenuActivity{
                         year = currentCalendar.get(Calendar.YEAR);
                         month = currentCalendar.get(Calendar.MONTH);
                         day = currentCalendar.get(Calendar.DAY_OF_MONTH);
-                        if(pos[0] == 0) intoDateList();
+                        if(pos[0] == 0 && listView.getChildAt(0) != null) intoDateList();
 
 
                     }
 
                     if (area!=null && area.equals(currentArea)) {
                         Log.d("TAG", "area!=null && area.equals(currentArea)");
-                        if(pos[0] == 0) intoDateList();
+                        if(pos[0] == 0 && listView.getChildAt(0) != null) intoDateList();
 
                     }
                 } else {
@@ -833,21 +794,22 @@ public class ChargeActivity extends MenuActivity{
     }
 
     private void generateList() {
-        listItemCount = listView.getChildCount();
-        listItemHeight = listView.getChildAt(0).getHeight();
-        listItemWidth = listView.getChildAt(0).getWidth();
-        listView.getChildAt(0).getLocationOnScreen(startPoint);
+        if(listView.getChildAt(0) != null) {
+            listItemCount = listView.getChildCount();
+            listItemHeight = listView.getChildAt(0).getHeight();
+            listItemWidth = listView.getChildAt(0).getWidth();
+            listView.getChildAt(0).getLocationOnScreen(startPoint);
 
-        int deltaX = (int)(listItemWidth/7.0);
+            int deltaX = (int) (listItemWidth / 7.0);
 
-        for (int i=0; i< listItemCount; i++) {
-            for (int j=0; j<7; j++) {
-                areaList.add(new ItemArea(startPoint[0]+deltaX*j, startPoint[1]+listItemHeight*i,
-                        startPoint[0]+deltaX*(j+1), startPoint[1]+listItemHeight*(i+1)));
+            for (int i = 0; i < listItemCount; i++) {
+                for (int j = 0; j < 7; j++) {
+                    areaList.add(new ItemArea(startPoint[0] + deltaX * j, startPoint[1] + listItemHeight * i,
+                            startPoint[0] + deltaX * (j + 1), startPoint[1] + listItemHeight * (i + 1)));
+                }
+
             }
-
         }
-
     }
 
     private void intoDateList() {
@@ -873,29 +835,25 @@ public class ChargeActivity extends MenuActivity{
         }
 
         String findDate = String.valueOf(year) + Smonth + SdayOfMonth;
-
-//        if(!(findDate.equals(checkDate))) {
         Intent intent = new Intent();
         intent.setClass(this, DateListActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         Bundle bundle = new Bundle();
         bundle.putString("findDate", findDate);
         intent.putExtras(bundle);
+        isDateList = true;
         startActivity(intent);
         if(!finish){
            new DateListActivity().finish();
         }
 
-//        }
+
         checkDate = findDate;
 
 
         lastX = upX;
         lastY = upY;
 
-
-
-//        Toast.makeText(this, "" + day + "/" + month + "/" + year, Toast.LENGTH_SHORT).show();
     }
 
     private ItemArea getItemArea(int x, int y) {
@@ -978,7 +936,7 @@ public class ChargeActivity extends MenuActivity{
             case 1:
             getBarChart();
             finish = false;
-
+            isDateList = false;
             break;
             }
         };
