@@ -42,7 +42,6 @@ import java.util.List;
 public class DateListActivity extends ChargeActivity {
 
     static String DATE = null;
-    TextView text;
 
     private ListView listView;
     List<HashMap<String, Object>> itemList;

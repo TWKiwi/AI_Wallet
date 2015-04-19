@@ -27,9 +27,9 @@ import java.util.Calendar;
 public class MenuActivity extends ActionBarActivity {
 
     GifView gif;
-    public static SharedPreferences option;
+    SharedPreferences option;
     public static int Budget;//預算屬性
-    public static boolean checkBoxBoolean;
+
     private PendingIntent pendingIntent;
 
 

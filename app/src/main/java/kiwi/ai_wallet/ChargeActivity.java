@@ -321,7 +321,8 @@ public class ChargeActivity extends MenuActivity{
             dirFile.mkdirs();
 
         }
-
+        Log.d("Budget",String.valueOf(Budget));
+//        Budget = option.getInt("Budget",20000);
     }
 
     void getBarChart(){
@@ -418,10 +419,11 @@ public class ChargeActivity extends MenuActivity{
                 }
             }
     //        SharedPreferences option = getPreferences(MODE_PRIVATE);
-            Budget = option.getInt("Budget",20000);
+    //        Budget = option.getInt("Budget",20000);
+
             int persent = (sum*100)/Budget;//算百分比條小數點弄成百分比整數
             if(persent <= 100) {
-                ScaleNumM.setText(Html.fromHtml("本月額度<br>" + sum + "<font color = '#FF0000'><big>/</font>" + Budget+ "元"));
+                ScaleNumM.setText(Html.fromHtml("本月額度<br>" + sum + "<font color = '#FF0000'><big>/</font>" + Budget + "元"));
             }else if(persent > 100){
                 ScaleNumM.setText(Html.fromHtml("本月" + "<font color = '#FF0000'><big>超支<br></font>" + (sum - Budget)+ "元"));
                 persent = 100;
@@ -441,7 +443,7 @@ public class ChargeActivity extends MenuActivity{
             }
         }
         //        SharedPreferences option = getPreferences(MODE_PRIVATE);
-        Budget = option.getInt("Budget",20000);
+  //      Budget = option.getInt("Budget",20000);
         int persent = (sum*100)/(Budget/30);//算百分比條小數點弄成百分比整數
         if(persent <= 100) {
             ScaleNumD.setText(Html.fromHtml("本日額度<br>" + sum + "<font color = '#FF0000'><big>/</font>" + (Budget/30) + "元"));
@@ -475,7 +477,7 @@ public class ChargeActivity extends MenuActivity{
                     sum += Double.parseDouble(cursor.getString(3));
                 }
             }
-            Budget = option.getInt("Budget", 20000);
+   //         Budget = option.getInt("Budget", 20000);
             if ((Double.parseDouble(String.valueOf(sum)) + Double.parseDouble(String.valueOf(priceText.getText()))) >= Budget) {
                 Toast.makeText(this, "注意！！超出預算！！", Toast.LENGTH_SHORT).show();
             }

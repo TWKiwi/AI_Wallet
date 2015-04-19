@@ -3,6 +3,7 @@ package kiwi.ai_wallet;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,8 +15,9 @@ import android.widget.EditText;
 public class OptionActivity extends SmartbutlerActivity {
 
     CheckBox alarmCheckBox;
-    EditText mbudgetText;
+    EditText budgetText;
     Button saveBtn;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,24 +25,22 @@ public class OptionActivity extends SmartbutlerActivity {
         setContentView(R.layout.activity_option);
         /**螢幕不隨手機旋轉*/
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-
         initView();
-
-        saveBtn.setOnClickListener(saveBtnClick);
-
+        editor = option.edit();
 
 
     }
 
     private void initView(){
-        mbudgetText = (EditText)findViewById(R.id.setMBudget);
+        budgetText = (EditText)findViewById(R.id.setMBudget);
         saveBtn = (Button)findViewById(R.id.saveBtn);
         alarmCheckBox = (CheckBox)findViewById(R.id.alarmCheckBox);
 
+
         Budget = option.getInt("Budget",20000);
-        mbudgetText.setHint(String.valueOf(Budget));
+        budgetText.setHint(String.valueOf(Budget));
 
-
+        saveBtn.setOnClickListener(saveBtnClick);
     }
 
 
@@ -50,13 +50,8 @@ public class OptionActivity extends SmartbutlerActivity {
         @Override
         public void onClick(View v) {
 
-//           setOption();
-
-            SharedPreferences.Editor editor = option.edit();
-            editor.clear();
-
-
-            Budget = Integer.parseInt(mbudgetText.getText().toString());
+            Budget = Integer.parseInt(budgetText.getText().toString());
+            Log.d("Budget", String.valueOf(Budget));
             editor.putInt("Budget",Budget);
             editor.apply();
         }
@@ -85,9 +80,5 @@ public class OptionActivity extends SmartbutlerActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
 
-    }
 }
