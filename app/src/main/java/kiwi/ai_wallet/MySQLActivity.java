@@ -4,9 +4,15 @@ import org.json.JSONArray;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.media.audiofx.BassBoost;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,15 +25,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-//import com.example.testandroiddbactivity.TestAndroidDBActivity;
 
-public class MySQLActivity extends Activity implements OnClickListener, OnItemSelectedListener{
 
-    protected static final Uri ListViewShowData = null;
+public class MySQLActivity extends Activity implements OnClickListener, OnItemSelectedListener,LocationListener{
+
     Spinner fclass, fname;
     EditText fPrice;
-
-    TextView txv2;
 
     private Button btn_select_data,btn2;
     String fClass_name[] = {"Br", "B", "L",
@@ -42,19 +45,26 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
     String Drink_name[] = {"茶類飲品", "果汁系列", "特調飲品", "全部類別"};
     String Drink_select[] = {"Tea", "Juice", "Special", "%"};
 
-
-    String sel_count;
     int spin_sel_fclass;
     int spin_sel_fname;
-    String input_fprice;
     String fName_name[];
     String fName_put [];
+
+    /**定位工程*/
+    static final int MIN_TIME = 5000;
+    static final float MIN_DIST = 5;
+    LocationManager mgr;
+    TextView txv;
+    Button setGPSBtn;
+    /**定位工程*/
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_sql);
-        findViews();
+        initViews();
 
         btn_select_data.setOnClickListener(this);
         btn2.setOnClickListener(this);
@@ -78,13 +88,17 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
 
     }
 
-    private void findViews() {
+    private void initViews() {
         btn_select_data = (Button)findViewById(R.id.button1);
         btn2 = (Button)findViewById(R.id.button2);
         fclass = (Spinner) findViewById(R.id.spinner_fclass);
         fname = (Spinner) findViewById(R.id.spinner_fname);
         fPrice = (EditText) findViewById(R.id.editText1);
+        txv = (TextView) findViewById(R.id.textView1);
 
+        mgr = (LocationManager)getSystemService(LOCATION_SERVICE);
+        setGPSBtn = (Button)findViewById(R.id.setGPSBtn);
+        setGPSBtn.setOnClickListener(setGPS);
     }
 
     @Override
@@ -163,7 +177,57 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
     }
 
     @Override
+    public void onResume(){
+        super.onResume();
+        //取得最佳定位提供者
+        String best = mgr.getBestProvider(new Criteria(), true);//true 找出已啟用
+        if(best != null){
+            txv.setText("取得定位資訊中...");
+                mgr.requestLocationUpdates(best,MIN_TIME,MIN_DIST,this);//註冊監聽器
+        }else txv.setText("請確認有開啟定位功能！");
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        mgr.removeUpdates(this);//取消註冊
+    }
+
+    @Override
     public void onNothingSelected(AdapterView<?> parent) {
         // TODO Auto-generated method stub
     }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        String str = "定位提供者：" + location.getProvider();
+        str += String.format("\n緯度:%.5f\n經度:%.5f\n高度:%.2f公尺",
+                location.getLatitude(),
+                location.getLongitude(),
+                location.getAltitude());//format(字串,經度,緯度,高度)
+        txv.setText(str);
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+
+    OnClickListener setGPS = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(intent);
+        }
+    };
 }

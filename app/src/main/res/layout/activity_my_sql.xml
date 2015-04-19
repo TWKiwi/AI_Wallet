@@ -7,7 +7,6 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-
     android:textColor="#642100"
     android:background="#FF8040"
     tools:context="com.example.dbconnertingsystem.MainActivity" >
@@ -54,7 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="5dp"
-        android:text="熱門查詢"
+        android:text="系統推薦商品"
         android:textSize="36sp"
         android:textColor="#842B00"
         android:background="#FFBD9D"
@@ -62,16 +61,34 @@
 
 
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="5dp"
-            android:text="隨機查詢商品"
-            android:textSize="36sp"
-            android:textColor="#642100"
-            android:background="#FFCBB3"
-            android:layout_weight="2"/>
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="5dp"
+        android:text="隨機查詢商品"
+        android:textSize="36sp"
+        android:textColor="#642100"
+        android:background="#FFCBB3"
+        android:layout_weight="2"/>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="5dp"
+        android:text="GPS定位"
+        android:gravity="center"
+        android:textColor="#642100"
+        android:background="#FFCBB3"
+        android:layout_weight="2"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="手機定位功能設定"
+        android:id="@+id/setGPSBtn"/>
 
 
 </LinearLayout>
