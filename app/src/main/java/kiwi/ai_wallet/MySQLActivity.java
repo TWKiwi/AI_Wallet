@@ -201,9 +201,9 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
     @Override
     public void onLocationChanged(Location location) {
         String str = "定位提供者：" + location.getProvider();
-        str += String.format("\n緯度:%.5f\n經度:%.5f\n高度:%.2f公尺",
-                location.getLatitude(),
-                location.getLongitude(),
+        str += String.format("\n緯度:%s\n經度:%s\n高度:%.2f公尺",
+                Location.convert(location.getLatitude(),Location.FORMAT_SECONDS),
+                Location.convert(location.getLongitude(),Location.FORMAT_SECONDS),
                 location.getAltitude());//format(字串,經度,緯度,高度)
         txv.setText(str);
     }
