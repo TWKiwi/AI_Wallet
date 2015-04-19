@@ -2,8 +2,6 @@ package kiwi.ai_wallet;
 
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,16 +9,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
 
 
-public class OptionActivity extends MenuActivity {
+public class OptionActivity extends SmartbutlerActivity {
 
     CheckBox alarmCheckBox;
-    EditText budgetText;
+    EditText mbudgetText;
     Button saveBtn;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,32 +28,37 @@ public class OptionActivity extends MenuActivity {
 
         saveBtn.setOnClickListener(saveBtnClick);
 
+
+
     }
 
     private void initView(){
-        budgetText = (EditText)findViewById(R.id.setBudget);
+        mbudgetText = (EditText)findViewById(R.id.setMBudget);
         saveBtn = (Button)findViewById(R.id.saveBtn);
         alarmCheckBox = (CheckBox)findViewById(R.id.alarmCheckBox);
 
         Budget = option.getInt("Budget",20000);
-        budgetText.setHint(String.valueOf(Budget));
+        mbudgetText.setHint(String.valueOf(Budget));
+
 
     }
 
-    void setOption(){
-        SharedPreferences.Editor editor = option.edit();
 
-        editor.putInt("Budget",Budget);
-        editor.apply();
-    }
 
 
     private View.OnClickListener saveBtnClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Budget = Integer.parseInt(budgetText.getText().toString());
-            checkBoxBoolean = alarmCheckBox.isChecked();
-            setOption();
+
+//           setOption();
+
+            SharedPreferences.Editor editor = option.edit();
+            editor.clear();
+
+
+            Budget = Integer.parseInt(mbudgetText.getText().toString());
+            editor.putInt("Budget",Budget);
+            editor.apply();
         }
     };
 
@@ -83,5 +83,11 @@ public class OptionActivity extends MenuActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
     }
 }

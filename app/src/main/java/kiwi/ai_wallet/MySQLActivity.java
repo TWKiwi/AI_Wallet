@@ -54,8 +54,8 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
     static final int MIN_TIME = 5000;
     static final float MIN_DIST = 5;
     LocationManager mgr;
-    TextView txv;
-    Button setGPSBtn;
+    Button GPSBtn,setGPSBtn;
+    protected double latitude,longitude;//latitude(緯度 Y),longitude(經度 X);   (X-X菊)^2 + (Y-Y菊)^2 <= 1^2
     /**定位工程*/
 
 
@@ -68,6 +68,7 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
 
         btn_select_data.setOnClickListener(this);
         btn2.setOnClickListener(this);
+        GPSBtn.setOnClickListener(this);
         fclass.setOnItemSelectedListener(this);
 
 
@@ -94,7 +95,7 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
         fclass = (Spinner) findViewById(R.id.spinner_fclass);
         fname = (Spinner) findViewById(R.id.spinner_fname);
         fPrice = (EditText) findViewById(R.id.editText1);
-        txv = (TextView) findViewById(R.id.textView1);
+        GPSBtn = (Button) findViewById(R.id.GPSBtn);
 
         mgr = (LocationManager)getSystemService(LOCATION_SERVICE);
         setGPSBtn = (Button)findViewById(R.id.setGPSBtn);
@@ -129,6 +130,9 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
                     g = 2;
                     it.putExtra("g", g);
                     break;
+                case R.id.GPSBtn :
+                    g = 3;
+                    it.putExtra("g", g);
             }
             startActivity(it);
         }
@@ -182,9 +186,9 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
         //取得最佳定位提供者
         String best = mgr.getBestProvider(new Criteria(), true);//true 找出已啟用
         if(best != null){
-            txv.setText("取得定位資訊中...");
+            GPSBtn.setText("取得定位資訊中...");
                 mgr.requestLocationUpdates(best,MIN_TIME,MIN_DIST,this);//註冊監聽器
-        }else txv.setText("請確認有開啟定位功能！");
+        }else GPSBtn.setText("請確認有開啟定位功能！");
     }
 
     @Override
@@ -201,11 +205,12 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
     @Override
     public void onLocationChanged(Location location) {
         String str = "定位提供者：" + location.getProvider();
-        str += String.format("\n緯度:%s\n經度:%s\n高度:%.2f公尺",
-                Location.convert(location.getLatitude(),Location.FORMAT_SECONDS),
-                Location.convert(location.getLongitude(),Location.FORMAT_SECONDS),
-                location.getAltitude());//format(字串,經度,緯度,高度)
-        txv.setText(str);
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
+        str += String.format("\n緯度:%.5f\n經度:%.5f",
+                latitude,
+                longitude);
+        GPSBtn.setText(str);
     }
 
     @Override
@@ -222,6 +227,7 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
     public void onProviderDisabled(String provider) {
 
     }
+
 
     OnClickListener setGPS = new OnClickListener() {
         @Override

@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 
-public class SmartbutlerActivity extends OptionActivity implements View.OnClickListener {
+public class SmartbutlerActivity extends MenuActivity implements View.OnClickListener {
 
 
 

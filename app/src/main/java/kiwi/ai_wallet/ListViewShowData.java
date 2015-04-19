@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 
 
-public class ListViewShowData extends Activity implements OnItemClickListener{
+public class ListViewShowData extends MySQLActivity implements OnItemClickListener{
 
     private ListView listView;
 
@@ -48,7 +48,7 @@ public class ListViewShowData extends Activity implements OnItemClickListener{
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listviewshowdata);
         //連線
@@ -87,14 +87,14 @@ public class ListViewShowData extends Activity implements OnItemClickListener{
         try {
 
             String result = null;
+            String resultG = null;
             if(check_num == 1){
                 String index =  "SELECT * FROM `food` WHERE `fSort` LIKE '%"+ sel_fname +"%' "
                         +"AND fPrice <= "+ in_fprice +
                         " AND `fClass` LIKE '%"+ sel_fclass +"%' ORDER BY `fRank` DESC limit 6";
                 result = MySQLConnector.executeQuery(index);
 
-            }else
-            {
+            }else if(check_num == 2){
                 String index = "select * from "
                         + "(select * from `food` where `fClass` like '%"+ sel_fclass + "%' "
                         + "AND `fSort` LIKE '%"+ sel_fname +"%' "
@@ -102,7 +102,35 @@ public class ListViewShowData extends Activity implements OnItemClickListener{
                         + "as a limit 6";
                 result = MySQLConnector.executeQuery(index);
 
+            }else if(check_num == 3){
+                String index = "UPDATE `ai_pomo`.`gps` SET `gUserX` = " + longitude + ", `gUserY` = " + latitude + " WHERE `gps`.`gId` = 1;";
+                result = GPSConnector.executeQuery(index);
+
+                String indexG = "SELECT *, \n" +
+                        "round(6378.138*2*asin(sqrt(pow(sin( (`gY`*pi()/180-`gUserY`*pi()/180)/2),2)+cos(`gY`*pi()/180)*cos(`gUserY`*pi()/180)* pow(sin( (`gX`*pi()/180-`gUserX`*pi()/180)/2),2)))*1000)  'Distance' from `gps`;";
+                resultG = GPSConnector.executeQuery(indexG);
+                int selGps = 0;
+                try {
+
+                    JSONArray jsonArray = new JSONArray(resultG);
+                    for(int i = 0; i < jsonArray.length(); i++) {
+
+                        JSONObject jsonData = jsonArray.getJSONObject(i);
+
+                        selGps += Integer.parseInt(jsonData.getString("Distance"));
+                        Toast.makeText(this,"經度"+String.valueOf(longitude)+"\n緯度"+String.valueOf(latitude)+"\n"+String.valueOf(selGps),Toast.LENGTH_SHORT).show();
+
+
+                    }
+
+                }
+                catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
             }
+
 
             JSONArray jsonArray = new JSONArray(result);
             ArrayList<HashMap<String, Object>> pomo = new ArrayList<HashMap<String, Object>>();
@@ -129,7 +157,6 @@ public class ListViewShowData extends Activity implements OnItemClickListener{
 
         }
         catch(Exception e) {
-            Log.e("log_tag111", e.toString());
         }
     }
     ArrayList<String> selected = new ArrayList<String>();
@@ -137,10 +164,12 @@ public class ListViewShowData extends Activity implements OnItemClickListener{
                             int position, long id){
         // TODO Auto-generated method stub
         String cMM_pannel = "";
-        String cMM =  listView.getItemAtPosition(position).toString();
-        String array[] = cMM.split(",");
+        String cMM;
+        String array[];
         String listSelPrice = "";
         String listSelfreq = "";
+
+//        Toast.makeText(this,cMM,Toast.LENGTH_SHORT).show();
 
         try{
 
@@ -225,6 +254,10 @@ public class ListViewShowData extends Activity implements OnItemClickListener{
             Log.e("log_tag21", e.toString());
         }
     }
+
+
+
+
 
     public void sel_count1(){
         String index =  "select `fClass`,  count(*), sum(`fClass`) from `food` where `fPrice` <= " + in_fprice

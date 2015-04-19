@@ -66,7 +66,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            android:text="設定預算額 :"
+            android:text="設定月預算額 :"
             android:textColor="#842B00"
             android:gravity="center" />
 
@@ -74,7 +74,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="7"
-            android:id="@+id/setBudget"
+            android:id="@+id/setMBudget"
             android:textColor="#842B00"
             android:inputType="number"
             android:layout_gravity="center"
@@ -85,6 +85,7 @@
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
+
     </TableRow>
 
     <TableRow
