@@ -4,6 +4,7 @@ import org.json.JSONArray;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -55,7 +56,7 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
     static final float MIN_DIST = 5;
     LocationManager mgr;
     Button GPSBtn,setGPSBtn;
-    protected double latitude,longitude;//latitude(緯度 Y),longitude(經度 X);   (X-X菊)^2 + (Y-Y菊)^2 <= 1^2
+    double latitude,longitude;//latitude(緯度 Y),longitude(經度 X);   (X-X菊)^2 + (Y-Y菊)^2 <= 1^2
     /**定位工程*/
 
 
@@ -133,6 +134,9 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
                 case R.id.GPSBtn :
                     g = 3;
                     it.putExtra("g", g);
+                    it.putExtra("latitude", latitude);
+                    it.putExtra("longitude", longitude);
+                    it.setClass(getApplicationContext(), GPSActivity.class);
             }
             startActivity(it);
         }
@@ -164,12 +168,6 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
                 fName_put = LD_select;
                 break;
         }
-
-        if(pos == 0){
-            fName_name = break_name1;
-        }
-
-
         ArrayAdapter<String> fNameAd =
                 new ArrayAdapter<String>(this,
                         android.R.layout.simple_spinner_item, fName_name);
@@ -187,7 +185,7 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
         String best = mgr.getBestProvider(new Criteria(), true);//true 找出已啟用
         if(best != null){
             GPSBtn.setText("取得定位資訊中...");
-                mgr.requestLocationUpdates(best,MIN_TIME,MIN_DIST,this);//註冊監聽器
+            mgr.requestLocationUpdates(best,MIN_TIME,MIN_DIST,this);//註冊監聽器
         }else GPSBtn.setText("請確認有開啟定位功能！");
     }
 
@@ -211,6 +209,7 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
                 latitude,
                 longitude);
         GPSBtn.setText(str);
+
     }
 
     @Override

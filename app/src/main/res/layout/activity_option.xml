@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="#FFE6D9"
+    android:background="#FFCBB3"
     android:orientation="vertical">
 
 
@@ -30,12 +30,14 @@
             android:textColor="#842B00"
             android:gravity="center"/>
 
-        <CheckBox
+        <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="7"
-            android:text="通知提醒"
-            android:id="@+id/alarmCheckBox" />
+            android:textSize="24sp"
+            android:textColor="#842B00"
+            android:gravity="center"
+            android:text="施工中...." />
 
     </TableRow>
 
@@ -86,6 +88,23 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:text="每月固定支出 :"
+            android:textColor="#842B00"
+            android:gravity="center" />
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:id="@+id/regularCost"
+            android:textColor="#842B00"
+            android:inputType="number"
+            android:layout_gravity="center"
+            android:gravity="left" />
     </TableRow>
 
     <TableRow
@@ -98,6 +117,15 @@
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/aboutUs"
+            android:text="關於我們"
+            android:textSize="24sp"
+            android:background="#FFBD9D"
+            android:gravity="center"/>
     </TableRow>
 
 
@@ -111,8 +139,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="儲存設定"
+            android:textSize="24sp"
+            android:textColor="#FFBD9D"
             android:id="@+id/saveBtn"
-            android:background="#FFBD9D"
+            android:background="#842B00"
             android:layout_gravity="bottom" />
         </TableRow>
 

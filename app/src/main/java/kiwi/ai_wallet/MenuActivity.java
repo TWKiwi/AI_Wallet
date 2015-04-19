@@ -16,6 +16,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,7 +29,8 @@ public class MenuActivity extends ActionBarActivity {
 
     GifView gif;
     SharedPreferences option;
-    public static int Budget;//預算屬性
+    public static int Budget = 20000;//預算屬性
+    public static int regularCost;//預算屬性
 
     private PendingIntent pendingIntent;
 
@@ -40,21 +42,12 @@ public class MenuActivity extends ActionBarActivity {
         /**螢幕不隨手機旋轉*/
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 
-//        initUI();
+        setImage();
 
         setOption();
         alarmManager();
 
 
-      /**點選StartText字串進入選單畫面的版面配置*/
-        ImageView StartView = (ImageView) findViewById(R.id.StartText);
-        StartView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toMenuUI();/**切換UI*/
-            }
-        });
-        addShortcut();
     }
 
     void alarmManager(){
@@ -97,36 +90,35 @@ public class MenuActivity extends ActionBarActivity {
 
     public void setImage(){
 
-        int iw,ih,vw,vh;
-        BitmapFactory.Options option = new BitmapFactory.Options();
-        option.inJustDecodeBounds = true;
+        ImageView StartText = (ImageView)findViewById(R.id.StartText);
+
+        StartText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                toMenuUI();
+                return false;
+            }
+        });
+
+        // 从xml中得到GifView的句柄
+        gif = (GifView) findViewById(R.id.gifview01);
+        // 设置Gif图片源
+        gif.setGifImage(R.drawable.head);
+        // 添加监听器
+        gif.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toMenuUI();/**切換UI*/
+            }
+        });
+        // 设置显示的大小，拉伸或者压缩
+//        gif.setShowDimension(1000, 1600);
+
+        // 设置加载方式：先加载后显示、边加载边显示、只显示第一帧再显示
+        gif.setGifImageType(GifView.GifImageType.COVER);
         
     }
 
-
-//    private void initUI()
-//    {
-//        gif = (GifView)findViewById(R.id.gifview01);
-//        gif.setGifImage(R.drawable.pomo_small);
-//
-////                gif1.setShowDimension(300, 300);
-//    }
-
-
-
-
-//    /**
-//     * 轉換到登入UI*/
-//    public void toLoginUI(){
-//        setContentView(R.layout.login);
-//        TextView LoginText = (TextView)findViewById(R.id.LoginText);
-//        LoginText.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                toMenuUI();
-//            }
-//        });
-//    }
 
     /**
      * 轉換到記帳UI*/
@@ -153,26 +145,24 @@ public class MenuActivity extends ActionBarActivity {
         });
 
 
-
-
     }
-
-    private void addShortcut() {
-        Intent shortcutIntent = new Intent(this,
-                ChargeActivity.class); // 啟動捷徑入口，一般用MainActivity，有使用其他入口則填入相對名稱，ex:有使用SplashScreen
-        shortcutIntent.setAction(Intent.ACTION_MAIN);
-        Intent addIntent = new Intent();
-        addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent); // shortcutIntent送入
-        addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME,
-                getString(R.string.app_name)); // 捷徑app名稱
-        addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
-                Intent.ShortcutIconResource.fromContext(
-                        getApplicationContext(),// 捷徑app圖
-                        R.drawable.ic_launcher));
-        addIntent.putExtra("duplicate", false); // 只創建一次
-        addIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT"); // 安裝
-        sendBroadcast(addIntent); // 送出廣播
-    }
+/**桌面捷徑有問題*/
+//    private void addShortcut() {
+//        Intent shortcutIntent = new Intent(this,
+//                StartActivity.class); // 啟動捷徑入口，一般用MainActivity，有使用其他入口則填入相對名稱，ex:有使用SplashScreen
+//        shortcutIntent.setAction(Intent.ACTION_MAIN);
+//        Intent addIntent = new Intent();
+//        addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent); // shortcutIntent送入
+//        addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME,
+//                getString(R.string.app_name)); // 捷徑app名稱
+//        addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
+//                Intent.ShortcutIconResource.fromContext(
+//                        getApplicationContext(),// 捷徑app圖
+//                        R.drawable.ic_launcher));
+//        addIntent.putExtra("duplicate", false); // 只創建一次
+//        addIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT"); // 安裝
+//        sendBroadcast(addIntent); // 送出廣播
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

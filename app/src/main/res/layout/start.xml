@@ -7,19 +7,19 @@
     tools:context=".MainActivity">
 
 
-    <!--<com.ant.liao.GifView-->
-        <!--android:id="@+id/gifview01"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerInParent="true"-->
-        <!--/>-->
+    <com.ant.liao.GifView
+        android:id="@+id/gifview01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+
+        />
 
     <ImageView
         android:id="@+id/StartText"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:gravity="center"
-        android:background="@drawable/start"
         />
     <!--android:text="Touch screen to start your Life"/>-->
 

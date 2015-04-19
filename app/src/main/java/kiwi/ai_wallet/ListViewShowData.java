@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
@@ -39,18 +40,18 @@ public class ListViewShowData extends MySQLActivity implements OnItemClickListen
     String sel_fname ;
     String in_fprice ;
 
-    int arraylengh;
     int selLength;
 
-    //String DB_fPrice;
 
-    //
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_listviewshowdata);
+        //setContentView(R.layout.activity_gpslistviewshowdata);
+
         //連線
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                 .detectDiskReads()
@@ -66,79 +67,55 @@ public class ListViewShowData extends MySQLActivity implements OnItemClickListen
         //連線
 
         listView = (ListView)findViewById(R.id.listView1);
+
         listView.setOnItemClickListener(this);
+
         renewListView(toString());
         sel_count1();
     }
 
-    public final void renewListView(String input){
+    public final void renewListView(String input) {
 
         Intent it = getIntent();
-        Bundle spin_sel_fclass =this.getIntent().getExtras();
-        Bundle spin_sel_fname =this.getIntent().getExtras();
-        Bundle input_fprice =this.getIntent().getExtras();
+        Bundle spin_sel_fclass = this.getIntent().getExtras();
+        Bundle spin_sel_fname = this.getIntent().getExtras();
+        Bundle input_fprice = this.getIntent().getExtras();
+        int check_num = it.getIntExtra("g", 0);
 
-        int check_num = it.getIntExtra("g",0);
+
+
 
         sel_fclass = spin_sel_fclass.getString("spin_sel_fclass");
         sel_fname = spin_sel_fname.getString("spin_sel_fname");
         in_fprice = input_fprice.getString("input_fprice");
 
+
+        String result = null;
+        String resultG = null;
         try {
 
-            String result = null;
-            String resultG = null;
-            if(check_num == 1){
-                String index =  "SELECT * FROM `food` WHERE `fSort` LIKE '%"+ sel_fname +"%' "
-                        +"AND fPrice <= "+ in_fprice +
-                        " AND `fClass` LIKE '%"+ sel_fclass +"%' ORDER BY `fRank` DESC limit 6";
+            if (check_num == 1) {
+                String index = "SELECT * FROM `food` WHERE `fSort` LIKE '%" + sel_fname + "%' "
+                        + "AND fPrice <= " + in_fprice +
+                        " AND `fClass` LIKE '%" + sel_fclass + "%' ORDER BY `fRank` DESC limit 6";
                 result = MySQLConnector.executeQuery(index);
 
-            }else if(check_num == 2){
+            } else if (check_num == 2) {
                 String index = "select * from "
-                        + "(select * from `food` where `fClass` like '%"+ sel_fclass + "%' "
-                        + "AND `fSort` LIKE '%"+ sel_fname +"%' "
-                        + "AND `fPrice` <= "+ in_fprice +" order by rand()) "
+                        + "(select * from `food` where `fClass` like '%" + sel_fclass + "%' "
+                        + "AND `fSort` LIKE '%" + sel_fname + "%' "
+                        + "AND `fPrice` <= " + in_fprice + " order by rand()) "
                         + "as a limit 6";
                 result = MySQLConnector.executeQuery(index);
 
-            }else if(check_num == 3){
-                String index = "UPDATE `ai_pomo`.`gps` SET `gUserX` = " + longitude + ", `gUserY` = " + latitude + " WHERE `gps`.`gId` = 1;";
-                result = GPSConnector.executeQuery(index);
-
-                String indexG = "SELECT *, \n" +
-                        "round(6378.138*2*asin(sqrt(pow(sin( (`gY`*pi()/180-`gUserY`*pi()/180)/2),2)+cos(`gY`*pi()/180)*cos(`gUserY`*pi()/180)* pow(sin( (`gX`*pi()/180-`gUserX`*pi()/180)/2),2)))*1000)  'Distance' from `gps`;";
-                resultG = GPSConnector.executeQuery(indexG);
-                int selGps = 0;
-                try {
-
-                    JSONArray jsonArray = new JSONArray(resultG);
-                    for(int i = 0; i < jsonArray.length(); i++) {
-
-                        JSONObject jsonData = jsonArray.getJSONObject(i);
-
-                        selGps += Integer.parseInt(jsonData.getString("Distance"));
-                        Toast.makeText(this,"經度"+String.valueOf(longitude)+"\n緯度"+String.valueOf(latitude)+"\n"+String.valueOf(selGps),Toast.LENGTH_SHORT).show();
-
-
-                    }
-
-                }
-                catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-
             }
-
 
             JSONArray jsonArray = new JSONArray(result);
             ArrayList<HashMap<String, Object>> pomo = new ArrayList<HashMap<String, Object>>();
 
             setTitle("查詢資料結果");
-            //selLength = jsonArray.length();
 
-            for(int i = 0; i < jsonArray.length(); i++) {
+            for (int i = 0; i < jsonArray.length(); i++) {
 
                 JSONObject jsonData = jsonArray.getJSONObject(i);
                 HashMap<String, Object> h2 = new HashMap<String, Object>();
@@ -150,10 +127,11 @@ public class ListViewShowData extends MySQLActivity implements OnItemClickListen
                 pomo.add(h2);
 
                 SimpleAdapter adapter = new SimpleAdapter(this, pomo, R.layout.listviewshowdataitem, new String[]
-                        {"fName", "fPrice","fStore" }, new int[]
-                        { R.id.fName_txv, R.id.fPrice_txv, R.id.fStore_txv });
+                        {"fName", "fPrice", "fStore"}, new int[]
+                        {R.id.fName_txv, R.id.fPrice_txv, R.id.fStore_txv});
                 listView.setAdapter(adapter);
             }
+
 
         }
         catch(Exception e) {
