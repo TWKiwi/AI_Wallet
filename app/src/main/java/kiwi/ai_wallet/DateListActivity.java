@@ -71,7 +71,7 @@ public class DateListActivity extends ChargeActivity {
 
         listView = (ListView)findViewById(R.id.listView);
         listView.setAdapter(adapter);
-        Log.d("測試","Start()");
+
     }
 
     void bundleCatch(){
@@ -89,11 +89,11 @@ public class DateListActivity extends ChargeActivity {
 
 
         Cursor cursor = getCursor();
-        Log.d("測試","準備進入for迴圈");
+
         while(cursor.moveToNext()) {
-            Log.d("測試","進入迴圈");
+
             if (DATE.equals(cursor.getString(4).substring(0, 8))) {
-                Log.d("測試","進入比較判斷");
+
                 /**依前面的路徑及檔案名建立Uri物件*/
                 imgUri = Uri.parse("file://" + dirFile + "/" + cursor.getString(4));
                 /**讀取圖檔內容轉換為Bitmap物件*/
@@ -120,7 +120,7 @@ public class DateListActivity extends ChargeActivity {
                 list.add(item);
             }
         }
-        Log.d("測試","getData()");
+
         return list;
     }
 

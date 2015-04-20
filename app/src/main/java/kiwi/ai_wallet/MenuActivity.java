@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.SystemClock;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBarActivity;
@@ -20,6 +21,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.ant.liao.*;
 
 import java.util.Calendar;
@@ -27,12 +30,14 @@ import java.util.Calendar;
 
 public class MenuActivity extends ActionBarActivity {
 
-    GifView gif;
-    SharedPreferences option;
-    public static int Budget = 20000;//預算屬性
-    public static int regularCost;//預算屬性
 
-    private PendingIntent pendingIntent;
+    protected SharedPreferences optionSpr;
+    protected int Budget;//預算屬性
+    protected int RegularCost;//預算屬性
+//    protected SharedPreferences.Editor optSprEdt;
+    protected PendingIntent pendingIntent;
+    protected GifView gif;
+
 
 
     @Override
@@ -42,11 +47,12 @@ public class MenuActivity extends ActionBarActivity {
         /**螢幕不隨手機旋轉*/
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 
+        setGif();
         setImage();
-
-        setOption();
+//        setBudget(18000);
+//        setRegularCost(0);
         alarmManager();
-
+        Log.d("Menu",String.valueOf(Budget)+ "/" + String.valueOf(RegularCost));
 
     }
 
@@ -81,12 +87,42 @@ public class MenuActivity extends ActionBarActivity {
          */
     }
 
-
-
-    void setOption(){
-        option = getPreferences(MODE_PRIVATE);
-
+    public void setBudget(int i){
+        optionSpr = getSharedPreferences("Option",0);
+        Log.d("刷新設置前",getBudget("Budget") + "/" + getBudget("RglCost"));
+        SharedPreferences.Editor optSprEdt = optionSpr.edit();
+        Log.d("刷新設置中",getBudget("Budget") + "/" + getBudget("RglCost"));
+        optSprEdt.putInt("Budget", i).commit();
+        Log.d("刷新設置後",getBudget("Budget") + "/" + getBudget("RglCost"));
     }
+
+    public void setRegularCost(int i){
+        optionSpr = getSharedPreferences("Option", 0);
+        Log.d("刷新設置前",getBudget("Budget") + "/" + getBudget("RglCost"));
+        SharedPreferences.Editor optSprEdt = optionSpr.edit();
+        Log.d("刷新設置中",getBudget("Budget") + "/" + getBudget("RglCost"));
+        optSprEdt.putInt("RglCost",i).commit();
+        Log.d("刷新設置後",getBudget("Budget") + "/" + getBudget("RglCost"));
+    }
+
+    public String getBudget(String s){
+        optionSpr = getSharedPreferences("Option", 0);
+
+        switch (s){
+            case "Budget" : Budget = optionSpr.getInt("Budget", 22222);
+                            s = String.valueOf(Budget);
+
+                            break;
+            case "RglCost" : RegularCost = optionSpr.getInt("RglCost",222);
+                            s = String.valueOf(RegularCost);
+                            break;
+        }
+
+        Log.d("取得設置",String.valueOf(Budget)+ "/" + String.valueOf(RegularCost));
+        return s;
+    }
+
+
 
     public void setImage(){
 
@@ -100,23 +136,6 @@ public class MenuActivity extends ActionBarActivity {
             }
         });
 
-        // 从xml中得到GifView的句柄
-        gif = (GifView) findViewById(R.id.gifview01);
-        // 设置Gif图片源
-        gif.setGifImage(R.drawable.head);
-        // 添加监听器
-        gif.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toMenuUI();/**切換UI*/
-            }
-        });
-        // 设置显示的大小，拉伸或者压缩
-//        gif.setShowDimension(1000, 1600);
-
-        // 设置加载方式：先加载后显示、边加载边显示、只显示第一帧再显示
-        gif.setGifImageType(GifView.GifImageType.COVER);
-        
     }
 
 
@@ -125,25 +144,30 @@ public class MenuActivity extends ActionBarActivity {
     public void toMenuUI(){
         setContentView(R.layout.menu_view);
 
-        TextView Charge = (TextView)findViewById(R.id.ChargeTextView);
-        Charge.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent ChargeIntent = new Intent(MenuActivity.this,ChargeActivity.class);
-                startActivity(ChargeIntent);
-            }
-        });
+        try {
+            TextView Charge = (TextView) findViewById(R.id.ChargeTextView);
+            Charge.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent ChargeIntent = new Intent(MenuActivity.this, ChargeActivity.class);
+                    startActivity(ChargeIntent);
+                }
+            });
 
-        TextView Smartbutler = (TextView)findViewById(R.id.SmartbutlerView);
-        Smartbutler.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent Smartbutler = new Intent(MenuActivity.this,SmartbutlerActivity.class);
-                startActivity(Smartbutler);
+            TextView Smartbutler = (TextView) findViewById(R.id.SmartbutlerView);
+            Smartbutler.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent Smartbutler = new Intent(MenuActivity.this, SmartbutlerActivity.class);
+                    startActivity(Smartbutler);
 
-            }
-        });
-
+                }
+            });
+        }catch(Exception e){
+            Intent intent = new Intent(this,OptionActivity.class);
+            startActivity(intent);
+            Toast.makeText(this,"預算金額有問題，請確認金額設定無誤",Toast.LENGTH_SHORT).show();
+        }
 
     }
 /**桌面捷徑有問題*/
@@ -186,6 +210,16 @@ public class MenuActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+    private void setGif(){
+        gif = (GifView) findViewById(R.id.gifview01);
+        gif.setGifImage(R.drawable.head);
+        gif.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toMenuUI();/**切換UI*/
+            }
+        });
+        gif.setGifImageType(GifView.GifImageType.COVER);
+    }
 
 }

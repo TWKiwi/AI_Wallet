@@ -2,6 +2,7 @@ package kiwi.ai_wallet;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -18,11 +19,10 @@ import android.widget.Toast;
 
 public class OptionActivity extends SmartbutlerActivity implements View.OnClickListener{
 
-    CheckBox alarmCheckBox;
     EditText budgetText,regularCostText;
     TextView aboutUs;
     Button saveBtn;
-    SharedPreferences.Editor editor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,7 @@ public class OptionActivity extends SmartbutlerActivity implements View.OnClickL
         /**螢幕不隨手機旋轉*/
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         initView();
-        editor = option.edit();
+
 
 
     }
@@ -43,10 +43,9 @@ public class OptionActivity extends SmartbutlerActivity implements View.OnClickL
         aboutUs = (TextView)findViewById(R.id.aboutUs);
 
 
-        Budget = option.getInt("Budget",20000);
-        regularCost = option.getInt("regularCost",0);
-        budgetText.setHint(String.valueOf(Budget));
-        regularCostText.setHint(String.valueOf(regularCost));
+
+        budgetText.setHint(String.valueOf(getBudget("Budget")));
+        regularCostText.setHint(String.valueOf(getBudget("RglCost")));
 
         saveBtn.setOnClickListener(saveBtnClick);
         aboutUs.setOnClickListener(aboutUsClick);
@@ -67,50 +66,38 @@ public class OptionActivity extends SmartbutlerActivity implements View.OnClickL
         @Override
         public void onClick(View v) {
 
+        try {
+            if (budgetText.getText().length() == 0 && budgetText.getHint().length() == 0) {
 
-            if(budgetText.getText().length() == 0 && budgetText.getHint().length() == 0){
-
-                Toast.makeText(OptionActivity.this,"每月的預算額怎麼可以是0呢",Toast.LENGTH_SHORT).show();
+                Toast.makeText(OptionActivity.this, "每月的預算額怎麼可以是空的呢", Toast.LENGTH_SHORT).show();
                 return;
 
-            }else if(budgetText.getHint().length() != 0){
-
-                if(budgetText.getText().length() == 0)budgetText.setText(budgetText.getHint());
-                Budget = Integer.parseInt(budgetText.getText().toString());
-                if(regularCostText.length() == 0 && regularCostText.getHint().length() == 0) regularCostText.setText("0");
-                if(regularCostText.getText().length() == 0)regularCostText.setText(regularCostText.getHint());
-                regularCost = Integer.parseInt(regularCostText.getText().toString());
-                Log.d("Budget", String.valueOf(Budget));
-                editor.putInt("Budget", Budget);
-                editor.putInt("regularCost", regularCost);
-                editor.apply();
-
+            }else if (budgetText.getHint().length() != 0) {
+        //                optionSpr = getSharedPreferences("Option",0);
+        //                optSprEdt = optionSpr.edit();
+                if (budgetText.getText().length() == 0) budgetText.setText(budgetText.getHint());
+                if (Integer.parseInt(budgetText.getHint().toString()) == 0 || Integer.parseInt(budgetText.getText().toString()) == 0) {
+                    Toast.makeText(OptionActivity.this, "每月的預算額怎麼可以是0呢", Toast.LENGTH_SHORT).show();
+                    return;
                 }
+                Log.d("檢測", budgetText.getText().toString());
+                setBudget(Integer.parseInt(budgetText.getText().toString()));
+                if (regularCostText.length() == 0 && regularCostText.getHint().length() == 0)
+                    regularCostText.setText("0");
+                if (regularCostText.getText().length() == 0)
+                    regularCostText.setText(regularCostText.getHint());
+                Log.d("檢測", regularCostText.getText().toString());
+                setRegularCost(Integer.parseInt(regularCostText.getText().toString()));
 
+        //                optSprEdt.putInt("Budget", Integer.parseInt(getBudget(String.valueOf(Budget))));
+        //                optSprEdt.putInt("RglCost", Integer.parseInt(getBudget(String.valueOf(RegularCost))));
+        //                optSprEdt.commit();
+                Toast.makeText(OptionActivity.this, "儲存成功", Toast.LENGTH_LONG).show();
 
-
-
-
-//            if(budgetText.length() != 0) {
-//                Budget = Integer.parseInt(budgetText.getText().toString());
-//                if(regularCostText.length() == 0 && regularCostText.getHint().length() == 0) regularCostText.setText("0");
-//                regularCost = Integer.parseInt(regularCostText.getText().toString());
-//                Log.d("Budget", String.valueOf(Budget));
-//                editor.putInt("Budget", Budget);
-//                editor.putInt("regularCost", regularCost);
-//                editor.apply();
-//            }else if(budgetText.getHint().length() != 0){
-//                budgetText.setText(budgetText.getHint());
-//                Budget = Integer.parseInt(budgetText.getText().toString());
-//                if(regularCostText.length() == 0 && regularCostText.getHint().length() == 0) regularCostText.setText("0");
-//                regularCost = Integer.parseInt(regularCostText.getText().toString());
-//                Log.d("Budget", String.valueOf(Budget));
-//                editor.putInt("Budget", Budget);
-//                editor.putInt("regularCost", regularCost);
-//                editor.apply();
-//            }else{
-//                Toast.makeText(OptionActivity.this,"每月的預算額怎麼可以是0呢",Toast.LENGTH_SHORT).show();
-//            }
+            }
+        }catch (Exception e){
+            Toast.makeText(OptionActivity.this,"儲存失敗!!\n每月預算不能為空或為0唷",Toast.LENGTH_SHORT).show();
+        }
         }
     };
 

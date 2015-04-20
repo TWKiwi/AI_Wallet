@@ -28,10 +28,13 @@ import android.widget.Toast;
 
 
 
-public class MySQLActivity extends Activity implements OnClickListener, OnItemSelectedListener,LocationListener{
+public class MySQLActivity extends Activity implements OnClickListener, OnItemSelectedListener{
 
+    protected static final Uri ListViewShowData = null;
     Spinner fclass, fname;
     EditText fPrice;
+
+    TextView txv2;
 
     private Button btn_select_data,btn2;
     String fClass_name[] = {"Br", "B", "L",
@@ -40,36 +43,31 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
     String break_name1[] = {"米飯主食", "麵類主食", "吐司系列", "漢堡系列","小嚐飲品", "中西式餐點", "全部類別"};
     String break_select[] = {"rice", "noodles", "Toast", "Hamburger","Tea", "CW", "%"};
 
+    String BL_name1[] = {"米飯主食", "麵類主食", "中西式餐點", "精緻茶品", "華麗特調", "全部類別"};
+    String BL_select[] = {"rice", "noodles", "CW", "Tea", "Speci", "%"};
+
     String LD_name1[] = {"米飯主食", "麵類主食", "披薩", "中西式餐點", "精緻茶品", "華麗特調", "全部類別"};
     String LD_select[] = {"rice", "noodles", "Pizza", "CW", "Tea", "Speci", "%"};
 
     String Drink_name[] = {"茶類飲品", "果汁系列", "特調飲品", "全部類別"};
     String Drink_select[] = {"Tea", "Juice", "Special", "%"};
 
+
+    String sel_count;
     int spin_sel_fclass;
     int spin_sel_fname;
+    String input_fprice;
     String fName_name[];
     String fName_put [];
-
-    /**定位工程*/
-    static final int MIN_TIME = 5000;
-    static final float MIN_DIST = 5;
-    LocationManager mgr;
-    Button GPSBtn,setGPSBtn;
-    double latitude,longitude;//latitude(緯度 Y),longitude(經度 X);   (X-X菊)^2 + (Y-Y菊)^2 <= 1^2
-    /**定位工程*/
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_sql);
-        initViews();
+        findViews();
 
         btn_select_data.setOnClickListener(this);
         btn2.setOnClickListener(this);
-        GPSBtn.setOnClickListener(this);
         fclass.setOnItemSelectedListener(this);
 
 
@@ -90,17 +88,13 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
 
     }
 
-    private void initViews() {
+    private void findViews() {
         btn_select_data = (Button)findViewById(R.id.button1);
         btn2 = (Button)findViewById(R.id.button2);
         fclass = (Spinner) findViewById(R.id.spinner_fclass);
         fname = (Spinner) findViewById(R.id.spinner_fname);
         fPrice = (EditText) findViewById(R.id.editText1);
-        GPSBtn = (Button) findViewById(R.id.GPSBtn);
 
-        mgr = (LocationManager)getSystemService(LOCATION_SERVICE);
-        setGPSBtn = (Button)findViewById(R.id.setGPSBtn);
-        setGPSBtn.setOnClickListener(setGPS);
     }
 
     @Override
@@ -131,12 +125,6 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
                     g = 2;
                     it.putExtra("g", g);
                     break;
-                case R.id.GPSBtn :
-                    g = 3;
-                    it.putExtra("g", g);
-                    it.putExtra("latitude", latitude);
-                    it.putExtra("longitude", longitude);
-                    it.setClass(getApplicationContext(), GPSActivity.class);
             }
             startActivity(it);
         }
@@ -159,6 +147,10 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
                 fName_name = break_name1;
                 fName_put = break_select;
                 break;
+            case 1:
+                fName_name = BL_name1;
+                fName_put = BL_select;
+                break;
             case 4:
                 fName_name = Drink_name;
                 fName_put = Drink_select;
@@ -168,6 +160,12 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
                 fName_put = LD_select;
                 break;
         }
+
+        if(pos == 0){
+            fName_name = break_name1;
+        }
+
+
         ArrayAdapter<String> fNameAd =
                 new ArrayAdapter<String>(this,
                         android.R.layout.simple_spinner_item, fName_name);
@@ -179,60 +177,8 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
     }
 
     @Override
-    public void onResume(){
-        super.onResume();
-        //取得最佳定位提供者
-        String best = mgr.getBestProvider(new Criteria(), true);//true 找出已啟用
-        if(best != null){
-            GPSBtn.setText("取得定位資訊中...");
-            mgr.requestLocationUpdates(best,MIN_TIME,MIN_DIST,this);//註冊監聽器
-        }else GPSBtn.setText("請確認有開啟定位功能！");
-    }
-
-    @Override
-    public void onPause(){
-        super.onPause();
-        mgr.removeUpdates(this);//取消註冊
-    }
-
-    @Override
     public void onNothingSelected(AdapterView<?> parent) {
         // TODO Auto-generated method stub
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        String str = "定位提供者：" + location.getProvider();
-        latitude = location.getLatitude();
-        longitude = location.getLongitude();
-        str += String.format("\n緯度:%.5f\n經度:%.5f",
-                latitude,
-                longitude);
-        GPSBtn.setText(str);
-
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
-
-
-    OnClickListener setGPS = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            startActivity(intent);
-        }
-    };
 }

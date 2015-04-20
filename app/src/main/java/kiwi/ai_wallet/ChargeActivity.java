@@ -36,6 +36,7 @@ import android.provider.MediaStore;
 import android.support.v4.view.PagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -158,7 +159,6 @@ public class ChargeActivity extends MenuActivity{
         openDatabase();
         ChargeTouchListener();/**第三步呼叫方法ChargeTouchListener()架設監聽器*/
         getBarChart();
-        setOption();
 
 
     }
@@ -321,7 +321,7 @@ public class ChargeActivity extends MenuActivity{
             dirFile.mkdirs();
 
         }
-        Log.d("Budget",String.valueOf(Budget));
+
 //        Budget = option.getInt("Budget",20000);
     }
 
@@ -420,12 +420,12 @@ public class ChargeActivity extends MenuActivity{
             }
     //        SharedPreferences option = getPreferences(MODE_PRIVATE);
     //        Budget = option.getInt("Budget",20000);
-            Log.d("regular",String.valueOf(regularCost));
-            int persent = ((sum + regularCost)*100)/Budget;//算百分比條小數點弄成百分比整數
+
+            int persent = ((sum + Integer.parseInt(getBudget("RglCost")))*100)/ Integer.parseInt(getBudget("Budget"));//算百分比條小數點弄成百分比整數
             if(persent <= 100) {
-                ScaleNumM.setText(Html.fromHtml("本月額度<br>" + (sum + regularCost) + "<font color = '#FF0000'><big>/</font>" + Budget + "元"));
+                ScaleNumM.setText(Html.fromHtml("本月額度<br>" + ((sum + Integer.parseInt(getBudget("RglCost"))) + "<font color = '#FF0000'><big>/</font>" + Integer.parseInt(getBudget("Budget")) + "元")));
             }else if(persent > 100){
-                ScaleNumM.setText(Html.fromHtml("本月" + "<font color = '#FF0000'><big>超支<br></font>" + ((sum + regularCost) - Budget)+ "元"));
+                ScaleNumM.setText(Html.fromHtml("本月" + "<font color = '#FF0000'><big>超支<br></font>" + ((sum + Integer.parseInt(getBudget("RglCost"))) - Integer.parseInt(getBudget("Budget")))+ "元"));
                 persent = 100;
             }
 
@@ -442,11 +442,11 @@ public class ChargeActivity extends MenuActivity{
                 sum += Double.parseDouble(cursor.getString(3));
             }
         }
-        int persent = ((sum + regularCost/30)*100)/(Budget/30);//算百分比條小數點弄成百分比整數
+        int persent = ((sum + Integer.parseInt(getBudget("RglCost"))/30)*100)/(Integer.parseInt(getBudget("Budget"))/30);//算百分比條小數點弄成百分比整數
         if(persent <= 100) {
-            ScaleNumD.setText(Html.fromHtml("本日額度<br>" + ((sum + regularCost)/30) + "<font color = '#FF0000'><big>/</font>" + (Budget/30) + "元"));
+            ScaleNumD.setText(Html.fromHtml("本日額度<br>" + ((sum + Integer.parseInt(getBudget("RglCost")))/30) + "<font color = '#FF0000'><big>/</font>" + (Integer.parseInt(getBudget("Budget"))/30) + "元"));
         }else if(persent > 100){
-            ScaleNumD.setText(Html.fromHtml("本日" + "<font color = '#FF0000'><big>超支<br></font>" + ((sum + regularCost - Budget)/30))+ "元");
+            ScaleNumD.setText(Html.fromHtml("本日" + "<font color = '#FF0000'><big>超支<br></font>" + ((sum + Integer.parseInt(getBudget("RglCost")) - Integer.parseInt(getBudget("Budget")) / 30)) + "元"));
             persent = 100;
         }
 
@@ -476,7 +476,7 @@ public class ChargeActivity extends MenuActivity{
                 }
             }
    //         Budget = option.getInt("Budget", 20000);
-            if ((Double.parseDouble(String.valueOf((sum + regularCost))) + Double.parseDouble(String.valueOf(priceText.getText()))) >= Budget) {
+            if ((Double.parseDouble(String.valueOf(sum + Integer.parseInt(getBudget("RglCost")))) + Double.parseDouble(String.valueOf(priceText.getText()))) >= Integer.parseInt(getBudget("Budget"))) {
                 Toast.makeText(this, "注意！！超出預算！！", Toast.LENGTH_SHORT).show();
             }
         }
