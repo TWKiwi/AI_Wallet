@@ -444,9 +444,9 @@ public class ChargeActivity extends MenuActivity{
         }
         int persent = ((sum + Integer.parseInt(getBudget("RglCost"))/30)*100)/(Integer.parseInt(getBudget("Budget"))/30);//算百分比條小數點弄成百分比整數
         if(persent <= 100) {
-            ScaleNumD.setText(Html.fromHtml("本日額度<br>" + ((sum + Integer.parseInt(getBudget("RglCost")))/30) + "<font color = '#FF0000'><big>/</font>" + (Integer.parseInt(getBudget("Budget"))/30) + "元"));
+            ScaleNumD.setText(Html.fromHtml("本日額度<br>" + (sum + Integer.parseInt(getBudget("RglCost"))/30) + "<font color = '#FF0000'><big>/</font>" + (Integer.parseInt(getBudget("Budget"))/30) + "元"));
         }else if(persent > 100){
-            ScaleNumD.setText(Html.fromHtml("本日" + "<font color = '#FF0000'><big>超支<br></font>" + ((sum + Integer.parseInt(getBudget("RglCost")) - Integer.parseInt(getBudget("Budget")) / 30)) + "元"));
+            ScaleNumD.setText(Html.fromHtml("本日" + "<font color = '#FF0000'><big>超支<br></font>" + ((sum + Integer.parseInt(getBudget("RglCost"))/30 - Integer.parseInt(getBudget("Budget")) / 30)) + "元"));
             persent = 100;
         }
 
@@ -629,9 +629,10 @@ public class ChargeActivity extends MenuActivity{
         File picCompression = new File(imgUri.getPath());
         try {
             FileOutputStream out= new FileOutputStream(picCompression);
-            if(bmp.compress(Bitmap.CompressFormat.PNG, 10, out)){
+            if(bmp.compress(Bitmap.CompressFormat.PNG, 50, out)){
                 out.flush();
                 out.close();
+
             }
         } catch (FileNotFoundException e){
             e.printStackTrace();
