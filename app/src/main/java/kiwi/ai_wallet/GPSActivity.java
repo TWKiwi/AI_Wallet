@@ -73,7 +73,7 @@ public class GPSActivity extends ActionBarActivity {
                 HashMap<String, Object> h2 = new HashMap<String, Object>();
 
                 h2.put("gName", jsonData.getString("gName"));
-                h2.put("Distance", jsonData.getString("Distance") + "公尺");
+                h2.put("Distance", "距離" + jsonData.getString("Distance") + " 公尺 ");
 
                 pomo.add(h2);
 
