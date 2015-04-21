@@ -38,7 +38,8 @@ public class MenuActivity extends ActionBarActivity {
 //    protected SharedPreferences.Editor optSprEdt;
     protected PendingIntent pendingIntent;
     protected GifView gif;
-
+    public static boolean timeTick;
+    protected CountDownTimer gifCountDownTimer;
 
 
     @Override
@@ -47,14 +48,39 @@ public class MenuActivity extends ActionBarActivity {
         setContentView(R.layout.start);
         /**螢幕不隨手機旋轉*/
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-
         setGif();
-        setImage();
+
+        if(timeTick){
+            setContentView(R.layout.menu_view);
+            toMenuUI();
+        }else if(!timeTick) {
+            gifRunner();
+        }
+
+//        setGif();
+//        setImage();
 //        setBudget(18000);
 //        setRegularCost(0);
         alarmManager();
         Log.d("Menu",String.valueOf(Budget)+ "/" + String.valueOf(RegularCost));
 
+    }
+
+    private void gifRunner(){
+        gifCountDownTimer = new CountDownTimer(5000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            public void onFinish() {
+                timeTick = true;
+                gifCountDownTimer.cancel();
+                setContentView(R.layout.menu_view);
+                toMenuUI();
+
+            }
+        }.start();
     }
 
     void alarmManager(){
@@ -153,7 +179,7 @@ public class MenuActivity extends ActionBarActivity {
     /**
      * 轉換到記帳UI*/
     public void toMenuUI(){
-        setContentView(R.layout.menu_view);
+
 
         try {
             TextView Charge = (TextView) findViewById(R.id.ChargeTextView);

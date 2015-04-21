@@ -109,6 +109,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:id="@+id/typeName"
+
                 android:entries="@array/Consumer_types"
                 android:spinnerMode="dialog"/>
         </TableRow>
@@ -144,31 +145,30 @@
 </LinearLayout>
 
     <!--<TableRow-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="0dp"-->
-        <!--android:layout_weight="0"-->
-        <!--android:orientation="vertical"-->
-        <!-->-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="0dp"-->
+    <!--android:layout_weight="0"-->
+    <!--android:orientation="vertical"-->
+    <!-->-->
 
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="相片流水號 :"-->
-            <!--android:id="@+id/textView10"-->
-            <!--android:layout_gravity="bottom" />-->
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="相片流水號 :"-->
+    <!--android:id="@+id/textView10"-->
+    <!--android:layout_gravity="bottom" />-->
 
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="New Text"-->
-            <!--android:id="@+id/testView"-->
-            <!--android:layout_gravity="bottom" />-->
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="New Text"-->
+    <!--android:id="@+id/testView"-->
+    <!--android:layout_gravity="bottom" />-->
 
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="dbPath"-->
-            <!--android:id="@+id/dbPath" />-->
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="dbPath"-->
+    <!--android:id="@+id/dbPath" />-->
 
     <!--</TableRow>-->
-

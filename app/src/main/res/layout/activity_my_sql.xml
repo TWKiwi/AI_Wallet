@@ -16,36 +16,39 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:entries="@array/fClass_spin"
+        android:drawSelectorOnTop="true"
         android:textColor="#842B00"
-        android:background="#FF8F59"
+        android:background="#FFBD9D"
         android:layout_weight="1"/>
 
 
-        <Spinner
-            android:id="@+id/spinner_fname"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="5dp"
-            android:background="#FF9D6F"/>
+    <Spinner
+        android:id="@+id/spinner_fname"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="5dp"
+        android:textColor="#842B00"
+        android:drawSelectorOnTop="true"
+        android:background="#FF9D6F"/>
 
-        <EditText
-            android:id="@+id/editText1"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="5dp"
-            android:ems="10"
-            android:hint="請輸入金額"
-            android:gravity="center"
-            android:textSize="18sp"
-            android:singleLine="true"
-            android:text=""
-            android:inputType="number"
-            android:background="#FFAD86">
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:hint="請輸入金額"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:singleLine="true"
+        android:text=""
+        android:inputType="number"
+        android:background="#FFAD86">
 
-            <requestFocus />
-        </EditText>
+        <requestFocus />
+    </EditText>
 
 
     <Button

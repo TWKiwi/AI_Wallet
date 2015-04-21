@@ -424,10 +424,12 @@ public class ChargeActivity extends MenuActivity{
 
             int persent = ((sum + Integer.parseInt(getBudget("RglCost")))*100)/ Integer.parseInt(getBudget("Budget"));//算百分比條小數點弄成百分比整數
             if(persent <= 100) {
-                if(getBudget("ScaleTS") == "1") {
+                if(getBudget("ScaleTS").equals("1")) {
                     ScaleNumM.setText(Html.fromHtml("累計花費<br>" + ((sum + Integer.parseInt(getBudget("RglCost"))) + "<font color = '#FF0000'><big>/</font>" + Integer.parseInt(getBudget("Budget")) + "元")));
-                }else if(getBudget("ScaleTS") == "2"){
+                }else if(getBudget("ScaleTS").equals("2")){
                     ScaleNumM.setText(Html.fromHtml("剩餘預算<br>" + ((Integer.parseInt(getBudget("Budget")) - (sum + Integer.parseInt(getBudget("RglCost")))) + "<font color = '#FF0000'><big>/</font>" + Integer.parseInt(getBudget("Budget")) + "元")));
+                }else{
+                    ScaleNumM.setText(getBudget("ScaleTS"));
                 }
             }else if(persent > 100){
                 ScaleNumM.setText(Html.fromHtml("本月" + "<font color = '#FF0000'><big>超支<br></font>" + ((sum + Integer.parseInt(getBudget("RglCost"))) - Integer.parseInt(getBudget("Budget")))+ "元"));
@@ -449,10 +451,12 @@ public class ChargeActivity extends MenuActivity{
         }
         int persent = ((sum + Integer.parseInt(getBudget("RglCost"))/30)*100)/(Integer.parseInt(getBudget("Budget"))/30);//算百分比條小數點弄成百分比整數
         if(persent <= 100) {
-            if(getBudget("ScaleTS") == "1") {
+            if(getBudget("ScaleTS").equals("1")) {
                 ScaleNumD.setText(Html.fromHtml("累計花費<br>" + (sum + Integer.parseInt(getBudget("RglCost")) / 30) + "<font color = '#FF0000'><big>/</font>" + (Integer.parseInt(getBudget("Budget")) / 30) + "元"));
-            }else if(getBudget("ScaleTS") == "2"){
+            }else if(getBudget("ScaleTS").equals("2")){
                 ScaleNumD.setText(Html.fromHtml("剩餘預算<br>" + ((Integer.parseInt(getBudget("Budget")) / 30) - (sum + Integer.parseInt(getBudget("RglCost")) / 30) + "<font color = '#FF0000'><big>/</font>" + (Integer.parseInt(getBudget("Budget")) / 30) + "元")));
+            }else{
+                ScaleNumM.setText(getBudget("ScaleTS"));
             }
         }else if(persent > 100){
             ScaleNumD.setText(Html.fromHtml("本日" + "<font color = '#FF0000'><big>超支<br></font>" + ((sum + Integer.parseInt(getBudget("RglCost"))/30 - Integer.parseInt(getBudget("Budget")) / 30)) + "元"));
