@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +24,8 @@ public class OptionActivity extends SmartbutlerActivity implements View.OnClickL
     EditText budgetText,regularCostText;
     TextView aboutUs;
     Button saveBtn;
+    RadioGroup ScaleTextStyleRadioGroup;
+    RadioButton ScaleRdoBtn1,ScaleRdoBtn2;
 
 
     @Override
@@ -41,15 +45,42 @@ public class OptionActivity extends SmartbutlerActivity implements View.OnClickL
         regularCostText = (EditText)findViewById(R.id.regularCost);
         saveBtn = (Button)findViewById(R.id.saveBtn);
         aboutUs = (TextView)findViewById(R.id.aboutUs);
-
-
+        ScaleTextStyleRadioGroup = (RadioGroup)findViewById(R.id.ScaleTextStyleRadioGroup);
+        ScaleRdoBtn1 = (RadioButton)findViewById(R.id.radioButton1);
+        ScaleRdoBtn2 = (RadioButton)findViewById(R.id.radioButton2);
 
         budgetText.setHint(String.valueOf(getBudget("Budget")));
         regularCostText.setHint(String.valueOf(getBudget("RglCost")));
 
         saveBtn.setOnClickListener(saveBtnClick);
         aboutUs.setOnClickListener(aboutUsClick);
+        ScaleTextStyleRadioGroup.setOnCheckedChangeListener(RdoChange);
+
+        setRdo();
     }
+
+    private void setRdo(){
+        if(getBudget("ScaleTS") == "1"){
+            ScaleRdoBtn1.setChecked(true);
+            ScaleRdoBtn2.setChecked(false);
+        }else if(getBudget("ScaleTS") == "2") {
+            ScaleRdoBtn1.setChecked(false);
+            ScaleRdoBtn2.setChecked(true);
+        }
+    }
+
+    private RadioGroup.OnCheckedChangeListener RdoChange = new RadioGroup.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
+            switch (checkedId){
+                case R.id.radioButton1: setScaleTextStyle(1);
+                    break;
+                case R.id.radioButton2 : setScaleTextStyle(2);
+                    break;
+            }
+        }
+    };
+
 
     private View.OnClickListener aboutUsClick = new View.OnClickListener() {
         @Override

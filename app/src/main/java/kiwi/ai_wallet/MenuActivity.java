@@ -34,6 +34,7 @@ public class MenuActivity extends ActionBarActivity {
     protected SharedPreferences optionSpr;
     protected int Budget;//預算屬性
     protected int RegularCost;//預算屬性
+    protected int ScaleTS;
 //    protected SharedPreferences.Editor optSprEdt;
     protected PendingIntent pendingIntent;
     protected GifView gif;
@@ -87,38 +88,48 @@ public class MenuActivity extends ActionBarActivity {
          */
     }
 
+    public void setScaleTextStyle(int i){
+        optionSpr = getSharedPreferences("Option",0);
+        Log.d("刷新ScaleTS前",getBudget("ScaleTS"));
+        SharedPreferences.Editor optSprEdt = optionSpr.edit();
+        Log.d("刷新ScaleTS中",getBudget("ScaleTS"));
+        optSprEdt.putInt("ScaleTS", i).commit();
+        Log.d("刷新ScaleTS後",getBudget("ScaleTS"));
+    }
+
     public void setBudget(int i){
         optionSpr = getSharedPreferences("Option",0);
-        Log.d("刷新設置前",getBudget("Budget") + "/" + getBudget("RglCost"));
+        Log.d("刷新Budget前",getBudget("Budget") + "/" + getBudget("RglCost"));
         SharedPreferences.Editor optSprEdt = optionSpr.edit();
-        Log.d("刷新設置中",getBudget("Budget") + "/" + getBudget("RglCost"));
+        Log.d("刷新Budget中",getBudget("Budget") + "/" + getBudget("RglCost"));
         optSprEdt.putInt("Budget", i).commit();
-        Log.d("刷新設置後",getBudget("Budget") + "/" + getBudget("RglCost"));
+        Log.d("刷新Budget後",getBudget("Budget") + "/" + getBudget("RglCost"));
     }
 
     public void setRegularCost(int i){
         optionSpr = getSharedPreferences("Option", 0);
-        Log.d("刷新設置前",getBudget("Budget") + "/" + getBudget("RglCost"));
+        Log.d("刷新RglCost前",getBudget("Budget") + "/" + getBudget("RglCost"));
         SharedPreferences.Editor optSprEdt = optionSpr.edit();
-        Log.d("刷新設置中",getBudget("Budget") + "/" + getBudget("RglCost"));
+        Log.d("刷新RglCost中",getBudget("Budget") + "/" + getBudget("RglCost"));
         optSprEdt.putInt("RglCost",i).commit();
-        Log.d("刷新設置後",getBudget("Budget") + "/" + getBudget("RglCost"));
+        Log.d("刷新RglCost後",getBudget("Budget") + "/" + getBudget("RglCost"));
     }
 
     public String getBudget(String s){
         optionSpr = getSharedPreferences("Option", 0);
 
         switch (s){
-            case "Budget" : Budget = optionSpr.getInt("Budget", 22222);
+            case "Budget" : Budget = optionSpr.getInt("Budget", 18000);
                             s = String.valueOf(Budget);
-
                             break;
-            case "RglCost" : RegularCost = optionSpr.getInt("RglCost",222);
+            case "RglCost" : RegularCost = optionSpr.getInt("RglCost",0);
                             s = String.valueOf(RegularCost);
                             break;
+            case "ScaleTS" : ScaleTS = optionSpr.getInt("ScaleTS",1);
+                            s = String.valueOf(ScaleTS);
         }
 
-        Log.d("取得設置",String.valueOf(Budget)+ "/" + String.valueOf(RegularCost));
+        Log.d("取得設置",String.valueOf(Budget)+ "/" + String.valueOf(RegularCost) + "/" +String.valueOf(ScaleTS));
         return s;
     }
 

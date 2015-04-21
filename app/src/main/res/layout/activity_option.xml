@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textSize="24sp"
-            android:text="系統通知"
+            android:text="顯示設定"
             android:textColor="#842B00"
             android:gravity="center"/>
     </TableRow>
@@ -26,18 +26,40 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            android:text="記帳提醒 :"
+            android:text="額度顯示方式 :"
             android:textColor="#842B00"
             android:gravity="center"/>
 
-        <TextView
+
+        <RadioGroup
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="7"
-            android:textSize="24sp"
-            android:textColor="#842B00"
-            android:gravity="center"
-            android:text="施工中...." />
+            android:orientation="vertical"
+            android:id="@+id/ScaleTextStyleRadioGroup">
+
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3.5"
+                android:textColor="#842B00"
+                android:gravity="center"
+                android:text="累計花費/本月預算"
+                android:id="@+id/radioButton1" />
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3.5"
+                android:textColor="#842B00"
+                android:gravity="center"
+                android:text="剩餘預算/本月預算"
+                android:id="@+id/radioButton2" />
+
+
+            </RadioGroup>
+
 
     </TableRow>
 
