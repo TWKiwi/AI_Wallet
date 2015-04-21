@@ -1,5 +1,6 @@
 package kiwi.ai_wallet;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -490,7 +491,7 @@ public class ChargeActivity extends MenuActivity{
             values.put(PRICE, priceText.getText().toString());
             db.insert(TABLE_NAME,null,values);
 
-            getBarChart();
+  //          getBarChart();
             cleanEditText();
 //          closeDatabase();
         }
@@ -552,7 +553,7 @@ public class ChargeActivity extends MenuActivity{
                 }
 
                 dbadd();
-                getBarChart();
+ //               getBarChart();
             }
     };
 
@@ -624,21 +625,54 @@ public class ChargeActivity extends MenuActivity{
                          "\n 縮小倍率為" + scaleFactor + "倍")
                 .setNeutralButton("關閉", null)
                 .show();
+//
+//        /**圖檔壓縮*/
+//        File picCompression = new File(imgUri.getPath());
+//        try {
+//            FileOutputStream out= new FileOutputStream(picCompression);
+//            if(bmp.compress(Bitmap.CompressFormat.PNG, 50, out)){
+//                out.flush();
+//                out.close();
+//
+//            }
+//        } catch (FileNotFoundException e){
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
-        /**圖檔壓縮*/
-        File picCompression = new File(imgUri.getPath());
-        try {
-            FileOutputStream out= new FileOutputStream(picCompression);
-            if(bmp.compress(Bitmap.CompressFormat.PNG, 50, out)){
-                out.flush();
-                out.close();
+        compressImageByQuality(bmp,imgUri.getPath());
 
+
+    }
+
+
+
+    public static void compressImageByQuality(final Bitmap bitmap,final String imgPath){
+        new Thread(new Runnable() {//开启多线程进行压缩处理
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                int options = 100;
+                bitmap.compress(Bitmap.CompressFormat.JPEG, options, baos);//质量压缩方法，把压缩后的数据存放到baos中 (100表示不压缩，0表示压缩到最小)
+                while (baos.toByteArray().length / 1024 > 100) {//循环判断如果压缩后图片是否大于100kb,大于继续压缩
+                    baos.reset();//重置baos即让下一次的写入覆盖之前的内容
+                    options -= 10;//图片质量每次减少10
+                    if(options<0)options=0;//如果图片质量小于10，则将图片的质量压缩到最小值
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, options, baos);//将压缩后的图片保存到baos中
+                    if(options==0)break;//如果图片的质量已降到最低则，不再进行压缩
+                }
+                try {
+                    FileOutputStream fos = new FileOutputStream(new File(imgPath));//将压缩后的图片保存的本地上指定路径中
+                    fos.write(baos.toByteArray());
+                    fos.flush();
+                    fos.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        } catch (FileNotFoundException e){
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        }).start();
     }
 
     /**
