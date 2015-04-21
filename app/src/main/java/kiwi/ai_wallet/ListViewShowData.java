@@ -159,12 +159,12 @@ public class ListViewShowData extends MySQLActivity implements OnItemClickListen
                 String bStr = "fName=";
                 boolean Equal = aStr.equals(bStr);
 
-                if(Equal == true){
+                if(Equal){
                     String cStr = array[i].substring(array[i].length()-1,array[i].length());
                     String dStr = "}";
                     boolean Equal2 = cStr.equals(dStr);
 
-                    if(Equal2 == true){
+                    if(Equal2){
                         cMM_pannel = array[i].substring(7,array[i].length()-1);
                         String index =  "UPDATE `food` SET `frequency` = `frequency`+1 where `fName` = '"
                                 + cMM_pannel + "'";
@@ -185,12 +185,12 @@ public class ListViewShowData extends MySQLActivity implements OnItemClickListen
                 String bStr = "fPrice=";
                 boolean Equal = aStr.equals(bStr);
 
-                if(Equal == true){
+                if(Equal){
                     String cStr = array[i].substring(array[i].length()-1,array[i].length());
                     String dStr = "}";
                     boolean Equal2 = cStr.equals(dStr);
 
-                    if(Equal2 == true){
+                    if(Equal2){
                         listSelPrice = array[i].substring(8,array[i].length()-1);
                     }
                     else{
@@ -204,13 +204,13 @@ public class ListViewShowData extends MySQLActivity implements OnItemClickListen
                 String bStr = "freque";
                 boolean Equal = aStr.equals(bStr);
                 //Toast.makeText(this, "123" + Equal, Toast.LENGTH_LONG).show();
-                if(Equal == true){
+                if(Equal){
 
                     String cStr = array[i].substring(array[i].length()-1,array[i].length());
                     String dStr = "}";
                     boolean Equal2 = cStr.equals(dStr);
 
-                    if(Equal2 == true){
+                    if(Equal2){
                         listSelfreq = array[i].substring(11,array[i].length()-1);
                     }
                     else{

@@ -54,13 +54,11 @@ public class MenuActivity extends ActionBarActivity {
             setContentView(R.layout.menu_view);
             toMenuUI();
         }else if(!timeTick) {
+            timeTick = true;
+            Log.d("Timer","gifRunner");
             gifRunner();
         }
 
-//        setGif();
-//        setImage();
-//        setBudget(18000);
-//        setRegularCost(0);
         alarmManager();
         Log.d("Menu",String.valueOf(Budget)+ "/" + String.valueOf(RegularCost));
 
@@ -70,11 +68,11 @@ public class MenuActivity extends ActionBarActivity {
         gifCountDownTimer = new CountDownTimer(5000, 1000) {
 
             public void onTick(long millisUntilFinished) {
-
+                Log.d("Timer","onTick");
             }
 
             public void onFinish() {
-                timeTick = true;
+                Log.d("Timer","onFinish");
                 gifCountDownTimer.cancel();
                 setContentView(R.layout.menu_view);
                 toMenuUI();
@@ -250,12 +248,6 @@ public class MenuActivity extends ActionBarActivity {
     private void setGif(){
         gif = (GifView) findViewById(R.id.gifview01);
         gif.setGifImage(R.drawable.head);
-        gif.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toMenuUI();/**切換UI*/
-            }
-        });
         gif.setGifImageType(GifView.GifImageType.COVER);
     }
 

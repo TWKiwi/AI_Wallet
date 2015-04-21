@@ -29,21 +29,21 @@ public class GPSActivity extends ActionBarActivity {
 
         listView = (ListView) findViewById(R.id.listView3);
 
-        gpslist(toString());
+        gpslist();
 
 
     }
 
-    public void gpslist(String input){
+    public void gpslist(){
 
-        double latitude,longitude;
+
         Intent it = getIntent();
         String result ;
         String resultG ;
 
 
-        latitude = it.getDoubleExtra("latitude", 10);
-        longitude = it.getDoubleExtra("longitude", 10);
+        double latitude = it.getDoubleExtra("latitude", 10);
+        double longitude = it.getDoubleExtra("longitude", 10);
 
         String index = "UPDATE `ai_pomo`.`gps` SET `gUserX` = " + longitude + ", `gUserY` = " + latitude + " WHERE `gps`.`gId` = 1;";
         result = GPSConnector.executeQuery(index);
@@ -73,7 +73,7 @@ public class GPSActivity extends ActionBarActivity {
                 HashMap<String, Object> h2 = new HashMap<String, Object>();
 
                 h2.put("gName", jsonData.getString("gName"));
-                h2.put("Distance", jsonData.getString("Distance"));
+                h2.put("Distance", jsonData.getString("Distance") + "公尺");
 
                 pomo.add(h2);
 
