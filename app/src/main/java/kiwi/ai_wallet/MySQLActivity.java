@@ -70,6 +70,8 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_sql);
+        /**螢幕不隨手機旋轉*/
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         initViews();
 
         btn_select_data.setOnClickListener(this);
@@ -213,7 +215,7 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
         //取得最佳定位提供者
         String best = mgr.getBestProvider(new Criteria(), true);//true 找出已啟用
         if(best != null){
-            GPSBtn.setText("取得定位資訊中...");
+            GPSBtn.setText("正在定位中...");
             mgr.requestLocationUpdates(best,MIN_TIME,MIN_DIST,this);//註冊監聽器
         }else GPSBtn.setText("請確認有開啟定位功能！");
     }
@@ -237,7 +239,7 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
         str += String.format("\n緯度:%.5f\n經度:%.5f",
                 latitude,
                 longitude);
-        GPSBtn.setText(str);
+        GPSBtn.setText(str + "\n點我查詢");
 
     }
 

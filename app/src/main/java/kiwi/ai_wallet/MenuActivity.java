@@ -65,7 +65,7 @@ public class MenuActivity extends ActionBarActivity {
     }
 
     private void gifRunner(){
-        gifCountDownTimer = new CountDownTimer(5000, 1000) {
+        gifCountDownTimer = new CountDownTimer(4000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 Log.d("Timer","onTick");

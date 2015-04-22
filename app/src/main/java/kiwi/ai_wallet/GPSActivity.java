@@ -1,11 +1,16 @@
 package kiwi.ai_wallet;
 
-
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.internal.widget.AdapterViewCompat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -16,41 +21,57 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import android.widget.AdapterView.OnItemClickListener;
 
 
-public class GPSActivity extends ActionBarActivity {
+public class GPSActivity extends ActionBarActivity implements OnItemClickListener {
 
     ListView listView;
+    double latitude, longitude;
+    String gX_pannel = "";
+    String gY_pannel = "";
+    String gUserX_pannel = "";
+    String gUserY_pannel = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gps);
-
+        /**螢幕不隨手機旋轉*/
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         listView = (ListView) findViewById(R.id.listView3);
+        listView.setOnItemClickListener(this);
 
-        gpslist();
+        gpslist(toString());
 
 
     }
 
-    public void gpslist(){
+    public void gpslist(String input) {
 
-
+        double latitude, longitude;
         Intent it = getIntent();
-        String result ;
-        String resultG ;
+        String result = "";
 
+        latitude = it.getDoubleExtra("latitude", 10);
+        longitude = it.getDoubleExtra("longitude", 10);
 
-        double latitude = it.getDoubleExtra("latitude", 10);
-        double longitude = it.getDoubleExtra("longitude", 10);
+        String index = "Select * from gps;";
+        String result_sum = GPSConnector.executeQuery(index);
+        try {
+            JSONArray jsonArray = new JSONArray(result_sum);
+            for (int i = 0; i < jsonArray.length(); i++) {
 
-        String index = "UPDATE `ai_pomo`.`gps` SET `gUserX` = " + longitude + ", `gUserY` = " + latitude + " WHERE `gps`.`gId` = 1;";
-        result = GPSConnector.executeQuery(index);
+                String index_sum = "UPDATE `ai_pomo`.`gps` SET `gUserX` = " + longitude + ", `gUserY` = " + latitude + " WHERE `gps`.`gId` = " + (i + 1) + ";";
+                result = GPSConnector.executeQuery(index_sum);
+            }
+        } catch (JSONException e) {
+
+        }
 
         String indexG = "SELECT *, \n" +
                 "round(6378.138*2*asin(sqrt(pow(sin( (`gY`*pi()/180-`gUserY`*pi()/180)/2),2)+cos(`gY`*pi()/180)*cos(`gUserY`*pi()/180)* pow(sin( (`gX`*pi()/180-`gUserX`*pi()/180)/2),2)))*1000)  'Distance' from `gps`;";
-        resultG = GPSConnector.executeQuery(indexG);
+        String resultG = GPSConnector.executeQuery(indexG);
         int selGps = 0;
         try {
 
@@ -60,7 +81,7 @@ public class GPSActivity extends ActionBarActivity {
                 JSONObject jsonData = jsonArray.getJSONObject(i);
 
                 selGps += Integer.parseInt(jsonData.getString("Distance"));
-                Toast.makeText(this, "經度" + String.valueOf(longitude) + "\n緯度" + String.valueOf(latitude) + "\n" + String.valueOf(selGps), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(this, "經度" + String.valueOf(longitude) + "\n緯度" + String.valueOf(latitude) + "\n" + String.valueOf(selGps), Toast.LENGTH_SHORT).show();
             }
             //setContentView(R.layout.activity_gpslistviewshowdata);
             ArrayList<HashMap<String, Object>> pomo = new ArrayList<HashMap<String, Object>>();
@@ -73,13 +94,18 @@ public class GPSActivity extends ActionBarActivity {
                 HashMap<String, Object> h2 = new HashMap<String, Object>();
 
                 h2.put("gName", jsonData.getString("gName"));
-                h2.put("Distance", "距離" + jsonData.getString("Distance") + " 公尺 ");
+                h2.put("Distance", jsonData.getString("Distance") + " 公尺");
+                h2.put("gX", jsonData.getString("gX"));
+                h2.put("gY", jsonData.getString("gY"));
+                h2.put("gUserX", jsonData.getString("gUserX"));
+                h2.put("gUserY", jsonData.getString("gUserY"));
+
 
                 pomo.add(h2);
 
-                SimpleAdapter adapter = new SimpleAdapter(this, pomo, R.layout.activity_gps, new String[]
+                SimpleAdapter adapter = new SimpleAdapter(this, pomo, R.layout.gpslistviewshowdataitem, new String[]
                         {"gName", "Distance"}, new int[]
-                        {R.id.GPS_Store_txv, R.id.GPS_Distance});
+                        {R.id.GPS_Store, R.id.GPS_Distance});
                 listView.setAdapter(adapter);
 
             }
@@ -90,8 +116,8 @@ public class GPSActivity extends ActionBarActivity {
         }
 
 
-
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -113,4 +139,110 @@ public class GPSActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        //Toast.makeText(this, parent.getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
+
+
+        String cMM;
+        String array[];
+
+
+        try {
+
+            cMM = listView.getItemAtPosition(position).toString();
+            array = cMM.split(",");
+
+            for (int i = 0; i < array.length; i++) {  //抓gX
+                String aStr = array[i].substring(1, 4);
+                //Toast.makeText(this, aStr, Toast.LENGTH_LONG).show();
+                String bStr = "gX=";
+                boolean Equal = aStr.equals(bStr);
+                //Toast.makeText(this, aStr, Toast.LENGTH_LONG).show();
+                if (Equal == true) {
+                    String cStr = array[i].substring(array[i].length() - 1, array[i].length());
+                    String dStr = "}";
+                    boolean Equal2 = cStr.equals(dStr);
+
+                    if (Equal2 == true) {
+                        gX_pannel = array[i].substring(4, array[i].length() - 1);
+                    } else {
+                        gX_pannel = array[i].substring(4, array[i].length());
+                    }
+                }
+            }
+
+            for (int i = 0; i < array.length; i++) {  //抓gY
+                String aStr = array[i].substring(1, 4);
+                //Toast.makeText(this, aStr, Toast.LENGTH_LONG).show();
+                String bStr = "gY=";
+                boolean Equal = aStr.equals(bStr);
+                //Toast.makeText(this, aStr, Toast.LENGTH_LONG).show();
+                if (Equal == true) {
+                    String cStr = array[i].substring(array[i].length() - 1, array[i].length());
+                    String dStr = "}";
+                    boolean Equal2 = cStr.equals(dStr);
+
+                    if (Equal2 == true) {
+                        gY_pannel = array[i].substring(4, array[i].length() - 1);
+                    } else {
+                        gY_pannel = array[i].substring(4, array[i].length());
+                    }
+                }
+            }
+
+            for (int i = 0; i < array.length; i++) {  //抓gUserX
+                String aStr = array[i].substring(1, 8);
+                //Toast.makeText(this, aStr, Toast.LENGTH_LONG).show();
+                String bStr = "gUserX=";
+                boolean Equal = aStr.equals(bStr);
+                //Toast.makeText(this, aStr, Toast.LENGTH_LONG).show();
+                if (Equal == true) {
+                    String cStr = array[i].substring(array[i].length() - 1, array[i].length());
+                    String dStr = "}";
+                    boolean Equal2 = cStr.equals(dStr);
+
+                    if (Equal2 == true) {
+                        gUserX_pannel = array[i].substring(8, array[i].length() - 1);
+                    } else {
+                        gUserX_pannel = array[i].substring(8, array[i].length());
+                    }
+                }
+            }
+
+            for (int i = 0; i < array.length; i++) {  //抓gUserX
+                String aStr = array[i].substring(1, 8);
+                //Toast.makeText(this, aStr, Toast.LENGTH_LONG).show();
+                String bStr = "gUserY=";
+                boolean Equal = aStr.equals(bStr);
+                //Toast.makeText(this, aStr, Toast.LENGTH_LONG).show();
+                if (Equal == true) {
+                    String cStr = array[i].substring(array[i].length() - 1, array[i].length());
+                    String dStr = "}";
+                    boolean Equal2 = cStr.equals(dStr);
+
+                    if (Equal2 == true) {
+                        gUserY_pannel = array[i].substring(8, array[i].length() - 1);
+                    } else {
+                        gUserY_pannel = array[i].substring(8, array[i].length());
+                    }
+                }
+            }
+
+            //Toast.makeText(this, gUserY_pannel, Toast.LENGTH_LONG).show();
+            Intent it = new Intent(Intent.ACTION_VIEW);
+            it.setData(Uri.parse("http://maps.google.com/maps?f=d&saddr=" + gUserY_pannel + "," + gUserX_pannel +
+                    "&daddr=" + gY_pannel + "," + gX_pannel + "&hl=tw"));
+            startActivity(it);
+
+            //gpslist(toString());
+
+        } catch (Exception e) {
+            Log.e("log_tag21", e.toString());
+        }
+    }
+
 }
+

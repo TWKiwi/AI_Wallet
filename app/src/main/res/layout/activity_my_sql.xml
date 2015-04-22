@@ -18,7 +18,7 @@
         android:entries="@array/fClass_spin"
         android:drawSelectorOnTop="true"
         android:textColor="#842B00"
-        android:background="#FFBD9D"
+        android:background="#FF8F59"
         android:layout_weight="1"/>
 
 
@@ -83,7 +83,7 @@
         android:text="GPS定位"
         android:gravity="center"
         android:textColor="#642100"
-        android:background="#FFCBB3"
+        android:background="#FFDAC8"
         android:layout_weight="2"/>
 
     <Button

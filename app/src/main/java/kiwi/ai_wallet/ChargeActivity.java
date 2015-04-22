@@ -187,6 +187,8 @@ public class ChargeActivity extends MenuActivity{
         name = (EditText)vCamera.findViewById(R.id.buyName);
         consumerType = (Spinner)vCamera.findViewById(R.id.typeName);
         priceText = (EditText)vCamera.findViewById(R.id.priceNum);
+        priceText.setText(String.valueOf(initPrice()));
+
         ScaleNumM = (TextView)vScale.findViewById(R.id.showScaleNumM);
         ScaleNumD = (TextView)vScale.findViewById(R.id.showScaleNumD);
 
@@ -324,6 +326,16 @@ public class ChargeActivity extends MenuActivity{
         }
 
 //        Budget = option.getInt("Budget",20000);
+    }
+
+    private int initPrice(){
+        Bundle extras = getIntent().getExtras();
+        int s = 0 ;
+        if(extras != null){
+            s = extras.getInt("price");
+        }
+//        Log.d("initPrice",s);
+        return s;
     }
 
     void getBarChart(){
@@ -628,15 +640,15 @@ public class ChargeActivity extends MenuActivity{
         /**顯示*/
         PhotoPic.setImageBitmap(bmp);
 
-        new AlertDialog.Builder(this)
-                .setTitle("圖檔資訊")
-                .setMessage("圖檔路徑:" + imgUri.getPath() +
-                         "\n 原始尺寸:" + iw + "x" + ih +
-                         "\n 載入尺寸:" + bmp.getWidth() + "x" + bmp.getHeight() +
-                         "\n 顯示尺寸:" + vw + "x" + vh +
-                         "\n 縮小倍率為" + scaleFactor + "倍")
-                .setNeutralButton("關閉", null)
-                .show();
+//        new AlertDialog.Builder(this)
+//                .setTitle("圖檔資訊")
+//                .setMessage("圖檔路徑:" + imgUri.getPath() +
+//                         "\n 原始尺寸:" + iw + "x" + ih +
+//                         "\n 載入尺寸:" + bmp.getWidth() + "x" + bmp.getHeight() +
+//                         "\n 顯示尺寸:" + vw + "x" + vh +
+//                         "\n 縮小倍率為" + scaleFactor + "倍")
+//                .setNeutralButton("關閉", null)
+//                .show();
 //
 //        /**圖檔壓縮*/
 //        File picCompression = new File(imgUri.getPath());

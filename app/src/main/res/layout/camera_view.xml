@@ -19,7 +19,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/PhotoPic"
-                android:background="#FFCBB3"
+                android:background="#FFBD9D"
                 android:layout_gravity="center_vertical" />
 
         </TableRow>
@@ -36,7 +36,7 @@
                 android:textSize="48sp"
                 android:gravity="center"
                 android:textColor="#842B00"
-                android:background="#FFDAC8"
+                android:background="#FFCBB3"
                 android:id="@+id/TakePic"
                 android:layout_weight="1"
                 />

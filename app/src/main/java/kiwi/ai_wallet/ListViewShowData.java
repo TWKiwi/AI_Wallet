@@ -50,6 +50,8 @@ public class ListViewShowData extends MySQLActivity implements OnItemClickListen
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_listviewshowdata);
+        /**螢幕不隨手機旋轉*/
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         //setContentView(R.layout.activity_gpslistviewshowdata);
 
         //連線

@@ -7,6 +7,7 @@ import android.location.GpsStatus;
 import android.renderscript.Sampler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -110,6 +111,9 @@ public class ComputerActivity extends SmartbutlerActivity implements View.OnClic
                 case R.id.cptTextViewE : Caculate(99 , Str_Value); break;
                 case R.id.cptTextViewC : totalNumText.setText("0"); break;
                 case R.id.cptTextViewB : Intent intent = new Intent(ComputerActivity.this,ChargeActivity.class);
+                                         if(totalNumText.length() != 0)intent.putExtra("price",(int)(Double.parseDouble(totalNumText.getText().toString())));
+                                            else if(totalNumText.length() == 0)intent.putExtra("price",0);
+                                           Log.d("initPrice", totalNumText.getText().toString());
                                          startActivity(intent);
                                          finish();
                                          break;
