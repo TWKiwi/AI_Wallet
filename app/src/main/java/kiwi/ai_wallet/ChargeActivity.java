@@ -187,7 +187,7 @@ public class ChargeActivity extends MenuActivity{
         name = (EditText)vCamera.findViewById(R.id.buyName);
         consumerType = (Spinner)vCamera.findViewById(R.id.typeName);
         priceText = (EditText)vCamera.findViewById(R.id.priceNum);
-        priceText.setText(String.valueOf(initPrice()));
+        priceText.setText(initPrice());
 
         ScaleNumM = (TextView)vScale.findViewById(R.id.showScaleNumM);
         ScaleNumD = (TextView)vScale.findViewById(R.id.showScaleNumD);
@@ -328,11 +328,11 @@ public class ChargeActivity extends MenuActivity{
 //        Budget = option.getInt("Budget",20000);
     }
 
-    private int initPrice(){
+    private String initPrice(){
         Bundle extras = getIntent().getExtras();
-        int s = 0 ;
+        String s = null;
         if(extras != null){
-            s = extras.getInt("price");
+            s = String.valueOf(extras.getInt("price"));
         }
 //        Log.d("initPrice",s);
         return s;

@@ -74,7 +74,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="若沒有資料則顯示空白"
+            android:text="若沒有資料則顯示空白\n點擊可提高產品積分以提高推薦準確度"
+            android:textColor="#BB3D00"
             android:textSize="15sp" />
 
     </LinearLayout>

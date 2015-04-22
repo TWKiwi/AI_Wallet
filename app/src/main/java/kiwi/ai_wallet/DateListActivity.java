@@ -42,7 +42,8 @@ import java.util.List;
 public class DateListActivity extends ChargeActivity {
 
     static String DATE = null;
-
+    TextView theDateCostTxv;
+    int theDateCost = 0;
     private ListView listView;
     List<HashMap<String, Object>> itemList;
     File dirFile = null;
@@ -57,7 +58,7 @@ public class DateListActivity extends ChargeActivity {
         /**螢幕不隨手機旋轉*/
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         Log.d("測試","onCreate");
-
+        theDateCostTxv = (TextView)findViewById(R.id.theDateCost);
         Start();
 
 
@@ -70,6 +71,7 @@ public class DateListActivity extends ChargeActivity {
         MyAdapter adapter = new MyAdapter(this);
 
         listView = (ListView)findViewById(R.id.listView);
+
         listView.setAdapter(adapter);
 
     }
@@ -86,7 +88,7 @@ public class DateListActivity extends ChargeActivity {
     private List<HashMap<String, Object>> getData() {
         /**新建一個集合類，用於存放多條數據，Map的key是一個String類型，Map的value是Object類型*/
         ArrayList<HashMap<String, Object>> list = new ArrayList<>();
-
+        theDateCost = 0;
 
         Cursor cursor = getCursor();
 
@@ -105,6 +107,7 @@ public class DateListActivity extends ChargeActivity {
                 String type = cursor.getString(2);
                 String price = cursor.getString(3);
                 String picname = cursor.getString(4);
+                theDateCost += Integer.parseInt(price);
 
                 StringBuilder resultData = new StringBuilder();
                 resultData.append("品名：").append(name).append("\n");
@@ -120,8 +123,13 @@ public class DateListActivity extends ChargeActivity {
                 list.add(item);
             }
         }
-
+        setDateCostTxv();
         return list;
+    }
+
+    void setDateCostTxv(){
+
+        theDateCostTxv.setText("當日累計支出"+theDateCost+" 元");
     }
 
 
@@ -169,6 +177,7 @@ public class DateListActivity extends ChargeActivity {
                     notifyDataSetChanged();
                     SQLiteDatabase db = dbHelper.getWritableDatabase();
                     db.delete(TABLE_NAME, _ID + "=" + id, null);
+                    Start();
                     Toast.makeText(DateListActivity.this,"已清除該筆紀錄",Toast.LENGTH_SHORT).show();
 
 //                  }catch (Exception e){

@@ -43,13 +43,28 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="8">
+        android:layout_weight="6">
 
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/listView3"
  />
-    </LinearLayout>>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3" >
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="點選店家可以導航，搜尋範圍1500公尺"
+            android:textColor="#BB3D00"
+            android:textSize="15sp" />
+
+    </LinearLayout>
 </LinearLayout>
 

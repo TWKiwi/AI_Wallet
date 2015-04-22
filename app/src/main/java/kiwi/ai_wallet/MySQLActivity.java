@@ -55,6 +55,7 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
     int spin_sel_fname;
     String fName_name[];
     String fName_put [];
+    boolean spinnerItemSelect;
 
     /**定位工程*/
     static final int MIN_TIME = 5000;
@@ -174,26 +175,31 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
     public void onItemSelected(AdapterView<?> parent, View view, int pos,
                                long id) {
         // TODO Auto-generated method stub
-        Toast.makeText(parent.getContext(), "你選擇了  " +
-                parent.getItemAtPosition(pos).toString(), Toast.LENGTH_LONG).show();
-
+        if(spinnerItemSelect) {
+            Toast.makeText(parent.getContext(), "你選擇了  " +
+                    parent.getItemAtPosition(pos).toString(), Toast.LENGTH_LONG).show();
+        }
 
         switch(pos){
             case 0:
                 fName_name = break_name1;
                 fName_put = break_select;
+                spinnerItemSelect = true;
                 break;
             case 1:
                 fName_name = BL_name1;
                 fName_put = BL_select;
+                spinnerItemSelect = true;
                 break;
             case 4:
                 fName_name = Drink_name;
                 fName_put = Drink_select;
+                spinnerItemSelect = true;
                 break;
             default:
                 fName_name = LD_name1;
                 fName_put = LD_select;
+                spinnerItemSelect = true;
                 break;
         }
         ArrayAdapter<String> fNameAd =
@@ -212,6 +218,7 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
     @Override
     public void onResume(){
         super.onResume();
+        spinnerItemSelect = false;
         //取得最佳定位提供者
         String best = mgr.getBestProvider(new Criteria(), true);//true 找出已啟用
         if(best != null){
