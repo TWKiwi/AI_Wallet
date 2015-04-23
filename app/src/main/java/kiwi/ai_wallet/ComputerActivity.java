@@ -112,7 +112,7 @@ public class ComputerActivity extends SmartbutlerActivity implements View.OnClic
                 case R.id.cptTextViewC : totalNumText.setText("0"); break;
                 case R.id.cptTextViewB : Intent intent = new Intent(ComputerActivity.this,ChargeActivity.class);
                                          if(totalNumText.length() != 0)intent.putExtra("price",(int)(Double.parseDouble(totalNumText.getText().toString())));
-                                            else if(totalNumText.length() == 0)intent.putExtra("price",0);
+                                            else if(totalNumText.length() == 0) startActivity(intent);
                                            Log.d("initPrice", totalNumText.getText().toString());
                                          startActivity(intent);
                                          finish();
