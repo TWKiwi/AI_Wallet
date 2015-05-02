@@ -2,9 +2,7 @@ package kiwi.ai_wallet;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -20,7 +18,6 @@ import static kiwi.ai_wallet.DbConstants.TYPE;
 import static kiwi.ai_wallet.DbConstants.PRICE;
 
 
-import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -37,7 +34,6 @@ import android.provider.MediaStore;
 import android.support.v4.view.PagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,12 +43,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,64 +62,48 @@ import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 
 
-public class ChargeActivity extends MenuActivity{
+public class ChargeActivity extends MenuActivity implements View.OnClickListener,View.OnTouchListener{
 
 
 
     private ViewPager ViewPager;/**對應的ViewPager*/
-    private View vCalender,vCamera,vScale;/**替每一頁Layout取代號*/
+    private View vCalender,vCamera, vMDScale;/**替每一頁Layout取代號*/
     private List<View> viewList;/**準備拿來裝每一頁*/
     private List<String> titleList;/**申請了一個String數組，用來存儲三個頁面所對應的標題的*/
 
     public DBHelper dbHelper = null;
 
 
-
+    Button ScaleBtn;
     TextView TakePic,SaveBtn,ScaleNumM,ScaleNumD;
     ImageView PhotoPic;
 
 
     Spinner consumerType = null;
-    String[] buyType = {" 食 "," 衣 "," 住 "," 行 "," 育 "," 樂 "," 其他 "};
+    String[] buyType = {"食","衣","住","行","育","樂","其他"};
     EditText name,priceText;
 
     Uri imgUri;
     /**建立APP圖檔公用路徑*/
     File dirFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/" + "WalletPic");
     static String fname;
+    static LayoutInflater vInflater;
 
 
     private long lastDate = 0;
 
-    private int downX;
-    private int downY;
-
-    private int upX;
-    private int upY;
-
-    private int lastX=0;
-    private int lastY=0;
-
+    private int downX,downY,upX,upY;
     private ItemArea currentArea;
-
     private int year = -1;
-    private int month;
-    private int day;
-
+    private int month,day;
     private ListView listView;
-
-    private int[] startPoint = new int[2];
-
+    private int[] startPoint = new int[4];
     private int listItemCount = 0;
     private int listItemWidth = 0;
     private int listItemHeight = 0;
-
     ArrayList<ItemArea> areaList = new ArrayList<>();
-
     private CalendarView calendar;
-
     private boolean isInitialized = false;
-
     private boolean finish = false;
 
 
@@ -158,8 +140,10 @@ public class ChargeActivity extends MenuActivity{
         listView = (ListView)calendar.findViewById(android.R.id.list);
 
         openDatabase();
+        getMBarChart();
+        getDBarChart();
         ChargeTouchListener();/**第三步呼叫方法ChargeTouchListener()架設監聽器*/
-        getBarChart();
+
 
 
     }
@@ -169,7 +153,7 @@ public class ChargeActivity extends MenuActivity{
     private void initView(){
         /**建立一個ViewPager*/
         ViewPager = (ViewPager) findViewById(R.id.chargePager);
-        LayoutInflater vInflater = getLayoutInflater();
+        vInflater = getLayoutInflater();
 
         /**
          * public View inflate (int resource, ViewGroup root)
@@ -178,7 +162,7 @@ public class ChargeActivity extends MenuActivity{
          * 如果!null,則將默認的layout作為View的根。*/
         vCalender = vInflater.inflate(R.layout.calendar_view,null);
         vCamera = vInflater.inflate(R.layout.camera_view,null);
-        vScale = vInflater.inflate(R.layout.scale_for_charge,null);
+        vMDScale = vInflater.inflate(R.layout.scale_for_charge,null);
 
         calendar = (CalendarView)vCalender.findViewById(R.id.CalendarView);
         PhotoPic = (ImageView)vCamera.findViewById(R.id.PhotoPic);
@@ -189,23 +173,23 @@ public class ChargeActivity extends MenuActivity{
         priceText = (EditText)vCamera.findViewById(R.id.priceNum);
         priceText.setText(initPrice());
 
-        ScaleNumM = (TextView)vScale.findViewById(R.id.showScaleNumM);
-        ScaleNumD = (TextView)vScale.findViewById(R.id.showScaleNumD);
+
+
 
         /**
          * 將要分頁顯示的View裝入數組中*/
         viewList = new ArrayList<>();
         viewList.add(vCamera);
         viewList.add(vCalender);
-        viewList.add(vScale);
+        viewList.add(vMDScale);
 
 
         /**
          * 在初始化階段增加了這麼一段初始化數組的代碼。*/
         titleList = new ArrayList<>();
-        titleList.add("Camera");
-        titleList.add("Calender");
-        titleList.add("Scale");
+        titleList.add("拍照記帳");
+        titleList.add("月曆查詢");
+        titleList.add("各類開銷");
 
 
 
@@ -309,6 +293,13 @@ public class ChargeActivity extends MenuActivity{
                  return  "" ;
                  }  */
                 return titleList.get(position);
+
+
+            }
+
+            @Override
+            public int getItemPosition(Object object) {
+                return POSITION_NONE;
             }
         };
         ViewPager.setAdapter(pagerAdapter);
@@ -338,24 +329,226 @@ public class ChargeActivity extends MenuActivity{
         return s;
     }
 
-    void getBarChart(){
+    void getMBarChart(){
+        ScaleNumM = (TextView) vMDScale.findViewById(R.id.showScaleNumM);
+        ScaleNumD = (TextView) vMDScale.findViewById(R.id.showScaleNumD);
+        ScaleBtn = (Button) vMDScale.findViewById(R.id.MD_ScaleBtn);
 
-
-        FrameLayout scale_view = (FrameLayout)vScale.findViewById(R.id.scaleView);
+        FrameLayout scale_MView = (FrameLayout) vMDScale.findViewById(R.id.scaleMView);
+        scale_MView.removeAllViews();
         int persentMonth = scaleComputeOfMonth();
-        int persentDay = scaleComputeOfDay();
 
+//        String[] titles = new String[] { "預算額", "已花費" };
+//        List < double []> values = new ArrayList<> ();
+//        values.add( new  double [] { 100});
+//        values.add( new  double [] { persentMonth});
+//        int [] colors = new  int [] { Color.parseColor("#FFCBB3"), Color.parseColor("#842B00")};
+//        XYMultipleSeriesRenderer renderer = buildBarRenderer(colors);//長條圖顏色設置
+//        renderer.setOrientation(XYMultipleSeriesRenderer.Orientation.VERTICAL);
+//        /**設置圖形renderer,標題,橫軸,縱軸,橫軸最小值,橫軸最大值,縱軸最大值,縱軸最小值,設定軸寬,設定軸色,標籤顏色*/
+//        setChartSettings(renderer, "", "", "", 0.9, 1.1 , 0, 100 , 96f , Color.GRAY, Color.LTGRAY);
+//        renderer.getSeriesRendererAt(0).setDisplayChartValues(false);//在第1條圖形上顯示數據
+//        renderer.getSeriesRendererAt(1).setDisplayChartValues(false);//在第2條圖形上顯示數據
+//        renderer.setXLabels(0);//設置x軸標籤數  0為不顯示文字 程式設定文字
+//        renderer.setYLabels(5);//設置y軸標籤數
+//        renderer.setXLabelsAlign(Paint.Align.CENTER);//設置x軸標籤置中
+//        renderer.setYLabelsAlign(Paint.Align.RIGHT);//設置y軸標籤置中
+//        renderer.setYLabelsColor(0, Color.BLUE);//設置y軸標籤顏色
+//        renderer.setPanEnabled(false, false);//圖表移動  If you want to lock both axis, then use renderer.setPanEnabled(false, false);
+//        renderer.setZoomEnabled(false, false);//圖表縮放(x軸,y軸)
+//        renderer.setZoomRate(1.1f);//放大倍率
+//        renderer.setBarSpacing(0.5f);//長條圖的間隔
+//        renderer.setChartValuesTextSize(40);//設置長條圖上面字大小
+//        renderer.setMarginsColor(Color.argb(0, 0xff, 0, 0));//這句很重要，不能用transparent代替。
+//        renderer.setBackgroundColor(Color.TRANSPARENT);//設置透明色
+//        renderer.setApplyBackgroundColor(true);//使背景色生效
+//        renderer.setMargins(new int[]{25,25,25,0});//右上左下
+//        renderer.setShowGrid(true);
+//        renderer.setGridColor(Color.GRAY);
+//        View view = ChartFactory.getBarChartView(this, buildBarDataset(titles, values), renderer, BarChart.Type.STACKED); // Type.STACKED
+        if(ScaleBtn.getText().equals("切換開銷類別瀏覽"))scale_MView.addView(getVBarChartView(persentMonth));
+            else if(ScaleBtn.getText().equals("切換月/日總開銷瀏覽")) {
+
+            Cursor cursor = getCursor();
+            int[] type = {0,0,0,0,0,0,0};//食衣住行育樂 其他
+            String select_month = new SimpleDateFormat("yyyyMMdd").format(new Date());
+            int sum = 0;
+            while (cursor.moveToNext()){
+                if(cursor.getString(4).substring(0,6).equals(select_month.substring(0,6))){
+//                switch(cursor.getString(2)){
+//
+//                    case "食" :
+//                        type[0] += Integer.parseInt(cursor.getString(3));
+//                        break;
+//                    case "衣" :
+//                        type[1] += Double.parseDouble(cursor.getString(3));
+//                        break;
+//                    case "住" :
+//                        type[2] += Double.parseDouble(cursor.getString(3));
+//                        break;
+//                    case "行" :
+//                        type[3] += Double.parseDouble(cursor.getString(3));
+//                        break;
+//                    case "育" :
+//                        type[4] += Double.parseDouble(cursor.getString(3));
+//                        break;
+//                    case "樂" :
+//                        type[5] += Double.parseDouble(cursor.getString(3));
+//                        break;
+//                    case "其他" :
+//                        type[6] += Double.parseDouble(cursor.getString(3));
+//                        break;
+//
+
+//              }
+                    String s = cursor.getString(2);
+
+                    if("食".equals(s)){type[0] += Integer.parseInt(cursor.getString(3));}
+                    else if("衣".equals(s)){type[1] += Integer.parseInt(cursor.getString(3));}
+                    else if("住".equals(s)){type[2] += Integer.parseInt(cursor.getString(3));}
+                    else if("行".equals(s)){type[3] += Integer.parseInt(cursor.getString(3));}
+                    else if("育".equals(s)){type[4] += Integer.parseInt(cursor.getString(3));}
+                    else if("樂".equals(s)){type[5] += Integer.parseInt(cursor.getString(3));}
+                    else if("其他".equals(s)){type[6] += Integer.parseInt(cursor.getString(3));}
+                    sum += Integer.parseInt(cursor.getString(3));
+
+                }
+            }
+
+
+
+            int persent = ((sum + Integer.parseInt(getBudget("RglCost")))*100)/ Integer.parseInt(getBudget("Budget"));//算百分比條小數點弄成百分比整數
+            if(persent <= 100) {
+                if(getBudget("ScaleTS").equals("1")) {
+                    ScaleNumM.setText(Html.fromHtml("累計花費(月)<br>" + ((sum + Integer.parseInt(getBudget("RglCost"))) + "<font color = '#FF0000'><big>/</font>" + Integer.parseInt(getBudget("Budget")) + "元")));
+                }else if(getBudget("ScaleTS").equals("2")){
+                    ScaleNumM.setText(Html.fromHtml("剩餘預算(月)<br>" + ((Integer.parseInt(getBudget("Budget")) - (sum + Integer.parseInt(getBudget("RglCost")))) + "<font color = '#FF0000'><big>/</font>" + Integer.parseInt(getBudget("Budget")) + "元")));
+                }else{
+                    ScaleNumM.setText(getBudget("ScaleTS"));
+                }
+            }else if(persent > 100){
+                ScaleNumM.setText(Html.fromHtml("本月" + "<font color = '#FF0000'><big>超支<br></font>" + ((sum + Integer.parseInt(getBudget("RglCost"))) - Integer.parseInt(getBudget("Budget")))+ "元"));
+                persent = 100;
+            }
+            scale_MView.addView(getHBarChartView(type,sum,"Month"));
+
+        }
+
+    }
+
+    void getDBarChart(){
+
+        FrameLayout scale_DView = (FrameLayout) vMDScale.findViewById(R.id.scaleDView);
+        scale_DView.removeAllViews();
+        int persentDay = scaleComputeOfDay();
+//
+//        String[] titles = new String[] { "預算額", "已花費" };
+//        List < double []> values = new ArrayList<> ();
+//        values.add( new  double [] {100});
+//        values.add( new  double [] {persentDay});
+//        int [] colors = new  int [] { Color.parseColor("#FFCBB3"), Color.parseColor("#842B00")};
+//        XYMultipleSeriesRenderer renderer = buildBarRenderer(colors);//長條圖顏色設置
+//        renderer.setOrientation(XYMultipleSeriesRenderer.Orientation.VERTICAL);
+//        /**設置圖形renderer,標題,橫軸,縱軸,橫軸最小值,橫軸最大值,縱軸最大值,縱軸最小值,設定軸寬,設定軸色,標籤顏色*/
+//        setChartSettings(renderer, "", "", "", 0.9, 1.1, 0, 100 , 96f , Color.GRAY, Color.LTGRAY);
+//        renderer.getSeriesRendererAt(0).setDisplayChartValues(false);//在第1條圖形上顯示數據
+//        renderer.getSeriesRendererAt(1).setDisplayChartValues(false);//在第2條圖形上顯示數據
+//        renderer.setXLabels(0);//設置x軸標籤數  0為不顯示文字 程式設定文字
+//        renderer.setYLabels(5);//設置y軸標籤數
+//        renderer.setXLabelsAlign(Paint.Align.CENTER);//設置x軸標籤置中
+//        renderer.setYLabelsAlign(Paint.Align.RIGHT);//設置y軸標籤置中
+//        renderer.setYLabelsColor(0, Color.BLUE);//設置y軸標籤顏色
+//        renderer.setPanEnabled(false, false);//圖表移動  If you want to lock both axis, then use renderer.setPanEnabled(false, false);
+//        renderer.setZoomEnabled(false, false);//圖表縮放(x軸,y軸)
+//        renderer.setZoomRate(1.1f);//放大倍率
+//        renderer.setBarSpacing(0.5f);//長條圖的間隔
+//        renderer.setChartValuesTextSize(32);//設置長條圖上面字大小
+//        renderer.setMarginsColor(Color.argb(0, 0xff, 0, 0));//這句很重要，不能用transparent代替。
+//        renderer.setBackgroundColor(Color.TRANSPARENT);//設置透明色
+//        renderer.setApplyBackgroundColor(true);//使背景色生效
+//        renderer.setMargins(new int[]{25, 25, 25, 0});//右上左下
+//        renderer.setShowGrid(true);
+//        renderer.setGridColor(Color.GRAY);
+//        View view = ChartFactory.getBarChartView(this, buildBarDataset(titles, values), renderer, BarChart.Type.STACKED); // Type.STACKED
+        if(ScaleBtn.getText().equals("切換開銷類別瀏覽"))scale_DView.addView(getVBarChartView(persentDay));
+        else if(ScaleBtn.getText().equals("切換月/日總開銷瀏覽")) {
+
+            Cursor cursor = getCursor();
+            int[] type = {0,0,0,0,0,0,0};//食衣住行育樂 其他
+            String select_month = new SimpleDateFormat("yyyyMMdd").format(new Date());
+            int sum = 0;
+            while (cursor.moveToNext()){
+                if(cursor.getString(4).substring(0,8).equals(select_month.substring(0,8))){
+//                switch(cursor.getString(2)){
+//
+//                    case "食" :
+//                        type[0] += Integer.parseInt(cursor.getString(3));
+//                        break;
+//                    case "衣" :
+//                        type[1] += Double.parseDouble(cursor.getString(3));
+//                        break;
+//                    case "住" :
+//                        type[2] += Double.parseDouble(cursor.getString(3));
+//                        break;
+//                    case "行" :
+//                        type[3] += Double.parseDouble(cursor.getString(3));
+//                        break;
+//                    case "育" :
+//                        type[4] += Double.parseDouble(cursor.getString(3));
+//                        break;
+//                    case "樂" :
+//                        type[5] += Double.parseDouble(cursor.getString(3));
+//                        break;
+//                    case "其他" :
+//                        type[6] += Double.parseDouble(cursor.getString(3));
+//                        break;
+//
+
+//              }
+                    String s = cursor.getString(2);
+
+                    if("食".equals(s)){type[0] += Integer.parseInt(cursor.getString(3));}
+                    else if("衣".equals(s)){type[1] += Integer.parseInt(cursor.getString(3));}
+                    else if("住".equals(s)){type[2] += Integer.parseInt(cursor.getString(3));}
+                    else if("行".equals(s)){type[3] += Integer.parseInt(cursor.getString(3));}
+                    else if("育".equals(s)){type[4] += Integer.parseInt(cursor.getString(3));}
+                    else if("樂".equals(s)){type[5] += Integer.parseInt(cursor.getString(3));}
+                    else if("其他".equals(s)){type[6] += Integer.parseInt(cursor.getString(3));}
+                    sum += Integer.parseInt(cursor.getString(3));
+
+                }
+            }
+
+            int persent = ((sum + Integer.parseInt(getBudget("RglCost"))/30)*100)/(Integer.parseInt(getBudget("Budget"))/30);//算百分比條小數點弄成百分比整數
+            if(persent <= 100) {
+                if(getBudget("ScaleTS").equals("1")) {
+                    ScaleNumD.setText(Html.fromHtml("累計花費(日)<br>" + (sum + Integer.parseInt(getBudget("RglCost")) / 30) + "<font color = '#FF0000'><big>/</font>" + (Integer.parseInt(getBudget("Budget")) / 30) + "元"));
+                }else if(getBudget("ScaleTS").equals("2")){
+                    ScaleNumD.setText(Html.fromHtml("剩餘預算(日)<br>" + ((Integer.parseInt(getBudget("Budget")) / 30) - (sum + Integer.parseInt(getBudget("RglCost")) / 30) + "<font color = '#FF0000'><big>/</font>" + (Integer.parseInt(getBudget("Budget")) / 30) + "元")));
+                }else{
+                    ScaleNumM.setText(getBudget("ScaleTS"));
+                }
+            }else if(persent > 100){
+                ScaleNumD.setText(Html.fromHtml("本日" + "<font color = '#FF0000'><big>超支<br></font>" + ((sum + Integer.parseInt(getBudget("RglCost")) / 30 - Integer.parseInt(getBudget("Budget")) / 30)) + "元"));
+                persent = 100;
+            }
+            scale_DView.addView(getHBarChartView(type,sum,"Day"));
+        }
+
+    }
+
+    public View getVBarChartView(double persent){
         String[] titles = new String[] { "預算額", "已花費" };
         List < double []> values = new ArrayList<> ();
-        values.add( new  double [] { 100  , 100});
-        values.add( new  double [] { persentMonth , persentDay});
-        int [] colors = new  int [] { Color.GRAY, Color.RED};
+        values.add( new  double [] {100});
+        values.add( new  double [] {persent});
+        int [] colors = new  int [] { Color.parseColor("#FFCBB3"), Color.parseColor("#842B00")};
         XYMultipleSeriesRenderer renderer = buildBarRenderer(colors);//長條圖顏色設置
-
+        renderer.setOrientation(XYMultipleSeriesRenderer.Orientation.VERTICAL);
         /**設置圖形renderer,標題,橫軸,縱軸,橫軸最小值,橫軸最大值,縱軸最大值,縱軸最小值,設定軸寬,設定軸色,標籤顏色*/
-        setChartSettings(renderer, "本月/本日花費(%)", "", "", 0.6, 2.6 , 0, 100 , 180f , Color.GRAY, Color.LTGRAY);
-        renderer.getSeriesRendererAt(0).setDisplayChartValues(true);//在第1條圖形上顯示數據
-        renderer.getSeriesRendererAt(1).setDisplayChartValues(true);//在第2條圖形上顯示數據
+        setChartSettings(renderer, "", "", "", 0.9, 1.1, 0, 100 , 96f , Color.GRAY, Color.LTGRAY);
+        renderer.getSeriesRendererAt(0).setDisplayChartValues(false);//在第1條圖形上顯示數據
+        renderer.getSeriesRendererAt(1).setDisplayChartValues(false);//在第2條圖形上顯示數據
         renderer.setXLabels(0);//設置x軸標籤數  0為不顯示文字 程式設定文字
         renderer.setYLabels(5);//設置y軸標籤數
         renderer.setXLabelsAlign(Paint.Align.CENTER);//設置x軸標籤置中
@@ -365,18 +558,79 @@ public class ChargeActivity extends MenuActivity{
         renderer.setZoomEnabled(false, false);//圖表縮放(x軸,y軸)
         renderer.setZoomRate(1.1f);//放大倍率
         renderer.setBarSpacing(0.5f);//長條圖的間隔
-        renderer.setChartValuesTextSize(40);//設置長條圖上面字大小
+        renderer.setChartValuesTextSize(32);//設置長條圖上面字大小
         renderer.setMarginsColor(Color.argb(0, 0xff, 0, 0));//這句很重要，不能用transparent代替。
         renderer.setBackgroundColor(Color.TRANSPARENT);//設置透明色
         renderer.setApplyBackgroundColor(true);//使背景色生效
-        renderer.setMargins(new int[]{200,100,0,100});
+        renderer.setMargins(new int[]{25, 0, 25, 0});//右上左下
+        renderer.setShowGrid(true);
+        renderer.setGridColor(Color.GRAY);
         View view = ChartFactory.getBarChartView(this, buildBarDataset(titles, values), renderer, BarChart.Type.STACKED); // Type.STACKED
-        scale_view.addView(view);
-
-
+        return view;
     }
 
-    protected XYMultipleSeriesDataset buildBarDataset(String[] titles, List< double []> values) {
+    public View getHBarChartView(int[] type,int sum,String s){
+
+
+
+        Log.d("測試",String.valueOf(type[0]));
+        Log.d("測試",String.valueOf(sum));
+        Log.d("測試",String.valueOf(((type[0]*100)/Integer.parseInt(getBudget("Budget")))));
+
+        if(s.equals("Month")) {
+            for (int i = 0; i < 7; i++) {
+                type[i] = (type[i] * 100) / (Integer.parseInt(getBudget("Budget")) + Integer.parseInt(getBudget("RglCost")));
+            }
+        }else{
+            for (int i = 0; i < 7; i++) {
+                type[i] = (type[i] * 100) / ((Integer.parseInt(getBudget("Budget")) + Integer.parseInt(getBudget("RglCost")))/30);
+            }
+        }
+        String[] titles = new String[] { "預算額", "已花費" };
+        List < double []> values = new ArrayList<> ();
+        values.add( new  double [] {100,100,100,100,100,100,100});
+        values.add( new  double [] {(type[0]),(type[1]),(type[2]),(type[3]),(type[4]),(type[5]),(type[6])});
+        int [] colors = new  int [] { Color.parseColor("#FFCBB3"), Color.parseColor("#842B00")};
+        XYMultipleSeriesRenderer renderer = buildBarRenderer(colors);//長條圖顏色設置
+        renderer.setOrientation(XYMultipleSeriesRenderer.Orientation.HORIZONTAL);
+        /**設置圖形renderer,標題,橫軸,縱軸,橫軸最小值,橫軸最大值,縱軸最大值,縱軸最小值,設定軸寬,設定軸色,標籤顏色*/
+        setChartSettings(renderer, "", "", "", 0.9, 7.1, 0, 100 , 48f , Color.GRAY, Color.LTGRAY);
+        renderer.getSeriesRendererAt(0).setDisplayChartValues(false);//在第1條圖形上顯示數據
+        renderer.getSeriesRendererAt(1).setDisplayChartValues(true);//在第2條圖形上顯示數據
+        renderer.setXLabels(0);//設置x軸標籤數  0為不顯示文字 程式設定文字
+        renderer.setYLabels(0);//設置y軸標籤數
+        renderer.setXLabelsAlign(Paint.Align.CENTER);//設置x軸標籤置中
+        renderer.setYLabelsAlign(Paint.Align.RIGHT);//設置y軸標籤置中
+        renderer.setYLabelsColor(0, Color.BLUE);//設置y軸標籤顏色
+        renderer.setPanEnabled(false, false);//圖表移動  If you want to lock both axis, then use renderer.setPanEnabled(false, false);
+        renderer.setZoomEnabled(false, false);//圖表縮放(x軸,y軸)
+        renderer.setZoomRate(1.1f);//放大倍率
+        renderer.setBarSpacing(0.5f);//長條圖的間隔
+        renderer.setChartValuesTextSize(32);//設置長條圖上面字大小
+        renderer.setMarginsColor(Color.argb(0, 0xff, 0, 0));//這句很重要，不能用transparent代替。
+        renderer.setBackgroundColor(Color.TRANSPARENT);//設置透明色
+        renderer.setApplyBackgroundColor(true);//使背景色生效
+        renderer.setMargins(new int[]{50, 25, 50, 0});//右上左下
+        renderer.setShowGrid(true);
+        renderer.setGridColor(Color.GRAY);
+        renderer.addXTextLabel(1, "食");
+        renderer.addXTextLabel(2, "衣");
+        renderer.addXTextLabel(3, "住");
+        renderer.addXTextLabel(4, "行");
+        renderer.addXTextLabel(5, "育");
+        renderer.addXTextLabel(6,"樂");
+        renderer.addXTextLabel(7, "其他");
+        renderer.addYTextLabel(1, "");
+        renderer.addYTextLabel(2, "");
+        renderer.addYTextLabel(3, "");
+        renderer.addYTextLabel(4, "");
+        renderer.addYTextLabel(5, "");
+        renderer.setXLabelsColor(Color.BLUE);
+        View view = ChartFactory.getBarChartView(this, buildBarDataset(titles, values), renderer, BarChart.Type.STACKED); // Type.STACKED
+        return view;
+    }
+
+    private XYMultipleSeriesDataset buildBarDataset(String[] titles, List< double []> values) {
         XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
         int length = titles.length;
         for ( int i = 0; i < length; i++ ) {
@@ -391,12 +645,12 @@ public class ChargeActivity extends MenuActivity{
         return dataset;
     }
 
-    protected XYMultipleSeriesRenderer buildBarRenderer( int [] colors) {
+    private XYMultipleSeriesRenderer buildBarRenderer( int [] colors) {
         XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer();
-        renderer.setAxisTitleTextSize( 60 );
-        renderer.setChartTitleTextSize( 60 );
-        renderer.setLabelsTextSize( 40 );
-        renderer.setLegendTextSize( 40 );
+        renderer.setAxisTitleTextSize( 50 );
+        renderer.setChartTitleTextSize( 20 );
+        renderer.setLabelsTextSize( 25 );
+        renderer.setLegendTextSize( 32 );
 
 
         int length = colors.length;
@@ -408,45 +662,45 @@ public class ChargeActivity extends MenuActivity{
         return renderer;
     }
     /**設置圖形renderer,標題,橫軸,縱軸,最小伸縮刻度,最大伸縮刻度,縱軸最大值,縱軸最小值,設定軸寬,設定軸色,標籤顏色*/
-    protected  void setChartSettings(XYMultipleSeriesRenderer renderer, String title, String xTitle, String yTitle, double xMin, double xMax, double yMin, double yMax,float width, int axesColor, int labelsColor) {
-            renderer.setChartTitle(title);
-            renderer.setXTitle(xTitle);
-            renderer.setYTitle(yTitle);
-            renderer.setXAxisMin(xMin);
-            renderer.setXAxisMax(xMax);
-            renderer.setYAxisMin(yMin);
-            renderer.setYAxisMax(yMax);
-            renderer.setBarWidth(width);
-            renderer.setAxesColor(axesColor);
-            renderer.setLabelsColor(labelsColor);
+    private void setChartSettings(XYMultipleSeriesRenderer renderer, String title, String xTitle, String yTitle, double xMin, double xMax, double yMin, double yMax,float width, int axesColor, int labelsColor) {
+        renderer.setChartTitle(title);
+        renderer.setXTitle(xTitle);
+        renderer.setYTitle(yTitle);
+        renderer.setXAxisMin(xMin);
+        renderer.setXAxisMax(xMax);
+        renderer.setYAxisMin(yMin);
+        renderer.setYAxisMax(yMax);
+        renderer.setBarWidth(width);
+        renderer.setAxesColor(axesColor);
+        renderer.setLabelsColor(labelsColor);
     }
 
     private int scaleComputeOfMonth(){
-            Cursor cursor = getCursor();
-            String select_month = new SimpleDateFormat("yyyyMMdd").format(new Date());
-            int sum = 0;
+        Cursor cursor = getCursor();
+        String select_month = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        int sum = 0;
 
-            while (cursor.moveToNext()){
-                if(cursor.getString(4).substring(0,6).equals(select_month.substring(0,6))){
-                    sum += Double.parseDouble(cursor.getString(3));
-                }
+        while (cursor.moveToNext()){
+            if(cursor.getString(4).substring(0,6).equals(select_month.substring(0,6))){
+                sum += Double.parseDouble(cursor.getString(3));
             }
-    //        SharedPreferences option = getPreferences(MODE_PRIVATE);
-    //        Budget = option.getInt("Budget",20000);
+        }
+        //        SharedPreferences option = getPreferences(MODE_PRIVATE);
+        //        Budget = option.getInt("Budget",20000);
 
-            int persent = ((sum + Integer.parseInt(getBudget("RglCost")))*100)/ Integer.parseInt(getBudget("Budget"));//算百分比條小數點弄成百分比整數
-            if(persent <= 100) {
-                if(getBudget("ScaleTS").equals("1")) {
-                    ScaleNumM.setText(Html.fromHtml("累計花費<br>" + ((sum + Integer.parseInt(getBudget("RglCost"))) + "<font color = '#FF0000'><big>/</font>" + Integer.parseInt(getBudget("Budget")) + "元")));
-                }else if(getBudget("ScaleTS").equals("2")){
-                    ScaleNumM.setText(Html.fromHtml("剩餘預算<br>" + ((Integer.parseInt(getBudget("Budget")) - (sum + Integer.parseInt(getBudget("RglCost")))) + "<font color = '#FF0000'><big>/</font>" + Integer.parseInt(getBudget("Budget")) + "元")));
-                }else{
-                    ScaleNumM.setText(getBudget("ScaleTS"));
-                }
-            }else if(persent > 100){
-                ScaleNumM.setText(Html.fromHtml("本月" + "<font color = '#FF0000'><big>超支<br></font>" + ((sum + Integer.parseInt(getBudget("RglCost"))) - Integer.parseInt(getBudget("Budget")))+ "元"));
-                persent = 100;
+        int persent = ((sum + Integer.parseInt(getBudget("RglCost")))*100)/ Integer.parseInt(getBudget("Budget"));//算百分比條小數點弄成百分比整數
+        if(persent <= 100) {
+            if(getBudget("ScaleTS").equals("1")) {
+                ScaleNumM.setText(Html.fromHtml("累計花費(月)" + persent + "%<br>" + ((sum + Integer.parseInt(getBudget("RglCost"))) + "<font color = '#FF0000'><big>/</font>" + Integer.parseInt(getBudget("Budget")) + "元")));
+            }else if(getBudget("ScaleTS").equals("2")){
+                ScaleNumM.setText(Html.fromHtml("剩餘預算(月)" + persent + "%<br>" + ((Integer.parseInt(getBudget("Budget")) - (sum + Integer.parseInt(getBudget("RglCost")))) + "<font color = '#FF0000'><big>/</font>" + Integer.parseInt(getBudget("Budget")) + "元")));
+            }else{
+                ScaleNumM.setText(getBudget("ScaleTS"));
             }
+        }else if(persent > 100){
+            ScaleNumM.setText(Html.fromHtml("本月" + "<font color = '#FF0000'><big>超支<br></font>" + ((sum + Integer.parseInt(getBudget("RglCost"))) - Integer.parseInt(getBudget("Budget")))+ "元"));
+            persent = 100;
+        }
 
         return persent;
     }
@@ -464,14 +718,14 @@ public class ChargeActivity extends MenuActivity{
         int persent = ((sum + Integer.parseInt(getBudget("RglCost"))/30)*100)/(Integer.parseInt(getBudget("Budget"))/30);//算百分比條小數點弄成百分比整數
         if(persent <= 100) {
             if(getBudget("ScaleTS").equals("1")) {
-                ScaleNumD.setText(Html.fromHtml("累計花費<br>" + (sum + Integer.parseInt(getBudget("RglCost")) / 30) + "<font color = '#FF0000'><big>/</font>" + (Integer.parseInt(getBudget("Budget")) / 30) + "元"));
+                ScaleNumD.setText(Html.fromHtml("累計花費(日)" + persent + "%<br>" + (sum + Integer.parseInt(getBudget("RglCost")) / 30) + "<font color = '#FF0000'><big>/</font>" + (Integer.parseInt(getBudget("Budget")) / 30) + "元"));
             }else if(getBudget("ScaleTS").equals("2")){
-                ScaleNumD.setText(Html.fromHtml("剩餘預算<br>" + ((Integer.parseInt(getBudget("Budget")) / 30) - (sum + Integer.parseInt(getBudget("RglCost")) / 30) + "<font color = '#FF0000'><big>/</font>" + (Integer.parseInt(getBudget("Budget")) / 30) + "元")));
+                ScaleNumD.setText(Html.fromHtml("剩餘預算(日)" + persent + "%<br>" + ((Integer.parseInt(getBudget("Budget")) / 30) - (sum + Integer.parseInt(getBudget("RglCost")) / 30) + "<font color = '#FF0000'><big>/</font>" + (Integer.parseInt(getBudget("Budget")) / 30) + "元")));
             }else{
                 ScaleNumM.setText(getBudget("ScaleTS"));
             }
         }else if(persent > 100){
-            ScaleNumD.setText(Html.fromHtml("本日" + "<font color = '#FF0000'><big>超支<br></font>" + ((sum + Integer.parseInt(getBudget("RglCost"))/30 - Integer.parseInt(getBudget("Budget")) / 30)) + "元"));
+            ScaleNumD.setText(Html.fromHtml("本日" + "<font color = '#FF0000'><big>超支<br></font>" + ((sum + Integer.parseInt(getBudget("RglCost")) / 30 - Integer.parseInt(getBudget("Budget")) / 30)) + "元"));
             persent = 100;
         }
 
@@ -490,19 +744,31 @@ public class ChargeActivity extends MenuActivity{
 
         Cursor cursor = getCursor();
         String select_month = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        int sum = 0;
+        int sumM = 0;
+        int sumD = 0;
         if (priceText.getText().toString().equals("")){
             Toast.makeText(this, "請確實輸入金額", Toast.LENGTH_SHORT).show();
 
         }else {
             while (cursor.moveToNext()) {
                 if (cursor.getString(4).substring(0, 6).equals(select_month.substring(0, 6))) {
-                    sum += Double.parseDouble(cursor.getString(3));
+                    if(cursor.getString(4).substring(0,8).equals(select_month.substring(0,8))){
+                        sumD += Double.parseDouble(cursor.getString(3));
+                    }
+                    sumM += Double.parseDouble(cursor.getString(3));
+
                 }
             }
-   //         Budget = option.getInt("Budget", 20000);
-            if ((Double.parseDouble(String.valueOf(sum + Integer.parseInt(getBudget("RglCost")))) + Double.parseDouble(String.valueOf(priceText.getText()))) >= Integer.parseInt(getBudget("Budget"))) {
-                Toast.makeText(this, "注意！！超出預算！！", Toast.LENGTH_SHORT).show();
+            //         Budget = option.getInt("Budget", 20000);
+            Log.d("dbadd測試",String.valueOf(sumM));
+            if ((sumM + Integer.parseInt(getBudget("RglCost"))) + Integer.parseInt(priceText.getText().toString()) >= Integer.parseInt(getBudget("Budget"))) {
+
+                Toast.makeText(this, "注意！！超出月預算！！", Toast.LENGTH_SHORT).show();
+            }
+            Log.d("dbadd測試",String.valueOf(sumD));
+            if (sumD + Integer.parseInt(priceText.getText().toString()) >= (Integer.parseInt(getBudget("RglCost")) + Integer.parseInt(getBudget("Budget")))/30) {
+
+                Toast.makeText(this, "注意！！超出日預算！！", Toast.LENGTH_SHORT).show();
             }
         }
         if (! priceText.getText().toString().equals("")){
@@ -511,11 +777,11 @@ public class ChargeActivity extends MenuActivity{
             ContentValues values = new ContentValues();
             values.put(PHNAME,fname);
             values.put(NAME, name.getText().toString());
-            values.put(TYPE, consumerType.getSelectedItem().toString());
+            values.put(TYPE, consumerType.getSelectedItem().toString().trim());
             values.put(PRICE, priceText.getText().toString());
             db.insert(TABLE_NAME,null,values);
 
-  //          getBarChart();
+            //          getBarChart();
             cleanEditText();
 //          closeDatabase();
         }
@@ -544,55 +810,12 @@ public class ChargeActivity extends MenuActivity{
      * ChargeTouchListener()設置按鍵監聽器*/
     public void ChargeTouchListener(){
 
-        TakePic.setOnClickListener(CameraBtn);
-        SaveBtn.setOnClickListener(SaveData);
+        TakePic.setOnClickListener(this);
+        SaveBtn.setOnClickListener(this);
+        ScaleBtn.setOnClickListener(this);
     }
 
-    /**拍照監聽器*/
-    public View.OnClickListener CameraBtn = new View.OnClickListener() {
-        /**
-         * 相同調用startActivityForResult（）在啟動此系統調用的Activity後，在調用完畢返回結果到當前頁面時，返回結果碼“1”
-         * ，對應PHOTO_TAKE_PIC，以便當前頁面知道是從這個按鈕的調用返回的結果；*/
-        @Override
-        public void onClick(View v) {
 
-
-            /**利用目前時間組合出一個不會重複的檔名*/
-            fname = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".jpg";
-            /**依前面的路徑及檔案名建立Uri物件*/
-            imgUri = Uri.parse("file://" + dirFile + "/" + fname);
-            Intent CameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            /**將Uri加到拍照Intent的額外資料中*/
-            CameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imgUri);
-            startActivityForResult(CameraIntent,0);
-
-        }
-    };
-
-    public  View.OnClickListener SaveData = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(fname == null){
-                    fname = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".jpg";
-                }
-
-                dbadd();
- //               getBarChart();
-            }
-    };
-
-
-//    public CalendarView.OnLongClickListener LongClick = new CalendarView.OnLongClickListener(){
-//
-//        @Override
-//        public boolean onLongClick(View v) {
-//
-//            Log.d("test","longClick");
-//
-//            return false;
-//        }
-//    };
-//
     String checkDate = null;
 
 
@@ -603,11 +826,11 @@ public class ChargeActivity extends MenuActivity{
 
         /**處理照片*/
         if (resulsCode == RESULT_OK) {
-           showImg();
+            showImg();
         }else{
             Toast.makeText(this, "沒有拍到照片", Toast.LENGTH_LONG).show();
         }
-    super.onActivityResult(requestCode,resulsCode,data);
+        super.onActivityResult(requestCode,resulsCode,data);
     }
 
 
@@ -640,30 +863,6 @@ public class ChargeActivity extends MenuActivity{
         /**顯示*/
         PhotoPic.setImageBitmap(bmp);
 
-//        new AlertDialog.Builder(this)
-//                .setTitle("圖檔資訊")
-//                .setMessage("圖檔路徑:" + imgUri.getPath() +
-//                         "\n 原始尺寸:" + iw + "x" + ih +
-//                         "\n 載入尺寸:" + bmp.getWidth() + "x" + bmp.getHeight() +
-//                         "\n 顯示尺寸:" + vw + "x" + vh +
-//                         "\n 縮小倍率為" + scaleFactor + "倍")
-//                .setNeutralButton("關閉", null)
-//                .show();
-//
-//        /**圖檔壓縮*/
-//        File picCompression = new File(imgUri.getPath());
-//        try {
-//            FileOutputStream out= new FileOutputStream(picCompression);
-//            if(bmp.compress(Bitmap.CompressFormat.PNG, 50, out)){
-//                out.flush();
-//                out.close();
-//
-//            }
-//        } catch (FileNotFoundException e){
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 
         compressImageByQuality(bmp,imgUri.getPath());
 
@@ -755,7 +954,7 @@ public class ChargeActivity extends MenuActivity{
                 upY = (int)event.getY();
 
                 int[] pos = new int[2];
-                calendar.getLocationOnScreen(pos);
+                vCalender.getLocationOnScreen(pos);
 
                 if (areaList.size()==0) {
                     generateList();
@@ -767,14 +966,15 @@ public class ChargeActivity extends MenuActivity{
 
                     // on application start up and click the current date, there are stored status.
                     if (currentArea==null || !isInitialized) {
-                        Log.d("TAG", "currentArea==null || !isInitialized" + isInitialized);
+                        Log.d("TAG", "currentArea==null || !isInitialized");
                         long time = calendar.getDate();
                         Calendar currentCalendar = new GregorianCalendar();
                         currentCalendar.setTimeInMillis(time);
                         year = currentCalendar.get(Calendar.YEAR);
                         month = currentCalendar.get(Calendar.MONTH);
                         day = currentCalendar.get(Calendar.DAY_OF_MONTH);
-                        if(pos[0] == 0 && listView.getChildAt(0) != null) intoDateList();
+                        Log.d("測試",String.valueOf(pos[0]));
+                        if(pos[0] == 0 && listView.getChildAt(1) != null) intoDateList();
 
 
                     }
@@ -791,13 +991,13 @@ public class ChargeActivity extends MenuActivity{
                         if (downY<upY) {
                             // move down
                             int times = (upY-downY)/listItemHeight;
-                            currentArea.top+=listItemHeight*(times+1);
-                            currentArea.bottom+=listItemHeight*(times+1);
+                            currentArea.top += listItemHeight*(times+1);
+                            currentArea.bottom += listItemHeight*(times+1);
                         } else {
                             // move up
                             int times = (downY-upY)/listItemHeight;
-                            currentArea.top-=listItemHeight*(times+1);
-                            currentArea.bottom-=listItemHeight*(times+1);
+                            currentArea.top -= listItemHeight*(times+1);
+                            currentArea.bottom -= listItemHeight*(times+1);
                         }
                     }
                 }
@@ -857,15 +1057,11 @@ public class ChargeActivity extends MenuActivity{
         intent.putExtras(bundle);
         startActivity(intent);
         if(!finish){
-           new DateListActivity().finish();
+            new DateListActivity().finish();
         }
 
 
         checkDate = findDate;
-
-
-        lastX = upX;
-        lastY = upY;
 
     }
 
@@ -879,6 +1075,49 @@ public class ChargeActivity extends MenuActivity{
     }
 
 
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.TakePic :
+
+                /**利用目前時間組合出一個不會重複的檔名*/
+                fname = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".jpg";
+                /**依前面的路徑及檔案名建立Uri物件*/
+                imgUri = Uri.parse("file://" + dirFile + "/" + fname);
+                Intent CameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                /**將Uri加到拍照Intent的額外資料中*/
+                CameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imgUri);
+                startActivityForResult(CameraIntent, 0);
+                break;
+            case R.id.saveBtn :
+
+                if (fname == null) {
+                    fname = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".jpg";
+                }
+
+                dbadd();
+                break;
+
+            case R.id.MD_ScaleBtn :
+
+                if(ScaleBtn.getText().equals("切換開銷類別瀏覽")){
+                    Log.d("測試","ScaleBtn監聽到點擊");
+                    ScaleBtn.setText("切換月/日總開銷瀏覽");
+                }else if(ScaleBtn.getText().equals("切換月/日總開銷瀏覽")){
+                    Log.d("測試","ScaleBtn監聽到點擊");
+                    ScaleBtn.setText("切換開銷類別瀏覽");
+                }
+                vMDScale.invalidate();
+                getMBarChart();
+                getDBarChart();
+                break;
+        }
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        return false;
+    }
 
 
     private class ItemArea {
@@ -938,7 +1177,7 @@ public class ChargeActivity extends MenuActivity{
 
     private Runnable runnable = new Runnable() {
         public void run() {
-        //做操作
+            //做操作
             handler.sendEmptyMessage(1);
         }
 
@@ -946,10 +1185,11 @@ public class ChargeActivity extends MenuActivity{
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
-            case 1:
-            getBarChart();
-            finish = false;
-            break;
+                case 1:
+                    getMBarChart();
+                    getDBarChart();
+                    finish = false;
+                    break;
             }
         };
     };

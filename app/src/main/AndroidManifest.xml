@@ -87,7 +87,11 @@
         <activity
             android:name=".GPSActivity"
             android:label="@string/title_activity_gps"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:theme="@style/Theme.AppCompat.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".ScaleActivity"
+            android:label="@string/title_activity_scale" >
         </activity>
     </application>
 

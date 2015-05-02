@@ -44,5 +44,6 @@
     <string name="title_activity_list_view_show_data">ListViewShowData</string>
     <string name="title_activity_start">StartActivity</string>
     <string name="title_activity_gps">GPSActivity</string>
+    <string name="title_activity_scale">scaleActivity</string>
 
 </resources>
