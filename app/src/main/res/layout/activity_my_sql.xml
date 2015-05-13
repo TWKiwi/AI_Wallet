@@ -11,48 +11,20 @@
     android:background="#FF8040"
     tools:context="com.example.dbconnertingsystem.MainActivity" >
 
-    <Spinner
-        android:id="@+id/spinner_fclass"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:entries="@array/fClass_spin"
-        android:drawSelectorOnTop="true"
-        android:textColor="#842B00"
-        android:background="#FF8F59"
-        android:layout_weight="1"/>
-
-
-    <Spinner
-        android:id="@+id/spinner_fname"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="5dp"
-        android:textColor="#842B00"
-        android:drawSelectorOnTop="true"
-        android:background="#FF9D6F"/>
-
-    <EditText
-        android:id="@+id/editText1"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="5dp"
-        android:ems="10"
-        android:hint="請輸入金額"
-        android:gravity="center"
-        android:textSize="18sp"
-        android:singleLine="true"
-        android:text=""
-        android:inputType="number"
-        android:background="#FFAD86">
-
-        <requestFocus />
-    </EditText>
-
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/GPSBtn"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="5dp"
+        android:text="正在定位中..."
+        android:gravity="center"
+        android:textColor="#642100"
+        android:background="#FFDAC8"
+        android:layout_weight="1"/>
+
+    <Button
+        android:id="@+id/ProposalBtn"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="5dp"
@@ -62,10 +34,8 @@
         android:background="#FFBD9D"
         android:layout_weight="2"/>
 
-
-
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/SelectDataBtn"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="5dp"
@@ -75,23 +45,83 @@
         android:background="#FFCBB3"
         android:layout_weight="2"/>
 
-    <Button
-        android:id="@+id/GPSBtn"
+
+    <TableRow
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="時段"
+            android:textSize="24sp"
+            android:gravity="center"
+            android:textColor="#842B00"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="食物類別"
+            android:textSize="24sp"
+            android:gravity="center"
+            android:textColor="#842B00"/>
+
+    </TableRow>
+
+    <TableRow
+         android:layout_height="0dp"
+         android:layout_width="match_parent"
+         android:layout_weight="1"
+         android:orientation="horizontal">
+
+
+            <Spinner
+                android:id="@+id/spinner_fclass"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:entries="@array/fClass_spin"
+                android:drawSelectorOnTop="true"
+                android:textColor="#842B00"
+                android:background="#FF8F59"
+                android:layout_weight="1"/>
+
+
+            <Spinner
+                android:id="@+id/spinner_fname"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="#842B00"
+                android:drawSelectorOnTop="true"
+                android:background="#FF9D6F"/>
+    </TableRow>
+
+    <EditText
+        android:id="@+id/inputPrice"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_marginTop="5dp"
-        android:text="GPS定位"
+        android:ems="10"
+        android:hint="請輸入金額"
         android:gravity="center"
-        android:textColor="#642100"
-        android:background="#FFDAC8"
-        android:layout_weight="2"/>
+        android:textSize="18sp"
+        android:singleLine="true"
+        android:inputType="number"
+        android:background="#FFAD86">
+
+
+    </EditText>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="手機定位功能設定"
+        android:text="GPS相關設定"
         android:id="@+id/setGPSBtn"/>
-
 
 </LinearLayout>

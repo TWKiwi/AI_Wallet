@@ -93,6 +93,10 @@
             android:name=".ScaleActivity"
             android:label="@string/title_activity_scale" >
         </activity>
+        <activity
+            android:name=".FoodListActivity"
+            android:label="@string/title_activity_food_list" >
+        </activity>
     </application>
 
 </manifest>

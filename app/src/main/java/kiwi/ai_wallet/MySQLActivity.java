@@ -1,7 +1,5 @@
 package kiwi.ai_wallet;
 
-import org.json.JSONArray;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -9,12 +7,9 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.media.audiofx.BassBoost;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -23,38 +18,36 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
 
 public class MySQLActivity extends Activity implements OnClickListener, OnItemSelectedListener,LocationListener{
 
-    Spinner fclass, fname;
+    Spinner FoodClass,FoodName;
     EditText fPrice;
 
-    private Button btn_select_data,btn2;
-    String fClass_name_show[] = {"早餐", "早午餐", "午餐",
+    private Button SelectDataBtn, ProposalBtn;
+    String FoodClassNameDisplay[] = {"早餐", "早午餐", "午餐",
             "晚餐", "飲品"};
-    String fClass_name[] = {"Br", "B", "L",
+    String FoodClassName[] = {"Br", "B", "L",
             "d", "Dr"};
 
-    String break_name1[] = {"米飯主食", "麵類主食", "吐司系列", "漢堡系列","小嚐飲品", "中西式餐點", "全部類別"};
-    String break_select[] = {"rice", "noodles", "Toast", "Hamburger","Tea", "CW", "%"};
+    String BreakTypeName[] = {"米飯主食", "麵類主食", "吐司系列", "漢堡系列","小嚐飲品", "中西式餐點", "全部類別"};
+    String BreakTypeSelect[] = {"rice", "noodles", "Toast", "Hamburger","Tea", "CW", "%"};
 
-    String BL_name1[] = {"米飯主食", "麵類主食", "中西式餐點", "精緻茶品", "華麗特調", "全部類別"};
-    String BL_select[] = {"rice", "noodles", "CW", "Tea", "Speci", "%"};
+    String BreakLunchTypeName[] = {"米飯主食", "麵類主食", "中西式餐點", "精緻茶品", "華麗特調", "全部類別"};
+    String BreakLunchTypeSelect[] = {"rice", "noodles", "CW", "Tea", "Speci", "%"};
 
-    String LD_name1[] = {"米飯主食", "麵類主食", "披薩", "中西式餐點", "精緻茶品", "華麗特調", "全部類別"};
-    String LD_select[] = {"rice", "noodles", "Pizza", "CW", "Tea", "Speci", "%"};
+    String LunchDinnerTypeName[] = {"米飯主食", "麵類主食", "披薩", "中西式餐點", "精緻茶品", "華麗特調", "全部類別"};
+    String LunchDinnerTypeSelect[] = {"rice", "noodles", "Pizza", "CW", "Tea", "Speci", "%"};
 
-    String Drink_name[] = {"茶類飲品", "果汁系列", "特調飲品", "全部類別"};
-    String Drink_select[] = {"Tea", "Juice", "Special", "%"};
+    String DrinkTypeName[] = {"茶類飲品", "果汁系列", "特調飲品", "全部類別"};
+    String DrinkTypeSelect[] = {"Tea", "Juice", "Special", "%"};
 
-    int spin_sel_fclass;
-    int spin_sel_fname;
-    String fName_name[];
-    String fName_put [];
+//    int spin_sel_fclass;
+//    int spin_sel_fname;
+    String fName_name[],fName_put[];
     boolean spinnerItemSelect;
 
     /**定位工程*/
@@ -74,11 +67,8 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
         /**螢幕不隨手機旋轉*/
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         initViews();
+        setListener();
 
-        btn_select_data.setOnClickListener(this);
-        btn2.setOnClickListener(this);
-        GPSBtn.setOnClickListener(this);
-        fclass.setOnItemSelectedListener(this);
 
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                 .detectDiskReads()
@@ -92,84 +82,130 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
                 .penaltyDeath()
                 .build());
 
-        ArrayAdapter<String> fClassAd =
+        ArrayAdapter<String> FoodClassAdd =
                 new ArrayAdapter<String>(this,
-                        android.R.layout.simple_spinner_item, fClass_name_show);
+                        android.R.layout.simple_spinner_item, FoodClassNameDisplay);
 
-        fClassAd.setDropDownViewResource(
+        FoodClassAdd.setDropDownViewResource(
                 android.R.layout.simple_spinner_dropdown_item);
 
-        fClassAd.setDropDownViewResource(R.layout.sql_spinner_item);
+        FoodClassAdd.setDropDownViewResource(R.layout.sql_spinner_item);
 
-        fclass.setAdapter(fClassAd);
+        FoodClass.setAdapter(FoodClassAdd);
 
 
     }
 
+    private void setListener(){
+        SelectDataBtn.setOnClickListener(this);
+        ProposalBtn.setOnClickListener(this);
+        GPSBtn.setOnClickListener(this);
+        FoodClass.setOnItemSelectedListener(this);
+        setGPSBtn.setOnClickListener(this);
+    }
+
     private void initViews() {
-        btn_select_data = (Button)findViewById(R.id.button1);
-        btn2 = (Button)findViewById(R.id.button2);
-        fclass = (Spinner) findViewById(R.id.spinner_fclass);
-        fname = (Spinner) findViewById(R.id.spinner_fname);
-        fPrice = (EditText) findViewById(R.id.editText1);
+        SelectDataBtn = (Button)findViewById(R.id.SelectDataBtn);
+        ProposalBtn = (Button)findViewById(R.id.ProposalBtn);
+        FoodClass = (Spinner) findViewById(R.id.spinner_fclass);
+        FoodName = (Spinner) findViewById(R.id.spinner_fname);
+        fPrice = (EditText) findViewById(R.id.inputPrice);
         GPSBtn = (Button) findViewById(R.id.GPSBtn);
 
         mgr = (LocationManager)getSystemService(LOCATION_SERVICE);
         setGPSBtn = (Button)findViewById(R.id.setGPSBtn);
-        setGPSBtn.setOnClickListener(setGPS);
+
+
     }
 
     @Override
     public void onClick(View v) {
+        if(fPrice.length() != 0){
 
-        spin_sel_fclass = fclass.getSelectedItemPosition();
-        spin_sel_fname = fname.getSelectedItemPosition();
-        String input_fprice = fPrice.getText().toString();
-
-        Intent it = new Intent();
-
-        int g;
-
-        if(v.getId() == R.id.GPSBtn){
-            g = 3;
-            it.putExtra("g", g);
-            it.putExtra("latitude", latitude);
-            it.putExtra("longitude", longitude);
-            it.setClass(getApplicationContext(), GPSActivity.class);
-
-            startActivity(it);
+            switch(v.getId()) {
+                case R.id.setGPSBtn:
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                    break;
+                case R.id.GPSBtn:
+                    Intent GPSIntent = new Intent(this, FoodListActivity.class);
+                    Bundle GPSBundle = new Bundle();
+                    GPSBundle.putString("whatBtn?", "isGPS");
+                    GPSBundle.putDouble("latitude", latitude);
+                    GPSBundle.putDouble("longitude", longitude);
+                    GPSIntent.putExtras(GPSBundle);
+                    startActivity(GPSIntent);
+                    break;
+                case R.id.ProposalBtn:
+                    if (fPrice.length() == 0) break;
+                    Intent ProposalIntent = new Intent(this, FoodListActivity.class);
+                    Bundle SelectBundle = new Bundle();
+                    SelectBundle.putString("SpinnerClassPos", FoodClassName[FoodClass.getSelectedItemPosition()]);
+                    SelectBundle.putString("SpinnerNamePos", fName_put[FoodName.getSelectedItemPosition()]);
+                    SelectBundle.putString("InputPrice", fPrice.getText().toString());
+                    SelectBundle.putDouble("latitude", latitude);
+                    SelectBundle.putDouble("longitude", longitude);
+                    SelectBundle.putString("whatBtn?", "isProposal");
+                    ProposalIntent.putExtras(SelectBundle);
+                    startActivity(ProposalIntent);
+                    break;
+            }
+        }else{
+                Toast.makeText(this, "請輸入金額 ", Toast.LENGTH_LONG).show();
         }
-        else{
-
-            if(input_fprice.length() != 0 && ((v.getId() == R.id.button1) ||( v.getId() == R.id.button2))){
-
-                it.setClass(getApplicationContext(), ListViewShowData.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("spin_sel_fclass", fClass_name[spin_sel_fclass]);
-                bundle.putString("spin_sel_fname", fName_put[spin_sel_fname]);
-                bundle.putString("input_fprice", input_fprice);
-                it.putExtras(bundle);
-
-                switch(v.getId()) {
-                    case R.id.button1:
-                        g = 1;
-                        it.putExtra("g", g);
-                        break;
-                    case R.id.button2:
-                        g = 2;
-                        it.putExtra("g", g);
-                        break;
-                }
-                startActivity(it);
-            }
-            else{
-                Toast.makeText(this, "請輸入金額 "
-                        , Toast.LENGTH_LONG).show();
-            }
 
         }
 
-    }
+////        spin_sel_fclass = FoodClass.getSelectedItemPosition();
+////        spin_sel_fname = FoodName.getSelectedItemPosition();
+//        Price = fPrice.getText().toString();
+//
+//        Intent intent = new Intent();
+//
+//        int g;
+//
+//        if(v.getId() == R.id.GPSBtn){
+//            g = 3;
+//            intent.putExtra("g", g);
+//            intent.putExtra("latitude", latitude);
+//            intent.putExtra("longitude", longitude);
+//            intent.setClass(getApplicationContext(), GPSActivity.class);
+//
+//            startActivity(intent);
+//        }
+//        else{
+//
+//            if(Price.length() != 0 && ((v.getId() == R.id.button1) ||( v.getId() == R.id.button2))){
+//
+//                intent.setClass(getApplicationContext(), ListViewShowData.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putString("spin_sel_fclass", FoodClassName[FoodClass.getSelectedItemPosition()]);
+//                bundle.putString("spin_sel_fname", fName_put[FoodName.getSelectedItemPosition()]);
+//                bundle.putString("input_fprice", Price);
+//                intent.putExtras(bundle);
+//
+//                switch(v.getId()) {
+//                    case R.id.button1:
+//                        g = 1;
+//                        intent.putExtra("g", g);
+//                        break;
+//                    case R.id.button2:
+//                        g = 2;
+//                        intent.putExtra("g", g);
+//                        intent.putExtra("latitude", latitude);
+//                        intent.putExtra("longitude", longitude);
+//                        break;
+//                }
+//                startActivity(intent);
+//            }
+//            else{
+//                Toast.makeText(this, "請輸入金額 "
+//                        , Toast.LENGTH_LONG).show();
+//            }
+//
+//        }
+
+
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos,
@@ -182,23 +218,23 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
 
         switch(pos){
             case 0:
-                fName_name = break_name1;
-                fName_put = break_select;
+                fName_name = BreakTypeName;
+                fName_put = BreakTypeSelect;
                 spinnerItemSelect = true;
                 break;
             case 1:
-                fName_name = BL_name1;
-                fName_put = BL_select;
+                fName_name = BreakLunchTypeName;
+                fName_put = BreakLunchTypeSelect;
                 spinnerItemSelect = true;
                 break;
             case 4:
-                fName_name = Drink_name;
-                fName_put = Drink_select;
+                fName_name = DrinkTypeName;
+                fName_put = DrinkTypeSelect;
                 spinnerItemSelect = true;
                 break;
             default:
-                fName_name = LD_name1;
-                fName_put = LD_select;
+                fName_name = LunchDinnerTypeName;
+                fName_put = LunchDinnerTypeSelect;
                 spinnerItemSelect = true;
                 break;
         }
@@ -211,7 +247,7 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
 
         fNameAd.setDropDownViewResource(R.layout.sql_spinner_item);
 
-        fname.setAdapter(fNameAd);
+        FoodName.setAdapter(fNameAd);
 
     }
 
@@ -265,12 +301,4 @@ public class MySQLActivity extends Activity implements OnClickListener, OnItemSe
 
     }
 
-
-    OnClickListener setGPS = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            startActivity(intent);
-        }
-    };
 }

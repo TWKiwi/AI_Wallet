@@ -49,13 +49,12 @@ public class GPSActivity extends ActionBarActivity implements OnItemClickListene
 
     public void gpslist(String input){
 
-        double latitude,longitude;
-        Intent it = getIntent();
+        Intent intent = getIntent();
 
-        String resultG ;
+        latitude = intent.getDoubleExtra("latitude", 10);
+        longitude = intent.getDoubleExtra("longitude", 10);
 
-        latitude = it.getDoubleExtra("latitude", 10);
-        longitude = it.getDoubleExtra("longitude", 10);
+        /**先更新資料庫端的gUser資料*/
 
         String index = "Select * from gps;";
         String result_sum = GPSConnector.executeQuery(index);
@@ -63,55 +62,36 @@ public class GPSActivity extends ActionBarActivity implements OnItemClickListene
             JSONArray jsonArray = new JSONArray(result_sum);
             for (int i = 0; i < jsonArray.length(); i++) {
 
+                /**更新每筆商店的gUserX和gUserY"欄位，(i+1)是因為資料庫id是從1開始非0"*/
                 String index_sum = "UPDATE `ai_pomo`.`gps` SET `gUserX` = " + longitude + ", `gUserY` = " + latitude + " WHERE `gps`.`gId` = "+ (i+1) +";";
                 GPSConnector.executeQuery(index_sum);
             }
         }
         catch (JSONException e){
-
         }
 
 
-        int selGps = 0;
+
         try {
-
-
-            String indexG = "SELECT *, \n" +
-                    "round(6378.138*2*asin(sqrt(pow(sin( (`gY`*pi()/180-`gUserY`*pi()/180)/2),2)+cos(`gY`*pi()/180)*cos(`gUserY`*pi()/180)* pow(sin( (`gX`*pi()/180-`gUserX`*pi()/180)/2),2)))*1000)  'Distance'  from `gps`;";
-            resultG = GPSConnector.executeQuery(indexG);
-
+            String indexG = "SELECT *, \n" +"round(6378.138*2*asin(sqrt(pow(sin( (`gY`*pi()/180-`gUserY`*pi()/180)/2),2)+cos(`gY`*pi()/180)*cos(`gUserY`*pi()/180)* pow(sin( (`gX`*pi()/180-`gUserX`*pi()/180)/2),2)))*1000)  'Distance'  from `gps`;";
+            String resultG  = GPSConnector.executeQuery(indexG);
             JSONArray jsonArray = new JSONArray(resultG);
-            for (int i = 0; i < jsonArray.length(); i++) {
-
-                JSONObject jsonData = jsonArray.getJSONObject(i);
-
-                selGps = Integer.parseInt(jsonData.getString("Distance"));
-
-                String index_long =  "UPDATE `gps` SET `long` = "+ selGps +" where `gId` = '"
-                        + (i+1) + ";'";
-
-                GPSConnector.executeQuery(index_long);
-
-
-                // Toast.makeText(this, "經度" + String.valueOf(longitude) + "\n緯度" + String.valueOf(latitude) + "\n" + String.valueOf(selGps), Toast.LENGTH_SHORT).show();
-            }
-            //setContentView(R.layout.activity_gpslistviewshowdata);
-
-
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonData = jsonArray.getJSONObject(i);
+                    int selGps = Integer.parseInt(jsonData.getString("Distance"));
+                    String index_long =  "UPDATE `gps` SET `long` = "+ selGps +" where `gId` = '" + (i+1) + ";'";
+                    GPSConnector.executeQuery(index_long);
+                    // Toast.makeText(this, "經度" + String.valueOf(longitude) + "\n緯度" + String.valueOf(latitude) + "\n" + String.valueOf(selGps), Toast.LENGTH_SHORT).show();
+                }
             String index_sel = "SELECT * from `gps` where `long` < 1500;";
             String result_sumsel =  GPSConnector.executeQuery(index_sel);
-
             JSONArray jsonArray2 = new JSONArray(result_sumsel);
-
             ArrayList<HashMap<String, Object>> pomo = new ArrayList<HashMap<String, Object>>();
-
             setTitle("查詢資料結果");
 
             for (int i = 0; i < jsonArray2.length(); i++) {
-
                 JSONObject jsonData = jsonArray2.getJSONObject(i);
                 HashMap<String, Object> h2 = new HashMap<String, Object>();
-
                 h2.put("gName", jsonData.getString("gName"));
                 h2.put("long", jsonData.getString("long") + " 公尺");
                 h2.put("gX", jsonData.getString("gX"));

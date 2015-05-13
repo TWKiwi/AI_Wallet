@@ -50,7 +50,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -338,34 +337,7 @@ public class ChargeActivity extends MenuActivity implements View.OnClickListener
         scale_MView.removeAllViews();
         int persentMonth = scaleComputeOfMonth();
 
-//        String[] titles = new String[] { "預算額", "已花費" };
-//        List < double []> values = new ArrayList<> ();
-//        values.add( new  double [] { 100});
-//        values.add( new  double [] { persentMonth});
-//        int [] colors = new  int [] { Color.parseColor("#FFCBB3"), Color.parseColor("#842B00")};
-//        XYMultipleSeriesRenderer renderer = buildBarRenderer(colors);//長條圖顏色設置
-//        renderer.setOrientation(XYMultipleSeriesRenderer.Orientation.VERTICAL);
-//        /**設置圖形renderer,標題,橫軸,縱軸,橫軸最小值,橫軸最大值,縱軸最大值,縱軸最小值,設定軸寬,設定軸色,標籤顏色*/
-//        setChartSettings(renderer, "", "", "", 0.9, 1.1 , 0, 100 , 96f , Color.GRAY, Color.LTGRAY);
-//        renderer.getSeriesRendererAt(0).setDisplayChartValues(false);//在第1條圖形上顯示數據
-//        renderer.getSeriesRendererAt(1).setDisplayChartValues(false);//在第2條圖形上顯示數據
-//        renderer.setXLabels(0);//設置x軸標籤數  0為不顯示文字 程式設定文字
-//        renderer.setYLabels(5);//設置y軸標籤數
-//        renderer.setXLabelsAlign(Paint.Align.CENTER);//設置x軸標籤置中
-//        renderer.setYLabelsAlign(Paint.Align.RIGHT);//設置y軸標籤置中
-//        renderer.setYLabelsColor(0, Color.BLUE);//設置y軸標籤顏色
-//        renderer.setPanEnabled(false, false);//圖表移動  If you want to lock both axis, then use renderer.setPanEnabled(false, false);
-//        renderer.setZoomEnabled(false, false);//圖表縮放(x軸,y軸)
-//        renderer.setZoomRate(1.1f);//放大倍率
-//        renderer.setBarSpacing(0.5f);//長條圖的間隔
-//        renderer.setChartValuesTextSize(40);//設置長條圖上面字大小
-//        renderer.setMarginsColor(Color.argb(0, 0xff, 0, 0));//這句很重要，不能用transparent代替。
-//        renderer.setBackgroundColor(Color.TRANSPARENT);//設置透明色
-//        renderer.setApplyBackgroundColor(true);//使背景色生效
-//        renderer.setMargins(new int[]{25,25,25,0});//右上左下
-//        renderer.setShowGrid(true);
-//        renderer.setGridColor(Color.GRAY);
-//        View view = ChartFactory.getBarChartView(this, buildBarDataset(titles, values), renderer, BarChart.Type.STACKED); // Type.STACKED
+
         if(ScaleBtn.getText().equals("切換開銷類別瀏覽"))scale_MView.addView(getVBarChartView(persentMonth));
             else if(ScaleBtn.getText().equals("切換月/日總開銷瀏覽")) {
 
@@ -375,32 +347,7 @@ public class ChargeActivity extends MenuActivity implements View.OnClickListener
             int sum = 0;
             while (cursor.moveToNext()){
                 if(cursor.getString(4).substring(0,6).equals(select_month.substring(0,6))){
-//                switch(cursor.getString(2)){
-//
-//                    case "食" :
-//                        type[0] += Integer.parseInt(cursor.getString(3));
-//                        break;
-//                    case "衣" :
-//                        type[1] += Double.parseDouble(cursor.getString(3));
-//                        break;
-//                    case "住" :
-//                        type[2] += Double.parseDouble(cursor.getString(3));
-//                        break;
-//                    case "行" :
-//                        type[3] += Double.parseDouble(cursor.getString(3));
-//                        break;
-//                    case "育" :
-//                        type[4] += Double.parseDouble(cursor.getString(3));
-//                        break;
-//                    case "樂" :
-//                        type[5] += Double.parseDouble(cursor.getString(3));
-//                        break;
-//                    case "其他" :
-//                        type[6] += Double.parseDouble(cursor.getString(3));
-//                        break;
-//
 
-//              }
                     String s = cursor.getString(2);
 
                     if("食".equals(s)){type[0] += Integer.parseInt(cursor.getString(3));}
@@ -441,35 +388,7 @@ public class ChargeActivity extends MenuActivity implements View.OnClickListener
         FrameLayout scale_DView = (FrameLayout) vMDScale.findViewById(R.id.scaleDView);
         scale_DView.removeAllViews();
         int persentDay = scaleComputeOfDay();
-//
-//        String[] titles = new String[] { "預算額", "已花費" };
-//        List < double []> values = new ArrayList<> ();
-//        values.add( new  double [] {100});
-//        values.add( new  double [] {persentDay});
-//        int [] colors = new  int [] { Color.parseColor("#FFCBB3"), Color.parseColor("#842B00")};
-//        XYMultipleSeriesRenderer renderer = buildBarRenderer(colors);//長條圖顏色設置
-//        renderer.setOrientation(XYMultipleSeriesRenderer.Orientation.VERTICAL);
-//        /**設置圖形renderer,標題,橫軸,縱軸,橫軸最小值,橫軸最大值,縱軸最大值,縱軸最小值,設定軸寬,設定軸色,標籤顏色*/
-//        setChartSettings(renderer, "", "", "", 0.9, 1.1, 0, 100 , 96f , Color.GRAY, Color.LTGRAY);
-//        renderer.getSeriesRendererAt(0).setDisplayChartValues(false);//在第1條圖形上顯示數據
-//        renderer.getSeriesRendererAt(1).setDisplayChartValues(false);//在第2條圖形上顯示數據
-//        renderer.setXLabels(0);//設置x軸標籤數  0為不顯示文字 程式設定文字
-//        renderer.setYLabels(5);//設置y軸標籤數
-//        renderer.setXLabelsAlign(Paint.Align.CENTER);//設置x軸標籤置中
-//        renderer.setYLabelsAlign(Paint.Align.RIGHT);//設置y軸標籤置中
-//        renderer.setYLabelsColor(0, Color.BLUE);//設置y軸標籤顏色
-//        renderer.setPanEnabled(false, false);//圖表移動  If you want to lock both axis, then use renderer.setPanEnabled(false, false);
-//        renderer.setZoomEnabled(false, false);//圖表縮放(x軸,y軸)
-//        renderer.setZoomRate(1.1f);//放大倍率
-//        renderer.setBarSpacing(0.5f);//長條圖的間隔
-//        renderer.setChartValuesTextSize(32);//設置長條圖上面字大小
-//        renderer.setMarginsColor(Color.argb(0, 0xff, 0, 0));//這句很重要，不能用transparent代替。
-//        renderer.setBackgroundColor(Color.TRANSPARENT);//設置透明色
-//        renderer.setApplyBackgroundColor(true);//使背景色生效
-//        renderer.setMargins(new int[]{25, 25, 25, 0});//右上左下
-//        renderer.setShowGrid(true);
-//        renderer.setGridColor(Color.GRAY);
-//        View view = ChartFactory.getBarChartView(this, buildBarDataset(titles, values), renderer, BarChart.Type.STACKED); // Type.STACKED
+
         if(ScaleBtn.getText().equals("切換開銷類別瀏覽"))scale_DView.addView(getVBarChartView(persentDay));
         else if(ScaleBtn.getText().equals("切換月/日總開銷瀏覽")) {
 
@@ -479,32 +398,7 @@ public class ChargeActivity extends MenuActivity implements View.OnClickListener
             int sum = 0;
             while (cursor.moveToNext()){
                 if(cursor.getString(4).substring(0,8).equals(select_month.substring(0,8))){
-//                switch(cursor.getString(2)){
-//
-//                    case "食" :
-//                        type[0] += Integer.parseInt(cursor.getString(3));
-//                        break;
-//                    case "衣" :
-//                        type[1] += Double.parseDouble(cursor.getString(3));
-//                        break;
-//                    case "住" :
-//                        type[2] += Double.parseDouble(cursor.getString(3));
-//                        break;
-//                    case "行" :
-//                        type[3] += Double.parseDouble(cursor.getString(3));
-//                        break;
-//                    case "育" :
-//                        type[4] += Double.parseDouble(cursor.getString(3));
-//                        break;
-//                    case "樂" :
-//                        type[5] += Double.parseDouble(cursor.getString(3));
-//                        break;
-//                    case "其他" :
-//                        type[6] += Double.parseDouble(cursor.getString(3));
-//                        break;
-//
 
-//              }
                     String s = cursor.getString(2);
 
                     if("食".equals(s)){type[0] += Integer.parseInt(cursor.getString(3));}

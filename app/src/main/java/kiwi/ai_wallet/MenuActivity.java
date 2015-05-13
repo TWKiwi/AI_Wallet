@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +29,7 @@ import com.ant.liao.*;
 import java.util.Calendar;
 
 
-public class MenuActivity extends ActionBarActivity {
+public class MenuActivity extends ActionBarActivity implements View.OnClickListener{
 
 
     protected SharedPreferences optionSpr;
@@ -40,6 +41,9 @@ public class MenuActivity extends ActionBarActivity {
     protected GifView gif;
     public static boolean timeTick;
     protected CountDownTimer gifCountDownTimer;
+
+
+    private Button FoodBtn,ClothBtn,LiveBtn,WalkBtn,EduBtn,FunBtn,OtherBtn;
 
 
     @Override
@@ -60,8 +64,30 @@ public class MenuActivity extends ActionBarActivity {
         }
 
         alarmManager();
-        Log.d("Menu",String.valueOf(Budget)+ "/" + String.valueOf(RegularCost));
+//        Log.d("Menu",String.valueOf(Budget)+ "/" + String.valueOf(RegularCost));
 
+    }
+
+    private void initView(){
+        FoodBtn = (Button)findViewById(R.id.FoodBtn);
+        ClothBtn = (Button)findViewById(R.id.ClothBtn);
+        LiveBtn = (Button)findViewById(R.id.LiveBtn);
+        WalkBtn = (Button)findViewById(R.id.WalkBtn);
+        EduBtn = (Button)findViewById(R.id.EduBtn);
+        FunBtn = (Button)findViewById(R.id.FunBtn);
+        OtherBtn = (Button)findViewById(R.id.OtherBtn);
+
+        setListener();
+    }
+
+    private void setListener(){
+        FoodBtn.setOnClickListener(this);
+        ClothBtn.setOnClickListener(this);
+        LiveBtn.setOnClickListener(this);
+        WalkBtn.setOnClickListener(this);
+        EduBtn.setOnClickListener(this);
+        FunBtn.setOnClickListener(this);
+        OtherBtn.setOnClickListener(this);
     }
 
     private void gifRunner(){
@@ -74,12 +100,15 @@ public class MenuActivity extends ActionBarActivity {
             public void onFinish() {
                 Log.d("Timer","onFinish");
                 gifCountDownTimer.cancel();
-                setContentView(R.layout.menu_view);
-                toMenuUI();
-
+//                setContentView(R.layout.menu_view);
+//                toMenuUI();
+                setContentView(R.layout.choose_search);
+                initView();
             }
         }.start();
     }
+
+
 
     void alarmManager(){
         Calendar calendar = Calendar.getInstance();
@@ -153,25 +182,10 @@ public class MenuActivity extends ActionBarActivity {
                             s = String.valueOf(ScaleTS);
         }
 
-        Log.d("取得設置",String.valueOf(Budget)+ "/" + String.valueOf(RegularCost) + "/" +String.valueOf(ScaleTS));
+//        Log.d("取得設置",String.valueOf(Budget)+ "/" + String.valueOf(RegularCost) + "/" +String.valueOf(ScaleTS));
         return s;
     }
 
-
-
-    public void setImage(){
-
-        ImageView StartText = (ImageView)findViewById(R.id.StartText);
-
-        StartText.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                toMenuUI();
-                return false;
-            }
-        });
-
-    }
 
 
     /**
@@ -251,4 +265,38 @@ public class MenuActivity extends ActionBarActivity {
         gif.setGifImageType(GifView.GifImageType.COVER);
     }
 
+    @Override
+    public void onClick(View v) {
+        Intent intent;
+        switch (v.getId()){
+            case R.id.FoodBtn :
+                intent = new Intent(this,MySQLActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.ClothBtn :
+                intent = new Intent(this,MenuActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.LiveBtn :
+                intent = new Intent(this,MenuActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.WalkBtn :
+                intent = new Intent(this,MenuActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.EduBtn :
+                intent = new Intent(this,MenuActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.FunBtn :
+                intent = new Intent(this,MenuActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.OtherBtn :
+                intent = new Intent(this,MenuActivity.class);
+                startActivity(intent);
+                break;
+        }
+    }
 }

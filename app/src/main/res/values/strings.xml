@@ -45,5 +45,6 @@
     <string name="title_activity_start">StartActivity</string>
     <string name="title_activity_gps">GPSActivity</string>
     <string name="title_activity_scale">scaleActivity</string>
+    <string name="title_activity_food_list">FoodListActivity</string>
 
 </resources>

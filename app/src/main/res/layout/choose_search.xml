@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFE6D9">
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="想吃什麼?"
+        android:textSize="18sp"
+        android:textColor="#FFFFFF"
+        android:id="@+id/FoodBtn"
+        android:background="#642100"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="想買衣服?"
+        android:textSize="18sp"
+        android:textColor="#FFFFFF"
+        android:id="@+id/ClothBtn"
+        android:background="#842B00"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="找住處嘛?"
+        android:textSize="18sp"
+        android:textColor="#FFFFFF"
+        android:id="@+id/LiveBtn"
+        android:background="#A23400"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="代步工具?"
+        android:textSize="18sp"
+        android:textColor="#FFFFFF"
+        android:id="@+id/WalkBtn"
+        android:background="#BB3D00"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="教育機構?"
+        android:textSize="18sp"
+        android:textColor="#FFFFFF"
+        android:id="@+id/EduBtn"
+        android:background="#D94600"/>
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="玩得開心?"
+        android:textSize="18sp"
+        android:textColor="#FFFFFF"
+        android:id="@+id/FunBtn"
+        android:background="#F75000"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="在找什麼?"
+        android:textSize="18sp"
+        android:textColor="#FFFFFF"
+        android:id="@+id/OtherBtn"
+        android:background="#FF5809"/>
+
+
+</LinearLayout>
