@@ -42,12 +42,12 @@ public class GPSActivity extends ActionBarActivity implements OnItemClickListene
         listView = (ListView) findViewById(R.id.listView3);
         listView.setOnItemClickListener(this);
 
-        gpslist(toString());
+        gpslist();
 
 
     }
 
-    public void gpslist(String input){
+    public void gpslist(){
 
         Intent intent = getIntent();
 
@@ -71,7 +71,7 @@ public class GPSActivity extends ActionBarActivity implements OnItemClickListene
         }
 
 
-
+        /**計算每筆資料距離使用者當下位置的距離*/
         try {
             String indexG = "SELECT *, \n" +"round(6378.138*2*asin(sqrt(pow(sin( (`gY`*pi()/180-`gUserY`*pi()/180)/2),2)+cos(`gY`*pi()/180)*cos(`gUserY`*pi()/180)* pow(sin( (`gX`*pi()/180-`gUserX`*pi()/180)/2),2)))*1000)  'Distance'  from `gps`;";
             String resultG  = GPSConnector.executeQuery(indexG);
@@ -83,6 +83,8 @@ public class GPSActivity extends ActionBarActivity implements OnItemClickListene
                     GPSConnector.executeQuery(index_long);
                     // Toast.makeText(this, "經度" + String.valueOf(longitude) + "\n緯度" + String.valueOf(latitude) + "\n" + String.valueOf(selGps), Toast.LENGTH_SHORT).show();
                 }
+
+            /**真正在篩選距離小餘1500的店家*/
             String index_sel = "SELECT * from `gps` where `long` < 1500;";
             String result_sumsel =  GPSConnector.executeQuery(index_sel);
             JSONArray jsonArray2 = new JSONArray(result_sumsel);
@@ -161,12 +163,12 @@ public class GPSActivity extends ActionBarActivity implements OnItemClickListene
                 String bStr = "gX=";
                 boolean Equal = aStr.equals(bStr);
                 //Toast.makeText(this, aStr, Toast.LENGTH_LONG).show();
-                if (Equal == true) {
+                if (Equal) {
                     String cStr = array[i].substring(array[i].length() - 1, array[i].length());
                     String dStr = "}";
                     boolean Equal2 = cStr.equals(dStr);
 
-                    if (Equal2 == true) {
+                    if (Equal2) {
                         gX_pannel = array[i].substring(4, array[i].length() - 1);
                     } else {
                         gX_pannel = array[i].substring(4, array[i].length());
@@ -180,12 +182,12 @@ public class GPSActivity extends ActionBarActivity implements OnItemClickListene
                 String bStr = "gY=";
                 boolean Equal = aStr.equals(bStr);
                 //Toast.makeText(this, aStr, Toast.LENGTH_LONG).show();
-                if (Equal == true) {
+                if (Equal) {
                     String cStr = array[i].substring(array[i].length() - 1, array[i].length());
                     String dStr = "}";
                     boolean Equal2 = cStr.equals(dStr);
 
-                    if (Equal2 == true) {
+                    if (Equal2) {
                         gY_pannel = array[i].substring(4, array[i].length() - 1);
                     } else {
                         gY_pannel = array[i].substring(4, array[i].length());
@@ -199,12 +201,12 @@ public class GPSActivity extends ActionBarActivity implements OnItemClickListene
                 String bStr = "gUserX=";
                 boolean Equal = aStr.equals(bStr);
                 //Toast.makeText(this, aStr, Toast.LENGTH_LONG).show();
-                if (Equal == true) {
+                if (Equal) {
                     String cStr = array[i].substring(array[i].length() - 1, array[i].length());
                     String dStr = "}";
                     boolean Equal2 = cStr.equals(dStr);
 
-                    if (Equal2 == true) {
+                    if (Equal2) {
                         gUserX_pannel = array[i].substring(8, array[i].length() - 1);
                     } else {
                         gUserX_pannel = array[i].substring(8, array[i].length());
@@ -218,12 +220,12 @@ public class GPSActivity extends ActionBarActivity implements OnItemClickListene
                 String bStr = "gUserY=";
                 boolean Equal = aStr.equals(bStr);
                 //Toast.makeText(this, aStr, Toast.LENGTH_LONG).show();
-                if (Equal == true) {
+                if (Equal) {
                     String cStr = array[i].substring(array[i].length() - 1, array[i].length());
                     String dStr = "}";
                     boolean Equal2 = cStr.equals(dStr);
 
-                    if (Equal2 == true) {
+                    if (Equal2) {
                         gUserY_pannel = array[i].substring(8, array[i].length() - 1);
                     } else {
                         gUserY_pannel = array[i].substring(8, array[i].length());

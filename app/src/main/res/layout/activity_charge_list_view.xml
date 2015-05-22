@@ -14,14 +14,34 @@
         android:id="@+id/listView"
         android:layout_weight="9"/>
 
-    <TextView
+    <TableRow
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="當日沒有消費記錄"
-        android:gravity="center"
-        android:textColor="#842B00"
-        android:id="@+id/theDateCost"/>
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:text="當日沒有消費記錄"
+            android:gravity="center"
+            android:textColor="#842B00"
+            android:id="@+id/theDateCost"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="新增"
+            android:gravity="center"
+            android:textColor="#842B00"
+            android:id="@+id/newData"/>
+
+
+    </TableRow>
+
 
 
 </LinearLayout>

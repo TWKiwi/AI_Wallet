@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="品名"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_weight="1" />
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/buyNameBefore"
+            android:layout_weight="3" />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="價格"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_weight="1" />
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/buyPriceBefore"
+            android:layout_weight="3"
+            android:inputType="number"/>
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="種類"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_weight="1" />
+
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/buyTypeBefore"
+            android:layout_weight="3"
+            android:entries="@array/Consumer_types"/>
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/takePicBtn"
+            android:text="拍照"/>
+
+        <ImageView
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:id="@+id/PhotoPicBefore"
+            android:layout_gravity="center_horizontal" />
+
+    </TableRow>
+
+
+
+
+</LinearLayout>

@@ -1,17 +1,28 @@
 package kiwi.ai_wallet;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.StrictMode;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
+import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,24 +30,29 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.PriorityQueue;
 
 
-public class FoodListActivity extends ActionBarActivity {
+public class FoodListActivity extends ActionBarActivity implements AdapterView.OnItemClickListener {
 
-    private ListView FoodListView;
-    String SelectFoodClass;
-    String SelectFoodName;
-    String SelectPrice;
+    private ListView StoreListView,FoodListView;
+    private ImageView StorePic;
+    private TextView StoreTxt,StoreName;
+
+
 
     String whatBtn,SpinnerClassPos,SpinnerNamePos,InputPrice;
+    ArrayList<HashMap<String, Object>> FoodList = new ArrayList<HashMap<String, Object>>();
+    List<HashMap<String, Object>> itemList;
 
-    int selLength;
+
     double latitude,longitude;//latitude(緯度 Y),longitude(經度 X);   (X-X菊)^2 + (Y-Y菊)^2 <= 1^2
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_food_list);
+        setContentView(R.layout.activity_store_list);
         /**螢幕不隨手機旋轉*/
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         Log.d("FoodListActivity","onCreate(Bundle savedInstanceState)");
@@ -59,9 +75,18 @@ public class FoodListActivity extends ActionBarActivity {
 
     private void initView(){
         Log.d("FoodListActivity","initView()");
-        FoodListView = (ListView)findViewById(R.id.listView1);
+        StoreListView = (ListView)findViewById(R.id.StoreList);
+        StoreListView.setOnItemClickListener(this);
+
+
+
+
 
         getBundle();
+
+        itemList = setListView();
+        MyAdapter adapter = new MyAdapter(this);
+        StoreListView.setAdapter(adapter);
     }
 
     private void getBundle(){
@@ -74,32 +99,34 @@ public class FoodListActivity extends ActionBarActivity {
         SpinnerNamePos = intent.getStringExtra("SpinnerNamePos");
         InputPrice = intent.getStringExtra("InputPrice");
 
-        setListView();
+
     }
 
-    private void setListView(){
+    private ArrayList<HashMap<String, Object>> setListView(){
         Log.d("FoodListActivity",whatBtn + " " + SpinnerClassPos + " " + SpinnerNamePos  + " " + InputPrice);
+
+
 
         if(whatBtn.equals("isProposal")){
             Intent intent = getIntent();
-            latitude = intent.getDoubleExtra("latitude", 10);
-            longitude = intent.getDoubleExtra("longitude", 10);
+            latitude = intent.getDoubleExtra("latitude", 0);
+            longitude = intent.getDoubleExtra("longitude", 0);
 
-            String index = "Select * from gps;";
-            String result_sum = GPSConnector.executeQuery(index);
-            Log.d("ResultSum",result_sum);
-            try{
-                JSONArray jsonArray = new JSONArray(result_sum);
-                    for (int i = 0; i < jsonArray.length(); i++) {
+//            String index = "Select * from gps;";
+//            String result_sum = GPSConnector.executeQuery(index);
+//            Log.d("ResultSum",result_sum);
+//            try{
+//                JSONArray jsonArray = new JSONArray(result_sum);
+//                   for (int i = 0; i < jsonArray.length(); i++) {
 
-                        String index_sum = "UPDATE `ai_pomo`.`gps` SET `gUserX` = " + longitude + ", `gUserY` = " + latitude + " WHERE `gps`.`gId` = "+ (i+1) +";";
+                        String index_sum = "UPDATE `ai_pomo`.`gps` SET `gUserX` = " + "119.58152" + ", `gUserY` = " + "23.57383" + ";";
                         GPSConnector.executeQuery(index_sum);
 
-                    }
-            }
-            catch (JSONException e){
+//                    }
+//            }
+//            catch (JSONException e){
 
-            }
+//            }
 
             try {
                 String indexG = "SELECT *, \n" +"round(6378.138*2*asin(sqrt(pow(sin( (`gY`*pi()/180-`gUserY`*pi()/180)/2),2)+cos(`gY`*pi()/180)*cos(`gUserY`*pi()/180)* pow(sin( (`gX`*pi()/180-`gUserX`*pi()/180)/2),2)))*1000)  'Distance'  from `gps`;";
@@ -112,13 +139,13 @@ public class FoodListActivity extends ActionBarActivity {
                         int selGps = Integer.parseInt(jsonData.getString("Distance"));
                         String index_long =  "UPDATE `gps` SET `long` = "+ selGps +" where `gId` = '" + (i+1) + ";'";
                         GPSConnector.executeQuery(index_long);
-                        Toast.makeText(this, "經度" + String.valueOf(longitude) + "\n緯度" + String.valueOf(latitude) + "\n" + String.valueOf(selGps), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(this, "經度" + String.valueOf(longitude) + "\n緯度" + String.valueOf(latitude) + "\n" + String.valueOf(selGps), Toast.LENGTH_SHORT).show();
                     }
 
-                String index_sel = "SELECT * from `gps` where `long` < 1500;";
+                String index_sel = "SELECT * from `gps` where `long` < 400000;";
                 String result_sumsel =  GPSConnector.executeQuery(index_sel);
                 JSONArray jsonArray2 = new JSONArray(result_sumsel);
-                ArrayList<HashMap<String, Object>> pomo = new ArrayList<HashMap<String, Object>>();
+
                 setTitle("查詢資料結果");
 
                     for (int i = 0; i < jsonArray2.length(); i++) {
@@ -130,15 +157,19 @@ public class FoodListActivity extends ActionBarActivity {
                         h2.put("gY", jsonData.getString("gY"));
                         h2.put("gUserX", jsonData.getString("gUserX"));
                         h2.put("gUserY", jsonData.getString("gUserY"));
+                        h2.put("gPic", jsonData.getString("gPic"));
+                        h2.put("Description", jsonData.getString("Description"));
 
-                        pomo.add(h2);
+                        FoodList.add(h2);
 
-                        SimpleAdapter adapter = new SimpleAdapter(this, pomo, R.layout.gpslistviewshowdataitem, new String[]
-                                {"gName", "long"}, new int[]
-                                {R.id.GPS_Store, R.id.GPS_Distance});
-                                FoodListView.setAdapter(adapter);
+//                        SimpleAdapter adapter = new SimpleAdapter(this, FoodList, R.layout.gpslistviewshowdataitem, new String[]
+//                                {"gName", "long"}, new int[]
+//                                {R.id.GPS_Store, R.id.GPS_Distance});
+//                                StoreListView.setAdapter(adapter);
 
                     }
+
+
 
             } catch (JSONException e) {
                 // TODO Auto-generated catch block
@@ -146,7 +177,84 @@ public class FoodListActivity extends ActionBarActivity {
             }
         }
 
+        return FoodList;
     }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        LayoutInflater inflater = LayoutInflater.from(this);
+        view = inflater.inflate(R.layout.food_alertdialog_object, null);
+        StorePic = (ImageView)view.findViewById(R.id.StorePic);
+        StoreName = (TextView)view.findViewById(R.id.StoreName);
+        StoreTxt = (TextView)view.findViewById(R.id.StoreTxt);
+
+        byte[] decodedString = Base64.decode(FoodList.get(position).get("gPic").toString(), Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        StorePic.setImageBitmap(decodedByte);
+
+        StoreName.setText(FoodList.get(position).get("gName").toString());
+        StoreTxt.setText(FoodList.get(position).get("Description").toString());
+
+        new AlertDialog.Builder(this)
+                .setView(view)
+                .setPositiveButton("離開", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //do nothing and close view
+                    }
+                })
+                .show();
+
+
+
+
+
+    }
+
+    private class MyAdapter extends BaseAdapter{
+        private LayoutInflater mInflater;
+
+        public MyAdapter(Context context){
+            this.mInflater = LayoutInflater.from(context);
+        }
+        @Override
+        public int getCount() {
+            return FoodList.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if(convertView == null)convertView = mInflater.inflate(R.layout.store_list_view_object,null);
+
+            final ImageView itemImageView = (ImageView)convertView.findViewById(R.id.StoreListImage);
+            byte[] decodedString = Base64.decode(FoodList.get(position).get("gPic").toString(), Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            itemImageView.setImageBitmap(decodedByte);
+
+//         itemImageView.setImageBitmap((Bitmap)FoodList.get(position).get("gPic"));
+            TextView FoodListStoreText = (TextView)convertView.findViewById(R.id.StoreListStoreText);
+            FoodListStoreText.setText(FoodList.get(position).get("gName").toString());
+            TextView FoodListDistanceText = (TextView)convertView.findViewById(R.id.StoreListDistanceText);
+            FoodListDistanceText.setText(FoodList.get(position).get("long").toString());
+
+
+            return convertView;
+        }
+    }
+
+
+
+
 
 
     @Override
