@@ -1,49 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+
+
+
+
         <ImageView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_width="60sp"
+            android:layout_height="60sp"
             android:id="@+id/StorePic" />
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_width="match_parent"
+            android:layout_height="60sp"
             android:gravity="center"
             android:id="@+id/StoreName"/>
 
-    </TableRow>
 
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3">
+
 
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/StoreTxt"/>
+            android:layout_height="wrap_content"
+            android:id="@+id/StoreTxt"
+            android:layout_below="@+id/StoreName"/>
 
-    </TableRow>
 
 
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="4">
+
+
+
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/FoodListView" />
-    </TableRow>
+            android:id="@+id/FoodListView"
+            android:layout_below="@+id/StoreTxt"/>
 
-</LinearLayout>
+
+
+</RelativeLayout>

@@ -36,7 +36,7 @@ public class ListViewShowData extends MySQLActivity implements OnItemClickListen
 
     int selLength;
     double latitude,longitude;//latitude(緯度 Y),longitude(經度 X);   (X-X菊)^2 + (Y-Y菊)^2 <= 1^2
-
+    String php = "http://203.68.252.55/AndroidConnectDB/android_connect_db.php";
 
 
     @Override
@@ -97,6 +97,8 @@ public class ListViewShowData extends MySQLActivity implements OnItemClickListen
         SelectPrice = input_fprice.getString("input_fprice");
 
 
+
+
         String result = null;
         int selGps = 0;
         try {
@@ -105,7 +107,7 @@ public class ListViewShowData extends MySQLActivity implements OnItemClickListen
                 String index = "SELECT * FROM `food` WHERE `fSort` LIKE '%" + SelectFoodName + "%' "
                         + "AND fPrice <= " + SelectPrice +
                         " AND `fClass` LIKE '%" + SelectFoodClass + "%' ORDER BY `fRank` DESC limit 6";
-                result = MySQLConnector.executeQuery(index);
+                result = MySQLConnector.executeQuery(index,php);
 
 
                 JSONArray jsonArray = new JSONArray(result);
@@ -134,7 +136,7 @@ public class ListViewShowData extends MySQLActivity implements OnItemClickListen
                 String index = "SELECT *, \n" +
                         "round(6378.138*2*asin(sqrt(pow(sin( (`gY`*pi()/180-`gUserY`*pi()/180)/2),2)+cos(`gY`*pi()/180)*cos(`gUserY`*pi()/180)* pow(sin( (`gX`*pi()/180-`gUserX`*pi()/180)/2),2)))*1000)  'Distance'  from `store information`;";
 
-                result = MySQLConnector.executeQuery(index);
+                result = MySQLConnector.executeQuery(index,php);
 
                 JSONArray jsonArray = new JSONArray(result);
                 for (int i = 0; i < jsonArray.length(); i++) {
@@ -145,7 +147,7 @@ public class ListViewShowData extends MySQLActivity implements OnItemClickListen
 
                     String index_long =  "UPDATE `gps` SET `long` = "+ selGps +" where `gId` = '" + (i+1) + ";'";
 
-                    GPSConnector.executeQuery(index_long);
+                    MySQLConnector.executeQuery(index_long,php);
 
 
                     // Toast.makeText(this, "經度" + String.valueOf(longitude) + "\n緯度" + String.valueOf(latitude) + "\n" + String.valueOf(selGps), Toast.LENGTH_SHORT).show();
@@ -154,7 +156,7 @@ public class ListViewShowData extends MySQLActivity implements OnItemClickListen
 
 
                 String index_sel = "SELECT * from `gps` where `long` < 1500;";
-                String result_sumsel =  GPSConnector.executeQuery(index_sel);
+                String result_sumsel =  MySQLConnector.executeQuery(index_sel,php);
 
                 JSONArray jsonArray2 = new JSONArray(result_sumsel);
 
@@ -222,13 +224,13 @@ public class ListViewShowData extends MySQLActivity implements OnItemClickListen
                         cMM_pannel = array[i].substring(7,array[i].length()-1);
                         String index =  "UPDATE `food` SET `frequency` = `frequency`+1 where `fName` = '"
                                 + cMM_pannel + "'";
-                        MySQLConnector.executeQuery(index);
+                        MySQLConnector.executeQuery(index,php);
                     }
                     else{
                         cMM_pannel = array[i].substring(7,array[i].length());
                         String index =  "UPDATE `food` SET `frequency` = `frequency`+1 where `fName` = '"
                                 + cMM_pannel + "'";
-                        MySQLConnector.executeQuery(index);
+                        MySQLConnector.executeQuery(index,php);
                     }
                     //Toast.makeText(this, cMM_pannel, Toast.LENGTH_LONG).show();
                 }
@@ -278,7 +280,7 @@ public class ListViewShowData extends MySQLActivity implements OnItemClickListen
                     * Integer.parseInt(listSelfreq) * 50 / selLength ;
             String index =  "UPDATE `food` SET `fRank` = "+ rank +" where `fName` = '"
                     + cMM_pannel + "'";
-            MySQLConnector.executeQuery(index);
+            MySQLConnector.executeQuery(index,php);
             Toast.makeText(this,"你點選了"+ cMM_pannel + "LEVEL UP 喜愛度+1  ><", Toast.LENGTH_LONG).show();
             reNewListView(); // 目前都只有顯示六筆 記得除錯資料筆數 已解決
         }
@@ -291,7 +293,7 @@ public class ListViewShowData extends MySQLActivity implements OnItemClickListen
     public void sel_count1(){
         String index =  "select `fClass`,  count(*), sum(`fClass`) from `food` where `fPrice` <= " + SelectPrice
                 + " AND `fSort` like '%"+ SelectFoodName +"%' AND `fClass` like '%"+ SelectFoodClass +"%' group by `fClass`";
-        String result = MySQLConnector.executeQuery(index);
+        String result = MySQLConnector.executeQuery(index,php);
 
         try {
 

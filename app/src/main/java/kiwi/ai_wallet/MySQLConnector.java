@@ -16,12 +16,12 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 
 public class MySQLConnector {
-    public static String executeQuery(String query_string) {
+    public static String executeQuery(String query_string,String php) {
         String result = "";
 
         try {
             HttpClient httpClient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost("http://203.68.252.55/AndroidConnectDB/android_connect_db.php");
+            HttpPost httpPost = new HttpPost(php);
             ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("query_string", query_string));
             httpPost.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
