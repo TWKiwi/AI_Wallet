@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.StrictMode;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,7 +38,7 @@ public class FoodListActivity extends ActionBarActivity implements AdapterView.O
     private ListView StoreListView,FoodListView;
     private ImageView StorePic;
     private TextView StoreTxt,StoreName;
-
+    private int StorePosition;
 
 
     String whatBtn,SpinnerClassPos,SpinnerNamePos,InputPrice;
@@ -119,7 +121,7 @@ public class FoodListActivity extends ActionBarActivity implements AdapterView.O
 //                JSONArray jsonArray = new JSONArray(result_sum);
 //                   for (int i = 0; i < jsonArray.length(); i++) {
 
-                        String index_sum = "UPDATE `ai_pomo`.`gps` SET `gUserX` = " + "119.58152" + ", `gUserY` = " + "23.57383" + ";";
+                        String index_sum = "UPDATE `ai_pomo`.`gps` SET `gUserX` = " + longitude + ", `gUserY` = " + latitude + ";";
                         MySQLConnector.executeQuery(index_sum,php);
 
 //                    }
@@ -195,15 +197,16 @@ public class FoodListActivity extends ActionBarActivity implements AdapterView.O
         StoreTxt.setText(StoreList.get(position).get("Description").toString());
 
 
-        try{
 
+        try{
+            FoodList = new ArrayList<HashMap<String, Object>>();
             String index_sel = "SELECT * from `food` where `fStore` = '"+ StoreList.get(position).get("gName").toString() + "'";
             String result_sumsel =  MySQLConnector.executeQuery(index_sel,php);
             JSONArray jsonArray2 = new JSONArray(result_sumsel);
 
             setTitle("查詢資料結果");
 
-            FoodList = new ArrayList<HashMap<String, Object>>();
+
             for (int i = 0; i < jsonArray2.length(); i++) {
                 JSONObject jsonData = jsonArray2.getJSONObject(i);
                 HashMap<String, Object> h2 = new HashMap<String, Object>();
@@ -216,8 +219,10 @@ public class FoodListActivity extends ActionBarActivity implements AdapterView.O
         }catch(JSONException e){
             e.printStackTrace();
         }
+        StorePosition = position;
 
-
+        Toast.makeText(this,"http://maps.google.com/maps?f=d&saddr=" + StoreList.get(StorePosition).get("gX").toString() + "," + StoreList.get(StorePosition).get("gY").toString() +
+                "&daddr=" + StoreList.get(StorePosition).get("gUserX").toString() + "," + StoreList.get(StorePosition).get("gUserY").toString() + "&hl=tw",Toast.LENGTH_LONG).show();
         MyFoodAdapter adapter = new MyFoodAdapter(this);
         FoodListView.setAdapter(adapter);
 
@@ -225,17 +230,19 @@ public class FoodListActivity extends ActionBarActivity implements AdapterView.O
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                intoGpsView();
+
             }
         });
 
         AlertDialog.Builder FoodAD = new AlertDialog.Builder(this);
             FoodAD.setView(view);
             FoodAD.setPositiveButton("離開", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //do nothing and close view
-                    }
-                });
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                   //do nothing and close view
+                }
+            });
 
 
         FoodAD.show();
@@ -325,8 +332,14 @@ public class FoodListActivity extends ActionBarActivity implements AdapterView.O
         }
     }
 
+    private void intoGpsView(){
+        //Toast.makeText(this, gUserY_pannel, Toast.LENGTH_LONG).show();
+        Intent it = new Intent(Intent.ACTION_VIEW);
+        it.setData(Uri.parse("http://maps.google.com/maps?f=d&saddr=" + "121.98765" + "," + StoreList.get(StorePosition).get("gY").toString() +
+                "&daddr=" + "129.56789" + "," + StoreList.get(StorePosition).get("gUserY").toString() + "&hl=tw"));
 
-
+        startActivity(it);
+    }
 
 
 
