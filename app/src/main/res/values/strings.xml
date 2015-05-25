@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">POMO智能錢包</string>
+    <string name="app_name">商品羅盤</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_charge">懶人記帳</string>
@@ -27,11 +27,9 @@
     <string name="title_activity_my_sql">MySQLActivity</string>
 
     <string-array name="fClass_spin">
-        <item>早餐</item>
-        <item>早午餐</item>
-        <item>午餐</item>
-        <item>晚餐</item>
-        <item>飲品</item>
+        <item>早上</item>
+        <item>中午</item>
+        <item>晚上</item>
     </string-array>
     <string-array name="fName_spin">
         <item>飯</item>

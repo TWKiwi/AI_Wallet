@@ -7,8 +7,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:textColor="#642100"
-    android:background="#FF8040"
+    android:textColor="#0000E3"
+    android:background="#0080FF"
     tools:context="com.example.dbconnertingsystem.MainActivity" >
 
 
@@ -19,9 +19,9 @@
         android:layout_marginTop="5dp"
         android:text="正在定位中..."
         android:gravity="center"
-        android:textColor="#642100"
-        android:background="#FFDAC8"
-        android:layout_weight="1"/>
+        android:textColor="#0000E3"
+        android:background="#ACD6FF"
+        android:layout_weight="2"/>
 
     <Button
         android:id="@+id/ProposalBtn"
@@ -30,20 +30,9 @@
         android:layout_marginTop="5dp"
         android:text="系統推薦商品"
         android:textSize="36sp"
-        android:textColor="#842B00"
-        android:background="#FFBD9D"
-        android:layout_weight="2"/>
-
-    <Button
-        android:id="@+id/SelectDataBtn"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="5dp"
-        android:text="隨機查詢商品"
-        android:textSize="36sp"
-        android:textColor="#642100"
-        android:background="#FFCBB3"
-        android:layout_weight="2"/>
+        android:textColor="#2828FF"
+        android:background="#84C1FF"
+        android:layout_weight="3"/>
 
 
     <TableRow
@@ -59,69 +48,69 @@
             android:text="時段"
             android:textSize="24sp"
             android:gravity="center"
-            android:textColor="#842B00"/>
+            android:textColor="#0000C6"/>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="食物類別"
-            android:textSize="24sp"
-            android:gravity="center"
-            android:textColor="#842B00"/>
+        <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:text="食物類別"-->
+            <!--android:textSize="24sp"-->
+            <!--android:gravity="center"-->
+            <!--android:textColor="#842B00"/>-->
 
     </TableRow>
 
     <TableRow
-         android:layout_height="0dp"
-         android:layout_width="match_parent"
-         android:layout_weight="1"
-         android:orientation="horizontal">
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
 
 
-            <Spinner
-                android:id="@+id/spinner_fclass"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:entries="@array/fClass_spin"
-                android:drawSelectorOnTop="true"
-                android:textColor="#842B00"
-                android:background="#FF8F59"
-                android:layout_weight="1"/>
+        <Spinner
+            android:id="@+id/spinner_fclass"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawSelectorOnTop="true"
+            android:textColor="#2828FF"
+            android:background="#66B3FF"/>
 
 
-            <Spinner
-                android:id="@+id/spinner_fname"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:textColor="#842B00"
-                android:drawSelectorOnTop="true"
-                android:background="#FF9D6F"/>
+       <!--<Spinner-->
+            <!--android:id="@+id/spinner_fname"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:textColor="#842B00"-->
+            <!--android:drawSelectorOnTop="true"-->
+            <!--android:background="#FF9D6F"/>-->
     </TableRow>
 
-    <EditText
-        android:id="@+id/inputPrice"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="5dp"
-        android:ems="10"
-        android:hint="請輸入金額"
-        android:gravity="center"
-        android:textSize="18sp"
-        android:singleLine="true"
-        android:inputType="number"
-        android:background="#FFAD86">
+    <!--<EditText-->
+        <!--android:id="@+id/inputPrice"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--android:ems="10"-->
+        <!--android:hint="請輸入金額"-->
+        <!--android:gravity="center"-->
+        <!--android:textSize="18sp"-->
+        <!--android:singleLine="true"-->
+        <!--android:inputType="number"-->
+        <!--android:background="#FFAD86"/>-->
 
 
-    </EditText>
+
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:text="GPS相關設定"
+        android:background="#46A3FF"
         android:id="@+id/setGPSBtn"/>
 
 </LinearLayout>

@@ -14,7 +14,9 @@
             android:id="@+id/FoodListImage"
             android:layout_weight="1"
             android:paddingRight="10sp"
-            android:paddingLeft="5sp"/>
+            android:paddingLeft="5sp"
+            android:textColor="#0000E3"
+            android:background="#ACD6FF"/>
 
         <TextView
             android:layout_width="0dp"
@@ -24,7 +26,9 @@
             android:textSize="20sp"
             android:text=""
             android:id="@+id/FoodListStoreText"
-            android:layout_weight="2"/>
+            android:layout_weight="2"
+            android:textColor="#0000E3"
+            android:background="#ACD6FF"/>
 
         <TextView
             android:layout_width="0dp"
@@ -34,7 +38,9 @@
             android:textSize="20sp"
             android:text=""
             android:id="@+id/FoodListPriceText"
-            android:layout_weight="2"/>
+            android:layout_weight="2"
+            android:textColor="#0000E3"
+            android:background="#ACD6FF"/>
 
     </TableRow>
 

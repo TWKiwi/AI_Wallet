@@ -11,12 +11,15 @@
         android:id="@+id/CalendarView"
         android:layout_gravity="center_vertical"
         android:dateTextAppearance="@android:style/TextAppearance.Large"
-        android:focusedMonthDateColor="#842B00"
-        android:weekSeparatorLineColor="#C48888"
-        android:unfocusedMonthDateColor="#FFCBB3"
-        android:weekNumberColor="#C48888"
-        android:selectedWeekBackgroundColor= "#FFE6D9"
-        android:padding="10sp"/>
+        android:padding="10sp"
+        android:textColor="#2828FF"
+        android:background="#46A3FF"/>
+        <!--android:focusedMonthDateColor="#842B00"-->
+        <!--android:weekSeparatorLineColor="#C48888"-->
+        <!--android:unfocusedMonthDateColor="#FFCBB3"-->
+        <!--android:weekNumberColor="#C48888"-->
+        <!--android:selectedWeekBackgroundColor= "#FFE6D9"-->
+
 
 
 </LinearLayout>

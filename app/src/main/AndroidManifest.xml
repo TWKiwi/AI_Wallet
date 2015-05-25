@@ -63,7 +63,7 @@
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name=".MySQLActivity"
+            android:name=".FoodActivity"
             android:label="@string/title_activity_my_sql"
             android:theme="@style/Theme.AppCompat.NoActionBar" >
         </activity>
@@ -80,22 +80,19 @@
             android:theme="@style/Theme.AppCompat.NoActionBar" >
         </activity>
         <activity
-            android:name=".StartActivity"
-            android:label="@string/title_activity_start"
-            android:theme="@style/Theme.AppCompat.NoActionBar" >
-        </activity>
-        <activity
             android:name=".GPSActivity"
             android:label="@string/title_activity_gps"
             android:theme="@style/Theme.AppCompat.NoActionBar" >
         </activity>
         <activity
             android:name=".ScaleActivity"
-            android:label="@string/title_activity_scale" >
+            android:label="@string/title_activity_scale"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
         </activity>
         <activity
             android:name=".FoodListActivity"
-            android:label="@string/title_activity_food_list" >
+            android:label="@string/title_activity_food_list"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
         </activity>
     </application>
 

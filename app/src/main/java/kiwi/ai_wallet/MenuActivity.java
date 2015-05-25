@@ -1,26 +1,18 @@
 package kiwi.ai_wallet;
 
 import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.SystemClock;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -100,10 +92,10 @@ public class MenuActivity extends ActionBarActivity implements View.OnClickListe
             public void onFinish() {
                 Log.d("Timer","onFinish");
                 gifCountDownTimer.cancel();
-//                setContentView(R.layout.menu_view);
-//                toMenuUI();
-                setContentView(R.layout.choose_search);
-                initView();
+                setContentView(R.layout.menu_view);
+                toMenuUI();
+//                setContentView(R.layout.choose_search);
+//                initView();
             }
         }.start();
     }
@@ -143,29 +135,29 @@ public class MenuActivity extends ActionBarActivity implements View.OnClickListe
 
     public void setScaleTextStyle(int i){
         optionSpr = getSharedPreferences("Option",0);
-        Log.d("刷新ScaleTS前",getBudget("ScaleTS"));
+
         SharedPreferences.Editor optSprEdt = optionSpr.edit();
-        Log.d("刷新ScaleTS中",getBudget("ScaleTS"));
+
         optSprEdt.putInt("ScaleTS", i).commit();
-        Log.d("刷新ScaleTS後",getBudget("ScaleTS"));
+
     }
 
     public void setBudget(int i){
         optionSpr = getSharedPreferences("Option",0);
-        Log.d("刷新Budget前",getBudget("Budget") + "/" + getBudget("RglCost"));
+
         SharedPreferences.Editor optSprEdt = optionSpr.edit();
-        Log.d("刷新Budget中",getBudget("Budget") + "/" + getBudget("RglCost"));
+
         optSprEdt.putInt("Budget", i).commit();
-        Log.d("刷新Budget後",getBudget("Budget") + "/" + getBudget("RglCost"));
+
     }
 
     public void setRegularCost(int i){
         optionSpr = getSharedPreferences("Option", 0);
-        Log.d("刷新RglCost前",getBudget("Budget") + "/" + getBudget("RglCost"));
+
         SharedPreferences.Editor optSprEdt = optionSpr.edit();
-        Log.d("刷新RglCost中",getBudget("Budget") + "/" + getBudget("RglCost"));
+
         optSprEdt.putInt("RglCost",i).commit();
-        Log.d("刷新RglCost後",getBudget("Budget") + "/" + getBudget("RglCost"));
+
     }
 
     public String getBudget(String s){
@@ -261,7 +253,7 @@ public class MenuActivity extends ActionBarActivity implements View.OnClickListe
 
     private void setGif(){
         gif = (GifView) findViewById(R.id.gifview01);
-        gif.setGifImage(R.drawable.head);
+        gif.setGifImage(R.drawable.front);
         gif.setGifImageType(GifView.GifImageType.COVER);
     }
 
@@ -270,7 +262,7 @@ public class MenuActivity extends ActionBarActivity implements View.OnClickListe
         Intent intent;
         switch (v.getId()){
             case R.id.FoodBtn :
-                intent = new Intent(this,MySQLActivity.class);
+                intent = new Intent(this,FoodActivity.class);
                 startActivity(intent);
                 break;
             case R.id.ClothBtn :

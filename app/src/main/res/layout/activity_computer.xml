@@ -16,8 +16,8 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:textColor="#FFFFFF"
-                android:background="#842B00"
+                android:textColor="#66B3FF"
+                android:background="#2828FF"
                 android:textSize="24sp"
                 android:id="@+id/computeNumText" />
 
@@ -28,8 +28,8 @@
                 android:layout_height="0dp"
                 android:layout_weight="2"
                 android:gravity="right"
-                android:textColor="#FFFFFF"
-                android:background="#842B00"
+                android:textColor="#66B3FF"
+                android:background="#2828FF"
                 android:textSize="36sp"
                 android:id="@+id/totalNumText" />
             </LinearLayout>
@@ -53,7 +53,7 @@
                 android:gravity="center"
                 android:textSize="25sp"
                 android:text="清除"
-                android:background="#FFBD9D"
+                android:background="#46A3FF"
                 android:id="@+id/cptTextViewC"
                 android:onClick="onClick" />
 
@@ -64,7 +64,7 @@
                 android:gravity="center"
                 android:textSize="25sp"
                 android:text="記帳"
-                android:background="#FFAD86"
+                android:background="#66B3FF"
                 android:id="@+id/cptTextViewB"
                 android:onClick="onClick" />
         </TableRow>
@@ -79,7 +79,7 @@
                 android:gravity="center"
                 android:textSize="25sp"
                 android:text="7"
-                android:background="#FFAD86"
+                android:background="#66B3FF"
                 android:id="@+id/cptTextView7"
                 android:onClick="onClick" />
             <Button
@@ -89,7 +89,7 @@
                 android:gravity="center"
                 android:textSize="25sp"
                 android:text="8"
-                android:background="#FFBD9D"
+                android:background="#46A3FF"
                 android:id="@+id/cptTextView8"
                 android:onClick="onClick" />
             <Button
@@ -99,7 +99,7 @@
                 android:gravity="center"
                 android:textSize="25sp"
                 android:text="9"
-                android:background="#FFAD86"
+                android:background="#66B3FF"
                 android:id="@+id/cptTextView9"
                 android:onClick="onClick" />
             <Button
@@ -109,7 +109,7 @@
                 android:gravity="center"
                 android:textSize="48sp"
                 android:text="÷"
-                android:background="#FFBD9D"
+                android:background="#46A3FF"
                 android:id="@+id/cptTextViewD"
                 android:onClick="onClick" />
             </TableRow>
@@ -124,7 +124,7 @@
                 android:gravity="center"
                 android:textSize="25sp"
                 android:text="4"
-                android:background="#FFBD9D"
+                android:background="#46A3FF"
                 android:id="@+id/cptTextView4"
                 android:onClick="onClick" />
             <Button
@@ -134,7 +134,7 @@
                 android:gravity="center"
                 android:textSize="25sp"
                 android:text="5"
-                android:background="#FFAD86"
+                android:background="#66B3FF"
                 android:id="@+id/cptTextView5"
                 android:onClick="onClick" />
             <Button
@@ -144,7 +144,7 @@
                 android:gravity="center"
                 android:textSize="25sp"
                 android:text="6"
-                android:background="#FFBD9D"
+                android:background="#46A3FF"
                 android:id="@+id/cptTextView6"
                 android:onClick="onClick" />
             <Button
@@ -154,7 +154,7 @@
                 android:gravity="center"
                 android:textSize="25sp"
                 android:text="Ｘ"
-                android:background="#FFAD86"
+                android:background="#66B3FF"
                 android:id="@+id/cptTextViewM"
                 android:onClick="onClick" />
             </TableRow>
@@ -169,7 +169,7 @@
                 android:gravity="center"
                 android:textSize="25sp"
                 android:text="1"
-                android:background="#FFAD86"
+                android:background="#66B3FF"
                 android:id="@+id/cptTextView1"
                 android:onClick="onClick" />
             <Button
@@ -179,7 +179,7 @@
                 android:gravity="center"
                 android:textSize="25sp"
                 android:text="2"
-                android:background="#FFBD9D"
+                android:background="#46A3FF"
                 android:id="@+id/cptTextView2"
                 android:onClick="onClick" />
             <Button
@@ -189,7 +189,7 @@
                 android:gravity="center"
                 android:textSize="25sp"
                 android:text="3"
-                android:background="#FFAD86"
+                android:background="#66B3FF"
                 android:id="@+id/cptTextView3"
                 android:onClick="onClick" />
             <Button
@@ -199,7 +199,7 @@
                 android:gravity="center"
                 android:textSize="25sp"
                 android:text="一"
-                android:background="#FFBD9D"
+                android:background="#46A3FF"
                 android:id="@+id/cptTextViewS"
                 android:onClick="onClick" />
             </TableRow>
@@ -214,7 +214,7 @@
                 android:gravity="center"
                 android:textSize="48sp"
                 android:text="."
-                android:background="#FFBD9D"
+                android:background="#46A3FF"
                 android:id="@+id/cptTextViewpoint"
                 android:onClick="onClick" />
             <Button
@@ -224,7 +224,7 @@
                 android:gravity="center"
                 android:textSize="25sp"
                 android:text="0"
-                android:background="#FFAD86"
+                android:background="#66B3FF"
                 android:id="@+id/cptTextView0"
                 android:onClick="onClick" />
             <Button
@@ -234,7 +234,7 @@
                 android:gravity="center"
                 android:textSize="48sp"
                 android:text="＝"
-                android:background="#FFBD9D"
+                android:background="#46A3FF"
                 android:id="@+id/cptTextViewE"
                 android:onClick="onClick" />
             <Button
@@ -244,7 +244,7 @@
                 android:gravity="center"
                 android:textSize="25sp"
                 android:text="十"
-                android:background="#FFAD86"
+                android:background="#66B3FF"
                 android:id="@+id/cptTextViewA"
                 android:onClick="onClick" />
             </TableRow>

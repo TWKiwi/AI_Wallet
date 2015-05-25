@@ -19,7 +19,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/PhotoPic"
-                android:background="#FFBD9D"
+                android:background="#66B3FF"
                 android:layout_gravity="center_vertical" />
 
         </TableRow>
@@ -35,8 +35,8 @@
                 android:text="拍照"
                 android:textSize="48sp"
                 android:gravity="center"
-                android:textColor="#842B00"
-                android:background="#FFCBB3"
+                android:textColor="#2828FF"
+                android:background="#46A3FF"
                 android:id="@+id/TakePic"
                 android:layout_weight="1"
                 />
@@ -47,8 +47,8 @@
                 android:text="入帳"
                 android:textSize="48sp"
                 android:gravity="center"
-                android:textColor="#842B00"
-                android:background="#FFDAC8"
+                android:textColor="#46A3FF"
+                android:background="#2828FF"
                 android:id="@+id/saveBtn"
                 android:layout_weight="1" />
         </LinearLayout>
@@ -72,7 +72,8 @@
             android:layout_gravity="center"
             android:text="記錄名稱\n(可不填)"
             android:id="@+id/BuyText"
-            android:textColor="#842B00"
+            android:textColor="#2828FF"
+
             />
 
         <EditText
@@ -81,7 +82,7 @@
             android:layout_gravity="center"
             android:id="@+id/buyName"
             android:layout_weight="1"
-            android:textColor="#842B00"/>
+            android:textColor="#2828FF"/>
     </TableRow>
 
     <TableRow
@@ -102,7 +103,7 @@
                 android:layout_gravity="center"
                 android:text="消費型別"
                 android:id="@+id/TypeText"
-                android:textColor="#842B00"/>
+                android:textColor="#2828FF"/>
 
             <Spinner
                 android:layout_width="wrap_content"
@@ -126,7 +127,7 @@
                 android:layout_gravity="center"
                 android:text="金額"
                 android:id="@+id/PriceText"
-                android:textColor="#842B00"/>
+                android:textColor="#2828FF"/>
 
             <EditText
                 android:layout_width="wrap_content"
@@ -136,7 +137,7 @@
                 android:layout_weight="1"
                 android:inputType="number"
                 android:text=""
-                android:textColor="#842B00"/>
+                android:textColor="#2828FF"/>
         </TableRow>
 
     </TableRow>

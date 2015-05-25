@@ -11,7 +11,7 @@
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
-        android:background="#842B00"
+        android:background="#2828FF"
         android:id="@+id/PostView"></ImageView>
     <TextView
         android:layout_width="fill_parent"
@@ -19,9 +19,10 @@
         android:layout_weight="1"
         android:text="懶人記帳"
         android:textSize="35sp"
-        android:textColor="#842B00"
+        android:textColor="#2828FF"
+        android:background="#46A3FF"
         android:gravity="center"
-        android:background="#FFDAC8"
+
         android:id="@+id/ChargeTextView"></TextView>
     <TextView
         android:layout_width="fill_parent"
@@ -29,9 +30,10 @@
         android:layout_weight="1"
         android:text="智能管家"
         android:textSize="35sp"
-        android:textColor="#842B00"
+        android:textColor="#2828FF"
+        android:background="#2894FF"
         android:gravity="center"
-        android:background="#FFCBB3"
+
         android:id="@+id/SmartbutlerView"></TextView>
 
 

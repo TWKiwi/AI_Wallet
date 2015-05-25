@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 
 
-public class ListViewShowData extends MySQLActivity implements OnItemClickListener{
+public class ListViewShowData extends FoodActivity implements OnItemClickListener{
 
     private ListView FoodListView;
 

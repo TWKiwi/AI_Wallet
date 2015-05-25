@@ -41,7 +41,7 @@ public class FoodListActivity extends ActionBarActivity implements AdapterView.O
     private int StorePosition;
 
 
-    String whatBtn,SpinnerClassPos,SpinnerNamePos,InputPrice;
+    String whatBtn,SpinnerClass,SpinnerName,InputPrice;
     ArrayList<HashMap<String, Object>> StoreList = new ArrayList<HashMap<String, Object>>();
     ArrayList<HashMap<String, Object>> FoodList;
 //    List<HashMap<String, Object>> itemList;
@@ -97,15 +97,15 @@ public class FoodListActivity extends ActionBarActivity implements AdapterView.O
         whatBtn = intent.getStringExtra("whatBtn?");
         latitude = intent.getDoubleExtra("latitude", 0);
         longitude = intent.getDoubleExtra("longitude",0);
-        SpinnerClassPos = intent.getStringExtra("SpinnerClassPos");
-        SpinnerNamePos = intent.getStringExtra("SpinnerNamePos");
+        SpinnerClass = intent.getStringExtra("SpinnerClassPos");
+        SpinnerName = intent.getStringExtra("SpinnerNamePos");
         InputPrice = intent.getStringExtra("InputPrice");
 
 
     }
 
     private ArrayList<HashMap<String, Object>> setListView(){
-        Log.d("FoodListActivity",whatBtn + " " + SpinnerClassPos + " " + SpinnerNamePos  + " " + InputPrice);
+        Log.d("FoodListActivity",whatBtn + " " + SpinnerClass + " " + SpinnerName  + " " + InputPrice);
 
 
 
@@ -143,8 +143,9 @@ public class FoodListActivity extends ActionBarActivity implements AdapterView.O
                         MySQLConnector.executeQuery(index_long,php);
 //                        Toast.makeText(this, "經度" + String.valueOf(longitude) + "\n緯度" + String.valueOf(latitude) + "\n" + String.valueOf(selGps), Toast.LENGTH_SHORT).show();
                     }
-
-                String index_sel = "SELECT * from `gps` where `long` < 400000 order by `long` asc;";
+                String index_rank = "UPDATE `gps` SET `gRank`=`gFrequency`/`long`";
+                MySQLConnector.executeQuery(index_rank,php);
+                String index_sel = "SELECT * from `gps` where `long` < 400000 and `gStoreClass` LIKE '%" + SpinnerClass + "%'order by `gRank` desc;";
                 String result_sumsel =  MySQLConnector.executeQuery(index_sel,php);
                 JSONArray jsonArray2 = new JSONArray(result_sumsel);
 
@@ -221,14 +222,18 @@ public class FoodListActivity extends ActionBarActivity implements AdapterView.O
         }
         StorePosition = position;
 
-        Toast.makeText(this,"http://maps.google.com/maps?f=d&saddr=" + StoreList.get(StorePosition).get("gX").toString() + "," + StoreList.get(StorePosition).get("gY").toString() +
-                "&daddr=" + StoreList.get(StorePosition).get("gUserX").toString() + "," + StoreList.get(StorePosition).get("gUserY").toString() + "&hl=tw",Toast.LENGTH_LONG).show();
         MyFoodAdapter adapter = new MyFoodAdapter(this);
         FoodListView.setAdapter(adapter);
 
         FoodListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                MySQLConnector.executeQuery("UPDATE `food` SET `frequency` = `frequency`+1 where `fName` = '" +
+                         FoodList.get(position).get("fName").toString() + "'",php);
+
+                MySQLConnector.executeQuery("UPDATE `gps` SET `gFrequency` = `gFrequency`+1 where `gName` = '" +
+                        StoreList.get(StorePosition).get("gName").toString() + "'",php);
 
                 intoGpsView();
 
@@ -334,9 +339,13 @@ public class FoodListActivity extends ActionBarActivity implements AdapterView.O
 
     private void intoGpsView(){
         //Toast.makeText(this, gUserY_pannel, Toast.LENGTH_LONG).show();
+
+
+
+
         Intent it = new Intent(Intent.ACTION_VIEW);
-        it.setData(Uri.parse("http://maps.google.com/maps?f=d&saddr=" + "121.98765" + "," + StoreList.get(StorePosition).get("gY").toString() +
-                "&daddr=" + "129.56789" + "," + StoreList.get(StorePosition).get("gUserY").toString() + "&hl=tw"));
+        it.setData(Uri.parse("http://maps.google.com/maps?f=d&saddr=" + StoreList.get(StorePosition).get("gY").toString() + "," + StoreList.get(StorePosition).get("gX").toString() +
+                "&daddr=" + StoreList.get(StorePosition).get("gUserY").toString() + "," + StoreList.get(StorePosition).get("gUserX").toString() + "&hl=tw"));
 
         startActivity(it);
     }

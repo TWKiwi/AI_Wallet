@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="#FFAD86"
+    android:background="#0080FF"
     tools:context="com.example.dbconnertingsystem.ListViewShowData" >
 
 
@@ -24,10 +24,11 @@
             android:layout_width="0dp"
             android:layout_height="48sp"
             android:textSize="12sp"
-            android:layout_weight="4"
+            android:layout_weight="1"
             android:text="圖片"
             android:gravity="center"
-            android:background="#BB3D00"/>
+            android:textColor="#0000E3"
+            android:background="#ACD6FF"/>
 
 
 
@@ -39,7 +40,8 @@
             android:gravity="center"
             android:layout_weight="2"
             android:text="店名"
-            android:background="#BB3D00"/>
+            android:textColor="#0000E3"
+            android:background="#ACD6FF"/>
 
 
         <TextView
@@ -48,9 +50,10 @@
             android:layout_height="48sp"
             android:textSize="12sp"
             android:gravity="center"
-            android:layout_weight="3"
+            android:layout_weight="2"
             android:text="距離"
-            android:background="#BB3D00"/>
+            android:textColor="#0000E3"
+            android:background="#ACD6FF"/>
 
     </LinearLayout>
 

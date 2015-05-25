@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="#FFCBB3"
-
+    android:background="#66B3FF"
     android:orientation="vertical">
 
 
@@ -15,7 +14,7 @@
             android:layout_height="match_parent"
             android:textSize="24sp"
             android:text="顯示設定"
-            android:textColor="#842B00"
+            android:textColor="#2828FF"
             android:gravity="center"/>
     </TableRow>
 
@@ -28,7 +27,7 @@
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:text="額度顯示方式 :"
-            android:textColor="#842B00"
+            android:textColor="#2828FF"
             android:gravity="center"/>
 
 
@@ -44,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="3.5"
-                android:textColor="#842B00"
+                android:textColor="#2828FF"
                 android:gravity="center"
                 android:text="累計花費/本月預算"
                 android:id="@+id/radioButton1" />
@@ -53,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="3.5"
-                android:textColor="#842B00"
+                android:textColor="#2828FF"
                 android:gravity="center"
                 android:text="剩餘預算/本月預算"
                 android:id="@+id/radioButton2" />
@@ -79,7 +78,7 @@
             android:layout_height="match_parent"
             android:textSize="24sp"
             android:text="智能管家設定"
-            android:textColor="#842B00"
+            android:textColor="#2828FF"
             android:gravity="center"/>
     </TableRow>
 
@@ -92,7 +91,7 @@
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:text="設定月預算額 :"
-            android:textColor="#842B00"
+            android:textColor="#2828FF"
             android:gravity="center" />
 
         <EditText
@@ -100,7 +99,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="7"
             android:id="@+id/setMBudget"
-            android:textColor="#842B00"
+            android:textColor="#2828FF"
             android:inputType="number"
             android:layout_gravity="center"
             android:gravity="left" />
@@ -116,7 +115,7 @@
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:text="每月固定支出 :"
-            android:textColor="#842B00"
+            android:textColor="#2828FF"
             android:gravity="center" />
 
         <EditText
@@ -124,7 +123,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="7"
             android:id="@+id/regularCost"
-            android:textColor="#842B00"
+            android:textColor="#2828FF"
             android:inputType="number"
             android:layout_gravity="center"
             android:gravity="left" />
@@ -147,7 +146,8 @@
             android:id="@+id/aboutUs"
             android:text="關於我們"
             android:textSize="24sp"
-            android:background="#FFBD9D"
+            android:textColor="#2828FF"
+            android:background="#46A3FF"
             android:gravity="center"/>
     </TableRow>
 
@@ -163,9 +163,9 @@
             android:layout_height="match_parent"
             android:text="儲存設定"
             android:textSize="24sp"
-            android:textColor="#FFBD9D"
+            android:textColor="#66B3FF"
             android:id="@+id/saveBtn"
-            android:background="#842B00"
+            android:background="#2828FF"
             android:layout_gravity="bottom" />
         </TableRow>
 

@@ -367,14 +367,14 @@ public class ChargeActivity extends MenuActivity implements View.OnClickListener
             int persent = ((sum + Integer.parseInt(getBudget("RglCost")))*100)/ Integer.parseInt(getBudget("Budget"));//算百分比條小數點弄成百分比整數
             if(persent <= 100) {
                 if(getBudget("ScaleTS").equals("1")) {
-                    ScaleNumM.setText(Html.fromHtml("累計花費(月)<br>" + ((sum + Integer.parseInt(getBudget("RglCost"))) + "<font color = '#FF0000'><big>/</font>" + Integer.parseInt(getBudget("Budget")) + "元")));
+                    ScaleNumM.setText(Html.fromHtml("累計花費(月)<br>" + ((sum + Integer.parseInt(getBudget("RglCost"))) + "<font color = '#FFFFFF'><big>/</font>" + Integer.parseInt(getBudget("Budget")) + "元")));
                 }else if(getBudget("ScaleTS").equals("2")){
-                    ScaleNumM.setText(Html.fromHtml("剩餘預算(月)<br>" + ((Integer.parseInt(getBudget("Budget")) - (sum + Integer.parseInt(getBudget("RglCost")))) + "<font color = '#FF0000'><big>/</font>" + Integer.parseInt(getBudget("Budget")) + "元")));
+                    ScaleNumM.setText(Html.fromHtml("剩餘預算(月)<br>" + ((Integer.parseInt(getBudget("Budget")) - (sum + Integer.parseInt(getBudget("RglCost")))) + "<font color = '#FFFFFF'><big>/</font>" + Integer.parseInt(getBudget("Budget")) + "元")));
                 }else{
                     ScaleNumM.setText(getBudget("ScaleTS"));
                 }
             }else if(persent > 100){
-                ScaleNumM.setText(Html.fromHtml("本月" + "<font color = '#FF0000'><big>超支<br></font>" + ((sum + Integer.parseInt(getBudget("RglCost"))) - Integer.parseInt(getBudget("Budget")))+ "元"));
+                ScaleNumM.setText(Html.fromHtml("本月" + "<font color = '#FFFFFF'><big>超支<br></font>" + ((sum + Integer.parseInt(getBudget("RglCost"))) - Integer.parseInt(getBudget("Budget")))+ "元"));
                 persent = 100;
             }
             scale_MView.addView(getHBarChartView(type,sum,"Month"));
@@ -416,14 +416,14 @@ public class ChargeActivity extends MenuActivity implements View.OnClickListener
             int persent = ((sum + Integer.parseInt(getBudget("RglCost"))/30)*100)/(Integer.parseInt(getBudget("Budget"))/30);//算百分比條小數點弄成百分比整數
             if(persent <= 100) {
                 if(getBudget("ScaleTS").equals("1")) {
-                    ScaleNumD.setText(Html.fromHtml("累計花費(日)<br>" + (sum + Integer.parseInt(getBudget("RglCost")) / 30) + "<font color = '#FF0000'><big>/</font>" + (Integer.parseInt(getBudget("Budget")) / 30) + "元"));
+                    ScaleNumD.setText(Html.fromHtml("累計花費(日)<br>" + (sum + Integer.parseInt(getBudget("RglCost")) / 30) + "<font color = '#FFFFFF'><big>/</font>" + (Integer.parseInt(getBudget("Budget")) / 30) + "元"));
                 }else if(getBudget("ScaleTS").equals("2")){
-                    ScaleNumD.setText(Html.fromHtml("剩餘預算(日)<br>" + ((Integer.parseInt(getBudget("Budget")) / 30) - (sum + Integer.parseInt(getBudget("RglCost")) / 30) + "<font color = '#FF0000'><big>/</font>" + (Integer.parseInt(getBudget("Budget")) / 30) + "元")));
+                    ScaleNumD.setText(Html.fromHtml("剩餘預算(日)<br>" + ((Integer.parseInt(getBudget("Budget")) / 30) - (sum + Integer.parseInt(getBudget("RglCost")) / 30) + "<font color = '#FFFFFF'><big>/</font>" + (Integer.parseInt(getBudget("Budget")) / 30) + "元")));
                 }else{
                     ScaleNumM.setText(getBudget("ScaleTS"));
                 }
             }else if(persent > 100){
-                ScaleNumD.setText(Html.fromHtml("本日" + "<font color = '#FF0000'><big>超支<br></font>" + ((sum + Integer.parseInt(getBudget("RglCost")) / 30 - Integer.parseInt(getBudget("Budget")) / 30)) + "元"));
+                ScaleNumD.setText(Html.fromHtml("本日" + "<font color = '#FFFFFF'><big>超支<br></font>" + ((sum + Integer.parseInt(getBudget("RglCost")) / 30 - Integer.parseInt(getBudget("Budget")) / 30)) + "元"));
                 persent = 100;
             }
             scale_DView.addView(getHBarChartView(type,sum,"Day"));
@@ -436,7 +436,7 @@ public class ChargeActivity extends MenuActivity implements View.OnClickListener
         List < double []> values = new ArrayList<> ();
         values.add( new  double [] {100});
         values.add( new  double [] {persent});
-        int [] colors = new  int [] { Color.parseColor("#FFCBB3"), Color.parseColor("#842B00")};
+        int [] colors = new  int [] { Color.parseColor("#46A3FF"), Color.parseColor("#2828FF")};
         XYMultipleSeriesRenderer renderer = buildBarRenderer(colors);//長條圖顏色設置
         renderer.setOrientation(XYMultipleSeriesRenderer.Orientation.VERTICAL);
         /**設置圖形renderer,標題,橫軸,縱軸,橫軸最小值,橫軸最大值,縱軸最大值,縱軸最小值,設定軸寬,設定軸色,標籤顏色*/
@@ -447,7 +447,7 @@ public class ChargeActivity extends MenuActivity implements View.OnClickListener
         renderer.setYLabels(5);//設置y軸標籤數
         renderer.setXLabelsAlign(Paint.Align.CENTER);//設置x軸標籤置中
         renderer.setYLabelsAlign(Paint.Align.RIGHT);//設置y軸標籤置中
-        renderer.setYLabelsColor(0, Color.BLUE);//設置y軸標籤顏色
+        renderer.setYLabelsColor(0, Color.WHITE);//設置y軸標籤顏色
         renderer.setPanEnabled(false, false);//圖表移動  If you want to lock both axis, then use renderer.setPanEnabled(false, false);
         renderer.setZoomEnabled(false, false);//圖表縮放(x軸,y軸)
         renderer.setZoomRate(1.1f);//放大倍率
@@ -484,7 +484,7 @@ public class ChargeActivity extends MenuActivity implements View.OnClickListener
         List < double []> values = new ArrayList<> ();
         values.add( new  double [] {100,100,100,100,100,100,100});
         values.add( new  double [] {(type[0]),(type[1]),(type[2]),(type[3]),(type[4]),(type[5]),(type[6])});
-        int [] colors = new  int [] { Color.parseColor("#FFCBB3"), Color.parseColor("#842B00")};
+        int [] colors = new  int [] { Color.parseColor("#46A3FF"), Color.parseColor("#2828FF")};
         XYMultipleSeriesRenderer renderer = buildBarRenderer(colors);//長條圖顏色設置
         renderer.setOrientation(XYMultipleSeriesRenderer.Orientation.HORIZONTAL);
         /**設置圖形renderer,標題,橫軸,縱軸,橫軸最小值,橫軸最大值,縱軸最大值,縱軸最小值,設定軸寬,設定軸色,標籤顏色*/
@@ -495,7 +495,7 @@ public class ChargeActivity extends MenuActivity implements View.OnClickListener
         renderer.setYLabels(0);//設置y軸標籤數
         renderer.setXLabelsAlign(Paint.Align.CENTER);//設置x軸標籤置中
         renderer.setYLabelsAlign(Paint.Align.RIGHT);//設置y軸標籤置中
-        renderer.setYLabelsColor(0, Color.BLUE);//設置y軸標籤顏色
+        renderer.setYLabelsColor(0, Color.WHITE);//設置y軸標籤顏色
         renderer.setPanEnabled(false, false);//圖表移動  If you want to lock both axis, then use renderer.setPanEnabled(false, false);
         renderer.setZoomEnabled(false, false);//圖表縮放(x軸,y軸)
         renderer.setZoomRate(1.1f);//放大倍率
@@ -585,14 +585,14 @@ public class ChargeActivity extends MenuActivity implements View.OnClickListener
         int persent = ((sum + Integer.parseInt(getBudget("RglCost")))*100)/ Integer.parseInt(getBudget("Budget"));//算百分比條小數點弄成百分比整數
         if(persent <= 100) {
             if(getBudget("ScaleTS").equals("1")) {
-                ScaleNumM.setText(Html.fromHtml("累計花費(月)" + persent + "%<br>" + ((sum + Integer.parseInt(getBudget("RglCost"))) + "<font color = '#FF0000'><big>/</font>" + Integer.parseInt(getBudget("Budget")) + "元")));
+                ScaleNumM.setText(Html.fromHtml("累計花費(月)" + persent + "%<br>" + ((sum + Integer.parseInt(getBudget("RglCost"))) + "<font color = '#FFFFFF'><big>/</font>" + Integer.parseInt(getBudget("Budget")) + "元")));
             }else if(getBudget("ScaleTS").equals("2")){
-                ScaleNumM.setText(Html.fromHtml("剩餘預算(月)" + persent + "%<br>" + ((Integer.parseInt(getBudget("Budget")) - (sum + Integer.parseInt(getBudget("RglCost")))) + "<font color = '#FF0000'><big>/</font>" + Integer.parseInt(getBudget("Budget")) + "元")));
+                ScaleNumM.setText(Html.fromHtml("剩餘預算(月)" + persent + "%<br>" + ((Integer.parseInt(getBudget("Budget")) - (sum + Integer.parseInt(getBudget("RglCost")))) + "<font color = '#FFFFFF'><big>/</font>" + Integer.parseInt(getBudget("Budget")) + "元")));
             }else{
                 ScaleNumM.setText(getBudget("ScaleTS"));
             }
         }else if(persent > 100){
-            ScaleNumM.setText(Html.fromHtml("本月" + "<font color = '#FF0000'><big>超支<br></font>" + ((sum + Integer.parseInt(getBudget("RglCost"))) - Integer.parseInt(getBudget("Budget")))+ "元"));
+            ScaleNumM.setText(Html.fromHtml("本月" + "<font color = '#FFFFFF'><big>超支<br></font>" + ((sum + Integer.parseInt(getBudget("RglCost"))) - Integer.parseInt(getBudget("Budget")))+ "元"));
             persent = 100;
         }
 
@@ -612,14 +612,14 @@ public class ChargeActivity extends MenuActivity implements View.OnClickListener
         int persent = ((sum + Integer.parseInt(getBudget("RglCost"))/30)*100)/(Integer.parseInt(getBudget("Budget"))/30);//算百分比條小數點弄成百分比整數
         if(persent <= 100) {
             if(getBudget("ScaleTS").equals("1")) {
-                ScaleNumD.setText(Html.fromHtml("累計花費(日)" + persent + "%<br>" + (sum + Integer.parseInt(getBudget("RglCost")) / 30) + "<font color = '#FF0000'><big>/</font>" + (Integer.parseInt(getBudget("Budget")) / 30) + "元"));
+                ScaleNumD.setText(Html.fromHtml("累計花費(日)" + persent + "%<br>" + (sum + Integer.parseInt(getBudget("RglCost")) / 30) + "<font color = '#FFFFFF'><big>/</font>" + (Integer.parseInt(getBudget("Budget")) / 30) + "元"));
             }else if(getBudget("ScaleTS").equals("2")){
-                ScaleNumD.setText(Html.fromHtml("剩餘預算(日)" + persent + "%<br>" + ((Integer.parseInt(getBudget("Budget")) / 30) - (sum + Integer.parseInt(getBudget("RglCost")) / 30) + "<font color = '#FF0000'><big>/</font>" + (Integer.parseInt(getBudget("Budget")) / 30) + "元")));
+                ScaleNumD.setText(Html.fromHtml("剩餘預算(日)" + persent + "%<br>" + ((Integer.parseInt(getBudget("Budget")) / 30) - (sum + Integer.parseInt(getBudget("RglCost")) / 30) + "<font color = '#FFFFFF'><big>/</font>" + (Integer.parseInt(getBudget("Budget")) / 30) + "元")));
             }else{
                 ScaleNumM.setText(getBudget("ScaleTS"));
             }
         }else if(persent > 100){
-            ScaleNumD.setText(Html.fromHtml("本日" + "<font color = '#FF0000'><big>超支<br></font>" + ((sum + Integer.parseInt(getBudget("RglCost")) / 30 - Integer.parseInt(getBudget("Budget")) / 30)) + "元"));
+            ScaleNumD.setText(Html.fromHtml("本日" + "<font color = '#FFFFFF'><big>超支<br></font>" + ((sum + Integer.parseInt(getBudget("RglCost")) / 30 - Integer.parseInt(getBudget("Budget")) / 30)) + "元"));
             persent = 100;
         }
 

@@ -16,7 +16,7 @@
             android:layout_weight="1"
             android:textSize="18sp"
             android:gravity="center"
-            android:textColor="#842B00"
+            android:textColor="#2828FF"
             android:text="New Text"
             android:id="@+id/showScaleNumM"/>
 
@@ -52,7 +52,7 @@
         android:layout_weight="1"
         android:textSize="18sp"
         android:gravity="center"
-        android:textColor="#842B00"
+        android:textColor="#2828FF"
         android:text="New Text"
         android:id="@+id/showScaleNumD"/>
 
@@ -85,9 +85,10 @@
             android:layout_weight="1"
             android:textSize="18sp"
             android:gravity="center"
-            android:textColor="#842B00"
+            android:textColor="#2828FF"
+            android:background="#2894FF"
             android:text="切換開銷類別瀏覽"
-            android:background="#FFCBB3"
+
             android:id="@+id/MD_ScaleBtn"/>
 
     </TableRow>

@@ -15,7 +15,7 @@
             android:layout_weight="1"
             android:textSize="18sp"
             android:gravity="center"
-            android:textColor="#842B00"
+            android:textColor="#2828FF"
             android:text="各類開銷"
             android:id="@+id/showScaleNumM"/>
 

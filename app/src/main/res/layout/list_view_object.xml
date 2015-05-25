@@ -16,7 +16,8 @@
             android:layout_weight="1"
             android:paddingRight="10sp"
             android:paddingLeft="5sp"
-            android:background="#FFAD86"/>
+            android:textColor="#2828FF"
+            android:background="#46A3FF"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="86sp"
@@ -25,7 +26,8 @@
             android:text=""
             android:id="@+id/itemView"
             android:layout_weight="3"
-            android:background="#FFAD86"/>
+            android:textColor="#2828FF"
+            android:background="#46A3FF"/>
 
         <Button
             android:layout_width="0dp"
@@ -33,7 +35,8 @@
             android:layout_gravity="center"
             android:text="刪除"
             android:id="@+id/deleBtn"
-            android:background="#FFAD86"
+            android:textColor="#2828FF"
+            android:background="#46A3FF"
             android:layout_weight="1"/>
 
         </TableRow>

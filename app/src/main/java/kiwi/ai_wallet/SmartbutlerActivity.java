@@ -31,7 +31,7 @@ public class SmartbutlerActivity extends MenuActivity implements View.OnClickLis
         smartbutlerTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SmartbutlerActivity.this,MySQLActivity.class);
+                Intent intent = new Intent(SmartbutlerActivity.this,FoodActivity.class);
                 startActivity(intent);
             }
         });
@@ -56,7 +56,7 @@ public class SmartbutlerActivity extends MenuActivity implements View.OnClickLis
     @Override
     public void onClick(View v){
         switch (v.getId()){
-            case R.id.smartbutlerTxt :   Intent intent = new Intent(SmartbutlerActivity.this,MySQLActivity.class);
+            case R.id.smartbutlerTxt :   Intent intent = new Intent(SmartbutlerActivity.this,FoodActivity.class);
                                          startActivity(intent);
                                          break;
 
