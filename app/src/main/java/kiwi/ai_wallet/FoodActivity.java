@@ -257,7 +257,7 @@ public class FoodActivity extends Activity implements OnClickListener, OnItemSel
         //取得最佳定位提供者
         String best = mgr.getBestProvider(new Criteria(), true);//true 找出已啟用
         if(best != null){
-            GPSBtn.setText("正在定位中...");
+            GPSBtn.setText("請選擇時段並等候定位完成...");
             mgr.requestLocationUpdates(best,MIN_TIME,MIN_DIST,this);//註冊監聽器
         }else GPSBtn.setText("請確認有開啟定位功能！");
     }
@@ -281,8 +281,7 @@ public class FoodActivity extends Activity implements OnClickListener, OnItemSel
 //        str += String.format("\n緯度:%.5f\n經度:%.5f",
 //                latitude,
 //                longitude);
-        GPSBtn.setText("定位完成!!");
-        ProposalBtn.setText("若顯示定位完成，\n完成點我查詢！！");
+        GPSBtn.setText("定位完成!!\n請選擇時段並點選系統推薦商品!!");
 
     }
 
