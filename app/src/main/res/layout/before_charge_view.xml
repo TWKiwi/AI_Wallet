@@ -73,7 +73,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/takePicBtn"
-            android:text="拍照"/>
+            android:text="拍照"
+            android:visibility="gone" />
 
         <ImageView
             android:layout_width="1dp"

@@ -227,7 +227,6 @@ public class DateListActivity extends ChargeActivity implements View.OnClickList
             buyPriceBefore = (EditText) view.findViewById(R.id.buyPriceBefore);
             takePicBtn = (Button) view.findViewById(R.id.takePicBtn);
             buyTypeBefore = (Spinner) view.findViewById(R.id.buyTypeBefore);
-            PhotoPicBefore = (ImageView) view.findViewById(R.id.PhotoPicBefore);
             new AlertDialog.Builder(this)
                     .setTitle("補記帳")
                     .setView(view)

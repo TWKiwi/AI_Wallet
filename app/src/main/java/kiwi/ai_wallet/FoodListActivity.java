@@ -201,7 +201,7 @@ public class FoodListActivity extends ActionBarActivity implements AdapterView.O
 
         try{
             FoodList = new ArrayList<HashMap<String, Object>>();
-            String index_sel = "SELECT * from `food` where `fStore` = '"+ StoreList.get(position).get("gName").toString() + "'";
+            String index_sel = "SELECT * from `food` where `fStore` = '"+ StoreList.get(position).get("gName").toString() + "' ORDER BY `frequency` DESC";
             String result_sumsel =  MySQLConnector.executeQuery(index_sel,php);
             JSONArray jsonArray2 = new JSONArray(result_sumsel);
 

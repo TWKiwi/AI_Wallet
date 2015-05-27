@@ -253,8 +253,9 @@ public class MenuActivity extends ActionBarActivity implements View.OnClickListe
 
     private void setGif(){
         gif = (GifView) findViewById(R.id.gifview01);
-        gif.setGifImage(R.drawable.front);
+        gif.setGifImage(R.drawable.small_blue);
         gif.setGifImageType(GifView.GifImageType.COVER);
+
     }
 
     @Override

@@ -29,15 +29,17 @@
             android:text="當日沒有消費記錄"
             android:gravity="center"
             android:textColor="#0000E3"
+            android:background="#66B3FF"
             android:id="@+id/theDateCost"/>
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="新增"
+            android:text="補記帳"
             android:gravity="center"
             android:textColor="#0000E3"
+            android:background="#46A3FF"
             android:id="@+id/newData"/>
 
 
