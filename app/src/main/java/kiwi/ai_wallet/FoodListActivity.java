@@ -121,7 +121,7 @@ public class FoodListActivity extends ActionBarActivity implements AdapterView.O
 //                JSONArray jsonArray = new JSONArray(result_sum);
 //                   for (int i = 0; i < jsonArray.length(); i++) {
 
-                        String index_sum = "UPDATE `ai_pomo`.`gps` SET `gUserX` = " + longitude + ", `gUserY` = " + latitude + ";";
+                        String index_sum = "UPDATE `ai_pomo`.`gps` SET `gUserX` = " + "121.5644599" + ", `gUserY` = " + "23.9975483" + ";";
                         MySQLConnector.executeQuery(index_sum,php);
 
 //                    }
@@ -145,7 +145,7 @@ public class FoodListActivity extends ActionBarActivity implements AdapterView.O
                     }
                 String index_rank = "UPDATE `gps` SET `gRank`=`gFrequency`/`long`";
                 MySQLConnector.executeQuery(index_rank,php);
-                String index_sel = "SELECT * from `gps` where `long` < 400000 and `gStoreClass` LIKE '%" + SpinnerClass + "%'order by `gRank` desc;";
+                String index_sel = "SELECT * from `gps` where `long` < 5000 and `gStoreClass` LIKE '%" + SpinnerClass + "%'order by `gRank` desc;";
                 String result_sumsel =  MySQLConnector.executeQuery(index_sel,php);
                 JSONArray jsonArray2 = new JSONArray(result_sumsel);
 
