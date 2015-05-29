@@ -278,10 +278,10 @@ public class FoodActivity extends Activity implements OnClickListener, OnItemSel
         String str = "定位提供者：" + location.getProvider();
         latitude = location.getLatitude();
         longitude = location.getLongitude();
-//        str += String.format("\n緯度:%.5f\n經度:%.5f",
-//                latitude,
-//                longitude);
-        GPSBtn.setText("定位完成!!\n請選擇時段並點選系統推薦商品!!");
+        str += String.format("\n緯度:%.5f\n經度:%.5f",
+                latitude,
+                longitude);
+        GPSBtn.setText("定位完成!!\n請選擇時段並點選系統推薦商品!!\n" + str);
 
     }
 

@@ -121,7 +121,7 @@ public class FoodListActivity extends ActionBarActivity implements AdapterView.O
 //                JSONArray jsonArray = new JSONArray(result_sum);
 //                   for (int i = 0; i < jsonArray.length(); i++) {
 
-                        String index_sum = "UPDATE `ai_pomo`.`gps` SET `gUserX` = " + "121.5644599" + ", `gUserY` = " + "23.9975483" + ";";
+                        String index_sum = "UPDATE `ai_pomo`.`gps` SET `gUserX` = " + longitude + ", `gUserY` = " + latitude + ";";
                         MySQLConnector.executeQuery(index_sum,php);
 
 //                    }
