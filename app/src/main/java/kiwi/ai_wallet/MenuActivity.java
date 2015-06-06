@@ -24,10 +24,11 @@ import java.util.Calendar;
 public class MenuActivity extends ActionBarActivity implements View.OnClickListener{
 
 
-    protected SharedPreferences optionSpr;
-    protected int Budget;//預算屬性
-    protected int RegularCost;//預算屬性
-    protected int ScaleTS;
+    private SharedPreferences optionSpr;
+    private int Budget;//預算屬性
+    private int RegularCost;//預算屬性
+    protected int ScaleTS,FoodRiceRank,FoodNoodleRank;
+
 //    protected SharedPreferences.Editor optSprEdt;
     protected PendingIntent pendingIntent;
     protected GifView gif;
@@ -134,7 +135,7 @@ public class MenuActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     public void setScaleTextStyle(int i){
-        optionSpr = getSharedPreferences("Option",0);
+//        optionSpr = getSharedPreferences("Option",0);
 
         SharedPreferences.Editor optSprEdt = optionSpr.edit();
 
@@ -143,7 +144,7 @@ public class MenuActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     public void setBudget(int i){
-        optionSpr = getSharedPreferences("Option",0);
+//        optionSpr = getSharedPreferences("Option",0);
 
         SharedPreferences.Editor optSprEdt = optionSpr.edit();
 
@@ -152,7 +153,7 @@ public class MenuActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     public void setRegularCost(int i){
-        optionSpr = getSharedPreferences("Option", 0);
+//        optionSpr = getSharedPreferences("Option", 0);
 
         SharedPreferences.Editor optSprEdt = optionSpr.edit();
 
@@ -160,8 +161,26 @@ public class MenuActivity extends ActionBarActivity implements View.OnClickListe
 
     }
 
+    public void setFoodRiceRank(int i){
+//        optionSpr = getSharedPreferences("Option", 0);
+
+        SharedPreferences.Editor optSprEdt = optionSpr.edit();
+
+        optSprEdt.putInt("rice",i).commit();
+
+    }
+
+    public void setFoodNoodleRank(int i){
+//        optionSpr = getSharedPreferences("Option", 0);
+
+        SharedPreferences.Editor optSprEdt = optionSpr.edit();
+
+        optSprEdt.putInt("noodles",i).commit();
+
+    }
+
     public String getBudget(String s){
-        optionSpr = getSharedPreferences("Option", 0);
+//        optionSpr = getSharedPreferences("Option", 0);
 
         switch (s){
             case "Budget" : Budget = optionSpr.getInt("Budget", 18000);
@@ -172,6 +191,14 @@ public class MenuActivity extends ActionBarActivity implements View.OnClickListe
                             break;
             case "ScaleTS" : ScaleTS = optionSpr.getInt("ScaleTS",1);
                             s = String.valueOf(ScaleTS);
+                            break;
+            case "FoodRice" : FoodRiceRank = optionSpr.getInt("rice",0);
+                              s = String.valueOf(FoodRiceRank);
+                              break;
+            case "FoodNoodle" : FoodNoodleRank = optionSpr.getInt("noodles",0);
+                              s = String.valueOf(FoodNoodleRank);
+                              break;
+
         }
 
 //        Log.d("取得設置",String.valueOf(Budget)+ "/" + String.valueOf(RegularCost) + "/" +String.valueOf(ScaleTS));
@@ -252,6 +279,7 @@ public class MenuActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     private void setGif(){
+        optionSpr = getSharedPreferences("Option",0);
         gif = (GifView) findViewById(R.id.gifview01);
         gif.setGifImage(R.drawable.small_blue);
         gif.setGifImageType(GifView.GifImageType.COVER);

@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class FoodListActivity extends ActionBarActivity implements AdapterView.OnItemClickListener {
+public class FoodListActivity extends FoodActivity implements AdapterView.OnItemClickListener {
 
     private ListView StoreListView,FoodListView;
     private ImageView StorePic;
@@ -51,7 +51,7 @@ public class FoodListActivity extends ActionBarActivity implements AdapterView.O
     double latitude,longitude;//latitude(緯度 Y),longitude(經度 X);   (X-X菊)^2 + (Y-Y菊)^2 <= 1^2
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store_list);
         /**螢幕不隨手機旋轉*/
@@ -98,14 +98,14 @@ public class FoodListActivity extends ActionBarActivity implements AdapterView.O
         latitude = intent.getDoubleExtra("latitude", 0);
         longitude = intent.getDoubleExtra("longitude",0);
         SpinnerClass = intent.getStringExtra("SpinnerClassPos");
-        SpinnerName = intent.getStringExtra("SpinnerNamePos");
-        InputPrice = intent.getStringExtra("InputPrice");
+//        SpinnerName = intent.getStringExtra("SpinnerNamePos");
+//        InputPrice = intent.getStringExtra("InputPrice");
 
 
     }
 
     private ArrayList<HashMap<String, Object>> setListView(){
-        Log.d("FoodListActivity",whatBtn + " " + SpinnerClass + " " + SpinnerName  + " " + InputPrice);
+//        Log.d("FoodListActivity",whatBtn + " " + SpinnerClass + " " + SpinnerName  + " " + InputPrice);
 
 
 
@@ -120,10 +120,8 @@ public class FoodListActivity extends ActionBarActivity implements AdapterView.O
 //            try{
 //                JSONArray jsonArray = new JSONArray(result_sum);
 //                   for (int i = 0; i < jsonArray.length(); i++) {
-
-                        String index_sum = "UPDATE `ai_pomo`.`gps` SET `gUserX` = " + longitude + ", `gUserY` = " + latitude + ";";
-                        MySQLConnector.executeQuery(index_sum,php);
-
+            String index_sum = "UPDATE `ai_pomo`.`gps` SET `gUserX` = " + "119.57241" + ", `gUserY` = " + "23.57853" + ";";
+            MySQLConnector.executeQuery(index_sum,php);
 //                    }
 //            }
 //            catch (JSONException e){
@@ -141,7 +139,6 @@ public class FoodListActivity extends ActionBarActivity implements AdapterView.O
                         int selGps = Integer.parseInt(jsonData.getString("Distance"));
                         String index_long =  "UPDATE `gps` SET `long` = "+ selGps +" where `gId` = '" + (i+1) + ";'";
                         MySQLConnector.executeQuery(index_long,php);
-//                        Toast.makeText(this, "經度" + String.valueOf(longitude) + "\n緯度" + String.valueOf(latitude) + "\n" + String.valueOf(selGps), Toast.LENGTH_SHORT).show();
                     }
                 String index_rank = "UPDATE `gps` SET `gRank`=`gFrequency`/`long`";
                 MySQLConnector.executeQuery(index_rank,php);
@@ -214,6 +211,7 @@ public class FoodListActivity extends ActionBarActivity implements AdapterView.O
                 h2.put("fName", jsonData.getString("fName"));
                 h2.put("image", jsonData.getString("image"));
                 h2.put("fPrice", jsonData.getString("fPrice"));
+                h2.put("fSort", jsonData.getString("fSort"));
 
                 FoodList.add(h2);
             }
@@ -231,6 +229,12 @@ public class FoodListActivity extends ActionBarActivity implements AdapterView.O
 
                 MySQLConnector.executeQuery("UPDATE `food` SET `frequency` = `frequency`+1 where `fName` = '" +
                          FoodList.get(position).get("fName").toString() + "'",php);
+                if(FoodList.get(position).get("fSort").toString().equals("rice")) {
+                    setFoodRiceRank(Integer.parseInt(getBudget("FoodRice")) + 1);
+                }
+                else if(FoodList.get(position).get("fSort").toString().equals("noodles")){
+                    setFoodNoodleRank(Integer.parseInt(getBudget("FoodNoodle")) + 1);
+                }
 
                 MySQLConnector.executeQuery("UPDATE `gps` SET `gFrequency` = `gFrequency`+1 where `gName` = '" +
                         StoreList.get(StorePosition).get("gName").toString() + "'",php);

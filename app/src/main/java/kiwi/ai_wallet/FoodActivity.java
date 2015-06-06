@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 
 
-public class FoodActivity extends Activity implements OnClickListener, OnItemSelectedListener,LocationListener{
+public class FoodActivity extends SmartbutlerActivity implements OnClickListener, OnItemSelectedListener,LocationListener{
 
     Spinner FoodClass,FoodName;
     EditText fPrice;
