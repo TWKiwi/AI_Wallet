@@ -140,8 +140,19 @@ public class FoodListActivity extends FoodActivity implements AdapterView.OnItem
                         String index_long =  "UPDATE `gps` SET `long` = "+ selGps +" where `gId` = '" + (i+1) + ";'";
                         MySQLConnector.executeQuery(index_long,php);
                     }
-                String index_rank = "UPDATE `gps` SET `gRank`=`gFrequency`/`long`";
-                MySQLConnector.executeQuery(index_rank,php);
+//                String index_rank = "UPDATE `gps` SET `gRank`=`gFrequency`/`long`";
+//                MySQLConnector.executeQuery(index_rank,php);
+//
+//                String select = "SELECT DISTINCT `fStore` FROM `food` WHERE `fName` like '%麵%' ORDER BY `fRank` DESC";
+//                MySQLConnector.executeQuery(index_rank,php);
+//                JSONArray jsonArray1 = new JSONArray(select);
+//
+//                for(int i = 0; i < jsonArray1.length(); i++){
+//                    JSONObject jsonObject = jsonArray1.getJSONObject(i);
+//                    MySQLConnector.executeQuery("UPDATE `gps` SET `gRank`=`gFrequency`*100/`long` where `gName` = " + jsonObject.getString("fStore"),php);
+//
+//                }
+
                 String index_sel = "SELECT * from `gps` where `long` < 5000 and `gStoreClass` LIKE '%" + SpinnerClass + "%'order by `gRank` desc;";
                 String result_sumsel =  MySQLConnector.executeQuery(index_sel,php);
                 JSONArray jsonArray2 = new JSONArray(result_sumsel);
