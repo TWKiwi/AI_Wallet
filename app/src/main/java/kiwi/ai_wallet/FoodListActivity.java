@@ -30,7 +30,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class FoodListActivity extends FoodActivity implements AdapterView.OnItemClickListener {
@@ -140,19 +144,30 @@ public class FoodListActivity extends FoodActivity implements AdapterView.OnItem
                         String index_long =  "UPDATE `gps` SET `long` = "+ selGps +" where `gId` = '" + (i+1) + ";'";
                         MySQLConnector.executeQuery(index_long,php);
                     }
-//                String index_rank = "UPDATE `gps` SET `gRank`=`gFrequency`/`long`";
-//                MySQLConnector.executeQuery(index_rank,php);
-//
-//                String select = "SELECT DISTINCT `fStore` FROM `food` WHERE `fName` like '%麵%' ORDER BY `fRank` DESC";
-//                MySQLConnector.executeQuery(index_rank,php);
-//                JSONArray jsonArray1 = new JSONArray(select);
-//
-//                for(int i = 0; i < jsonArray1.length(); i++){
-//                    JSONObject jsonObject = jsonArray1.getJSONObject(i);
-//                    MySQLConnector.executeQuery("UPDATE `gps` SET `gRank`=`gFrequency`*100/`long` where `gName` = " + jsonObject.getString("fStore"),php);
-//
-//                }
+                String index_rank = "UPDATE `gps` SET `gRank`=`gFrequency`/`long`";
+                MySQLConnector.executeQuery(index_rank,php);
 
+            if(hashMapSort().equals("rice")) {
+                //特殊加成
+                String select = "SELECT DISTINCT `fStore` FROM `food` WHERE `fSort` like '%rice%' ORDER BY `fRank` DESC";
+                JSONArray jsonArray1 = new JSONArray(MySQLConnector.executeQuery(select, php));
+
+                for (int i = 0; i < jsonArray1.length(); i++) {
+                    JSONObject jsonObject = jsonArray1.getJSONObject(i);
+                    MySQLConnector.executeQuery("UPDATE `gps` SET `gRank`=`gFrequency`*1000/`long` where `gName` = '" + jsonObject.getString("fStore") + "'", php);
+
+                }
+            }else if(hashMapSort().equals("noodles")) {
+                //特殊加成
+                String select = "SELECT DISTINCT `fStore` FROM `food` WHERE `fSort` like '%noodles%' ORDER BY `fRank` DESC";
+                JSONArray jsonArray1 = new JSONArray(MySQLConnector.executeQuery(select, php));
+
+                for (int i = 0; i < jsonArray1.length(); i++) {
+                    JSONObject jsonObject = jsonArray1.getJSONObject(i);
+                    MySQLConnector.executeQuery("UPDATE `gps` SET `gRank`=`gFrequency`*1000/`long` where `gName` = '" + jsonObject.getString("fStore") + "'", php);
+
+                }
+            }
                 String index_sel = "SELECT * from `gps` where `long` < 5000 and `gStoreClass` LIKE '%" + SpinnerClass + "%'order by `gRank` desc;";
                 String result_sumsel =  MySQLConnector.executeQuery(index_sel,php);
                 JSONArray jsonArray2 = new JSONArray(result_sumsel);
@@ -363,6 +378,25 @@ public class FoodListActivity extends FoodActivity implements AdapterView.OnItem
                 "&daddr=" + StoreList.get(StorePosition).get("gUserY").toString() + "," + StoreList.get(StorePosition).get("gUserX").toString() + "&hl=tw"));
 
         startActivity(it);
+    }
+
+    private String hashMapSort(){
+        HashMap<String,Integer> hashMap = new HashMap<>();
+        hashMap.put("noodles",Integer.parseInt(getBudget("FoodNoodle")));
+        hashMap.put("rice",Integer.parseInt(getBudget("FoodRice")));
+
+        List<Map.Entry<String,Integer>> listData = new ArrayList<Map.Entry<String,Integer>>(hashMap.entrySet());
+
+        Collections.sort(listData, new Comparator<Map.Entry<String,Integer>>(){
+            public int compare(Map.Entry<String,Integer> entry1,
+                               Map.Entry<String,Integer> entry2){
+                return (entry2.getValue() - entry1.getValue());
+            }
+        });
+            //取得首筆資料
+            return listData.get(1).getKey();
+
+
     }
 
 
