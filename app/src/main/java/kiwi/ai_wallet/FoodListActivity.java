@@ -124,7 +124,7 @@ public class FoodListActivity extends FoodActivity implements AdapterView.OnItem
 //            try{
 //                JSONArray jsonArray = new JSONArray(result_sum);
 //                   for (int i = 0; i < jsonArray.length(); i++) {
-            String index_sum = "UPDATE `ai_pomo`.`gps` SET `gUserX` = " + "119.57241" + ", `gUserY` = " + "23.57853" + ";";
+            String index_sum = "UPDATE `ai_pomo`.`gps` SET `gUserX` = " + "121.595833" + ", `gUserY` = " + "23.99124" + ";";
             MySQLConnector.executeQuery(index_sum,php);
 //                    }
 //            }
@@ -154,7 +154,7 @@ public class FoodListActivity extends FoodActivity implements AdapterView.OnItem
 
                 for (int i = 0; i < jsonArray1.length(); i++) {
                     JSONObject jsonObject = jsonArray1.getJSONObject(i);
-                    MySQLConnector.executeQuery("UPDATE `gps` SET `gRank`=`gFrequency`*1000/`long` where `gName` = '" + jsonObject.getString("fStore") + "'", php);
+                    MySQLConnector.executeQuery("UPDATE `gps` SET `gRank`=`gFrequency`*10/`long`+50 where `gName` = '" + jsonObject.getString("fStore") + "'", php);
 
                 }
             }else if(hashMapSort().equals("noodles")) {
@@ -164,7 +164,7 @@ public class FoodListActivity extends FoodActivity implements AdapterView.OnItem
 
                 for (int i = 0; i < jsonArray1.length(); i++) {
                     JSONObject jsonObject = jsonArray1.getJSONObject(i);
-                    MySQLConnector.executeQuery("UPDATE `gps` SET `gRank`=`gFrequency`*1000/`long` where `gName` = '" + jsonObject.getString("fStore") + "'", php);
+                    MySQLConnector.executeQuery("UPDATE `gps` SET `gRank`=`gFrequency`*10/`long`+50 where `gName` = '" + jsonObject.getString("fStore") + "'", php);
 
                 }
             }
@@ -394,7 +394,7 @@ public class FoodListActivity extends FoodActivity implements AdapterView.OnItem
             }
         });
             //取得首筆資料
-            return listData.get(1).getKey();
+            return listData.get(0).getKey();
 
 
     }
