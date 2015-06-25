@@ -110,57 +110,6 @@ public class FoodListActivity extends FoodActivity implements AdapterView.OnItem
 
     private ArrayList<HashMap<String, Object>> setListView(){
 
-
-        if(whatBtn.equals("isProposal")){
-            Intent intent = getIntent();
-            latitude = intent.getDoubleExtra("latitude", 0);
-            longitude = intent.getDoubleExtra("longitude", 0);
-
-
-            String index_sum = "UPDATE `ai_pomo`.`health` SET `hUserX` = " + "119.5724473" + ", `hUserY` = " + "23.5785648" + ";";
-            MySQLConnector.executeQuery(index_sum,php);
-
-
-            try {
-                String indexG = "SELECT *, \n" +"round(6378.138*2*asin(sqrt(pow(sin( (`hY`*pi()/180-`hUserY`*pi()/180)/2),2)+cos(`hY`*pi()/180)*cos(`hUserY`*pi()/180)* pow(sin( (`hX`*pi()/180-`hUserX`*pi()/180)/2),2)))*1000)  'Distance'  from `health`;";
-                String resultG  = MySQLConnector.executeQuery(indexG,php);
-                Log.d("ResultG",resultG);
-                JSONArray jsonArray = new JSONArray(resultG);
-
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jsonData = jsonArray.getJSONObject(i);
-                    int selGps = Integer.parseInt(jsonData.getString("Distance"));
-                    String index_long =  "UPDATE `health` SET `hLong` = "+ selGps +" where `hId` = '" + (i+1) + ";'";
-                    MySQLConnector.executeQuery(index_long,php);
-                }
-
-                String index_sel = "SELECT * from `health` where `hLong` < 5000 ;";
-                String result_sumsel =  MySQLConnector.executeQuery(index_sel,php);
-                JSONArray jsonArray2 = new JSONArray(result_sumsel);
-
-                setTitle("查詢資料結果");
-
-                for (int i = 0; i < jsonArray2.length(); i++) {
-                    JSONObject jsonData = jsonArray2.getJSONObject(i);
-                    HashMap<String, Object> h2 = new HashMap<String, Object>();
-                    h2.put("hName", jsonData.getString("hName"));
-                    h2.put("hLong", jsonData.getString("hLong") + " 公尺");
-                    h2.put("hX", jsonData.getString("hX"));
-                    h2.put("hY", jsonData.getString("hY"));
-                    h2.put("hUserX", jsonData.getString("hUserX"));
-                    h2.put("hUserY", jsonData.getString("hUserY"));
-
-                    StoreList.add(h2);
-
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return StoreList;
-
 //
 //        if(whatBtn.equals("isProposal")){
 //            Intent intent = getIntent();
@@ -168,74 +117,117 @@ public class FoodListActivity extends FoodActivity implements AdapterView.OnItem
 //            longitude = intent.getDoubleExtra("longitude", 0);
 //
 //
-//            String index_sum = "UPDATE `ai_pomo`.`gps` SET `gUserX` = " + longitude + ", `gUserY` = " + latitude + ";";
-//        MySQLConnector.executeQuery(index_sum,php);
+//            String index_sum = "UPDATE `ai_pomo`.`health` SET `hUserX` = " + "119.57241" + ", `hUserY` = " + "23.57852" + ";";
+//            MySQLConnector.executeQuery(index_sum,php);
 //
 //
-//        try {
-//            String indexG = "SELECT *, \n" +"round(6378.138*2*asin(sqrt(pow(sin( (`gY`*pi()/180-`gUserY`*pi()/180)/2),2)+cos(`gY`*pi()/180)*cos(`gUserY`*pi()/180)* pow(sin( (`gX`*pi()/180-`gUserX`*pi()/180)/2),2)))*1000)  'Distance'  from `gps`;";
-//            String resultG  = MySQLConnector.executeQuery(indexG,php);
-//            Log.d("ResultG",resultG);
-//            JSONArray jsonArray = new JSONArray(resultG);
+//            try {
+//                String indexG = "Create or Replace View HospitalDistanceView AS" +
+//                        "SELECT *, round(6378.138*2*asin(sqrt(pow(sin( (`hY`*pi()/180-`hUserY`*pi()/180)/2),2)+cos(`hY`*pi()/180)*cos(`hUserY`*pi()/180)* pow(sin( (`hX`*pi()/180-`hUserX`*pi()/180)/2),2)))*1000) as HospitalDistance from `health`ORDER BY `HospitalDistance` ASC limit 20 ;";
 //
-//            for (int i = 0; i < jsonArray.length(); i++) {
-//                JSONObject jsonData = jsonArray.getJSONObject(i);
-//                int selGps = Integer.parseInt(jsonData.getString("Distance"));
-//                String index_long =  "UPDATE `gps` SET `long` = "+ selGps +" where `gId` = '" + (i+1) + ";'";
-//                MySQLConnector.executeQuery(index_long,php);
-//            }
-//            String index_rank = "UPDATE `gps` SET `gRank`=`gFrequency`/`long`";
-//            MySQLConnector.executeQuery(index_rank,php);
+//                String resultG  = MySQLConnector.executeQuery(indexG,php);
+//                Log.d("ResultG",resultG);
 //
-//            if(hashMapSort().equals("rice")) {
-//                //特殊加成
-//                String select = "SELECT DISTINCT `fStore` FROM `food` WHERE `fSort` like '%rice%' ORDER BY `fRank` DESC";
-//                JSONArray jsonArray1 = new JSONArray(MySQLConnector.executeQuery(select, php));
 //
-//                for (int i = 0; i < jsonArray1.length(); i++) {
-//                    JSONObject jsonObject = jsonArray1.getJSONObject(i);
-//                    MySQLConnector.executeQuery("UPDATE `gps` SET `gRank`=`gFrequency`*10/`long`+50 where `gName` = '" + jsonObject.getString("fStore") + "'", php);
+//                String index_sel = "Select * from `ai_pomo`.`HospitalDistanceView` where `HospitalDistance` < 5000 ORDER BY `HospitalDistance` ASC ;";
+//                String result_sumsel =  MySQLConnector.executeQuery(index_sel,php);
+//                JSONArray jsonArray2 = new JSONArray(result_sumsel);
 //
-//                }
-//            }else if(hashMapSort().equals("noodles")) {
-//                //特殊加成
-//                String select = "SELECT DISTINCT `fStore` FROM `food` WHERE `fSort` like '%noodles%' ORDER BY `fRank` DESC";
-//                JSONArray jsonArray1 = new JSONArray(MySQLConnector.executeQuery(select, php));
+//                setTitle("查詢資料結果");
 //
-//                for (int i = 0; i < jsonArray1.length(); i++) {
-//                    JSONObject jsonObject = jsonArray1.getJSONObject(i);
-//                    MySQLConnector.executeQuery("UPDATE `gps` SET `gRank`=`gFrequency`*10/`long`+50 where `gName` = '" + jsonObject.getString("fStore") + "'", php);
+//                for (int i = 0; i < jsonArray2.length(); i++) {
+//                    JSONObject jsonData = jsonArray2.getJSONObject(i);
+//                    HashMap<String, Object> h2 = new HashMap<String, Object>();
+//                    h2.put("hName", jsonData.getString("hName"));
+//                    h2.put("HospitalDistance", jsonData.getString("HospitalDistance") + " 公尺");
+//
+//
+//                    StoreList.add(h2);
 //
 //                }
+//
+//            } catch (JSONException e) {
+//                e.printStackTrace();
 //            }
-//            String index_sel = "SELECT * from `gps` where `long` < 5000 and `gStoreClass` LIKE '%" + SpinnerClass + "%'order by `gRank` desc;";
-//            String result_sumsel =  MySQLConnector.executeQuery(index_sel,php);
-//            JSONArray jsonArray2 = new JSONArray(result_sumsel);
-//
-//            setTitle("查詢資料結果");
-//
-//            for (int i = 0; i < jsonArray2.length(); i++) {
-//                JSONObject jsonData = jsonArray2.getJSONObject(i);
-//                HashMap<String, Object> h2 = new HashMap<String, Object>();
-//                h2.put("gName", jsonData.getString("gName"));
-//                h2.put("long", jsonData.getString("long") + " 公尺");
-//                h2.put("gX", jsonData.getString("gX"));
-//                h2.put("gY", jsonData.getString("gY"));
-//                h2.put("gUserX", jsonData.getString("gUserX"));
-//                h2.put("gUserY", jsonData.getString("gUserY"));
-//                h2.put("gPic", jsonData.getString("gPic"));
-//                h2.put("Description", jsonData.getString("Description"));
-//
-//                StoreList.add(h2);
-//
-//            }
-//
-//        } catch (JSONException e) {
-//            e.printStackTrace();
 //        }
-//    }
 //
-//    return StoreList;
+//        return StoreList;
+
+
+        if(whatBtn.equals("isProposal")){
+            Intent intent = getIntent();
+            latitude = intent.getDoubleExtra("latitude", 0);
+            longitude = intent.getDoubleExtra("longitude", 0);
+
+
+            String index_sum = "UPDATE `ai_pomo`.`gps` SET `gUserX` = " + longitude + ", `gUserY` = " + latitude + ";";
+        MySQLConnector.executeQuery(index_sum,php);
+
+
+        try {
+            String indexG = "SELECT *, \n" +"round(6378.138*2*asin(sqrt(pow(sin( (`gY`*pi()/180-`gUserY`*pi()/180)/2),2)+cos(`gY`*pi()/180)*cos(`gUserY`*pi()/180)* pow(sin( (`gX`*pi()/180-`gUserX`*pi()/180)/2),2)))*1000)  'Distance'  from `gps`;";
+            String resultG  = MySQLConnector.executeQuery(indexG,php);
+            Log.d("ResultG",resultG);
+            JSONArray jsonArray = new JSONArray(resultG);
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonData = jsonArray.getJSONObject(i);
+                int selGps = Integer.parseInt(jsonData.getString("Distance"));
+                String index_long =  "UPDATE `gps` SET `long` = "+ selGps +" where `gId` = '" + (i+1) + ";'";
+                MySQLConnector.executeQuery(index_long,php);
+            }
+            String index_rank = "UPDATE `gps` SET `gRank`=`gFrequency`/`long`";
+            MySQLConnector.executeQuery(index_rank,php);
+
+            if(hashMapSort().equals("rice")) {
+                //特殊加成
+                String select = "SELECT DISTINCT `fStore` FROM `food` WHERE `fSort` like '%rice%' ORDER BY `fRank` DESC";
+                JSONArray jsonArray1 = new JSONArray(MySQLConnector.executeQuery(select, php));
+
+                for (int i = 0; i < jsonArray1.length(); i++) {
+                    JSONObject jsonObject = jsonArray1.getJSONObject(i);
+                    MySQLConnector.executeQuery("UPDATE `gps` SET `gRank`=`gFrequency`*10/`long`+50 where `gName` = '" + jsonObject.getString("fStore") + "'", php);
+
+                }
+            }else if(hashMapSort().equals("noodles")) {
+                //特殊加成
+                String select = "SELECT DISTINCT `fStore` FROM `food` WHERE `fSort` like '%noodles%' ORDER BY `fRank` DESC";
+                JSONArray jsonArray1 = new JSONArray(MySQLConnector.executeQuery(select, php));
+
+                for (int i = 0; i < jsonArray1.length(); i++) {
+                    JSONObject jsonObject = jsonArray1.getJSONObject(i);
+                    MySQLConnector.executeQuery("UPDATE `gps` SET `gRank`=`gFrequency`*10/`long`+50 where `gName` = '" + jsonObject.getString("fStore") + "'", php);
+
+                }
+            }
+            String index_sel = "SELECT * from `gps` where `long` < 5000 and `gStoreClass` LIKE '%" + SpinnerClass + "%'order by `gRank` desc;";
+            String result_sumsel =  MySQLConnector.executeQuery(index_sel,php);
+            JSONArray jsonArray2 = new JSONArray(result_sumsel);
+
+            setTitle("查詢資料結果");
+
+            for (int i = 0; i < jsonArray2.length(); i++) {
+                JSONObject jsonData = jsonArray2.getJSONObject(i);
+                HashMap<String, Object> h2 = new HashMap<String, Object>();
+                h2.put("gName", jsonData.getString("gName"));
+                h2.put("long", jsonData.getString("long") + " 公尺");
+                h2.put("gX", jsonData.getString("gX"));
+                h2.put("gY", jsonData.getString("gY"));
+                h2.put("gUserX", jsonData.getString("gUserX"));
+                h2.put("gUserY", jsonData.getString("gUserY"));
+                h2.put("gPic", jsonData.getString("gPic"));
+                h2.put("Description", jsonData.getString("Description"));
+
+                StoreList.add(h2);
+
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    return StoreList;
     }
 
     @Override
@@ -318,6 +310,44 @@ public class FoodListActivity extends FoodActivity implements AdapterView.OnItem
 
 
     }
+//
+//    private class MyStoreAdapter extends BaseAdapter{
+//        private LayoutInflater mInflater;
+//
+//        public MyStoreAdapter(Context context){
+//            this.mInflater = LayoutInflater.from(context);
+//        }
+//        @Override
+//        public int getCount() {
+//            return StoreList.size();
+//        }
+//
+//        @Override
+//        public Object getItem(int position) {
+//            return null;
+//        }
+//
+//        @Override
+//        public long getItemId(int position) {
+//            return 0;
+//        }
+//
+//        @Override
+//        public View getView(int position, View convertView, ViewGroup parent) {
+//            if(convertView == null)convertView = mInflater.inflate(R.layout.store_list_view_object,null);
+//
+//
+//
+////         itemImageView.setImageBitmap((Bitmap)StoreList.get(position).get("gPic"));
+//            TextView StoreListStoreText = (TextView)convertView.findViewById(R.id.StoreListStoreText);
+//            StoreListStoreText.setText(StoreList.get(position).get("hName").toString());
+//            TextView StoreListDistanceText = (TextView)convertView.findViewById(R.id.StoreListDistanceText);
+//            StoreListDistanceText.setText(StoreList.get(position).get("HospitalDistance").toString());
+//
+//
+//            return convertView;
+//        }
+//    }
 
     private class MyStoreAdapter extends BaseAdapter{
         private LayoutInflater mInflater;
@@ -344,59 +374,21 @@ public class FoodListActivity extends FoodActivity implements AdapterView.OnItem
         public View getView(int position, View convertView, ViewGroup parent) {
             if(convertView == null)convertView = mInflater.inflate(R.layout.store_list_view_object,null);
 
-
+            final ImageView StoreListImage = (ImageView)convertView.findViewById(R.id.StoreListImage);
+            byte[] decodedString = Base64.decode(StoreList.get(position).get("gPic").toString(), Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            StoreListImage.setImageBitmap(decodedByte);
 
 //         itemImageView.setImageBitmap((Bitmap)StoreList.get(position).get("gPic"));
             TextView StoreListStoreText = (TextView)convertView.findViewById(R.id.StoreListStoreText);
-            StoreListStoreText.setText(StoreList.get(position).get("hName").toString());
+            StoreListStoreText.setText(StoreList.get(position).get("gName").toString());
             TextView StoreListDistanceText = (TextView)convertView.findViewById(R.id.StoreListDistanceText);
-            StoreListDistanceText.setText(StoreList.get(position).get("hLong").toString());
+            StoreListDistanceText.setText(StoreList.get(position).get("long").toString());
 
 
             return convertView;
         }
     }
-
-//    private class MyStoreAdapter extends BaseAdapter{
-//        private LayoutInflater mInflater;
-//
-//        public MyStoreAdapter(Context context){
-//            this.mInflater = LayoutInflater.from(context);
-//        }
-//        @Override
-//        public int getCount() {
-//            return StoreList.size();
-//        }
-//
-//        @Override
-//        public Object getItem(int position) {
-//            return null;
-//        }
-//
-//        @Override
-//        public long getItemId(int position) {
-//            return 0;
-//        }
-//
-//        @Override
-//        public View getView(int position, View convertView, ViewGroup parent) {
-//            if(convertView == null)convertView = mInflater.inflate(R.layout.store_list_view_object,null);
-//
-//            final ImageView StoreListImage = (ImageView)convertView.findViewById(R.id.StoreListImage);
-//            byte[] decodedString = Base64.decode(StoreList.get(position).get("gPic").toString(), Base64.DEFAULT);
-//            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-//            StoreListImage.setImageBitmap(decodedByte);
-//
-////         itemImageView.setImageBitmap((Bitmap)StoreList.get(position).get("gPic"));
-//            TextView StoreListStoreText = (TextView)convertView.findViewById(R.id.StoreListStoreText);
-//            StoreListStoreText.setText(StoreList.get(position).get("gName").toString());
-//            TextView StoreListDistanceText = (TextView)convertView.findViewById(R.id.StoreListDistanceText);
-//            StoreListDistanceText.setText(StoreList.get(position).get("long").toString());
-//
-//
-//            return convertView;
-//        }
-//    }
 
     private class MyFoodAdapter extends BaseAdapter{
         private LayoutInflater mInflater;
