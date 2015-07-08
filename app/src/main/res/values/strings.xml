@@ -46,5 +46,8 @@
     <string name="title_activity_gps">GPSActivity</string>
     <string name="title_activity_scale">scaleActivity</string>
     <string name="title_activity_food_list">FoodListActivity</string>
+    <string name="title_activity_live">LiveActivity</string>
+    <string name="title_activity_live_list">LiveListActivity</string>
+    <string name="title_activity_health">HealthActivity</string>
 
 </resources>

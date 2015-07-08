@@ -1,6 +1,5 @@
 package kiwi.ai_wallet;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.location.Criteria;
@@ -12,17 +11,14 @@ import android.os.StrictMode;
 import android.provider.Settings;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.TextView;
 
 
-
-public class FoodActivity extends SmartbutlerActivity implements OnClickListener, OnItemSelectedListener,LocationListener{
+public class FoodActivity extends SmartbutlerActivity implements OnClickListener,LocationListener{
 
     Spinner FoodClass,FoodName;
     EditText fPrice;
@@ -53,6 +49,7 @@ public class FoodActivity extends SmartbutlerActivity implements OnClickListener
     static final float MIN_DIST = 5;
     LocationManager mgr;
     Button GPSBtn,setGPSBtn;
+    TextView smartbutlerTxt,smartliveTxt,smarthealthTxt;
     double latitude,longitude;//latitude(緯度 Y),longitude(經度 X);   (X-X菊)^2 + (Y-Y菊)^2 <= 1^2
     /**定位工程*/
 
@@ -97,14 +94,19 @@ public class FoodActivity extends SmartbutlerActivity implements OnClickListener
     private void setListener(){
 
         ProposalBtn.setOnClickListener(this);
+        smartbutlerTxt.setOnClickListener(this);
+        smartliveTxt.setOnClickListener(this);
+        smarthealthTxt.setOnClickListener(this);
         GPSBtn.setOnClickListener(this);
-        FoodClass.setOnItemSelectedListener(this);
         setGPSBtn.setOnClickListener(this);
     }
 
     private void initViews() {
 
         ProposalBtn = (Button)findViewById(R.id.ProposalBtn);
+        smartbutlerTxt = (TextView)findViewById(R.id.smartbutlerTxt);
+        smartliveTxt = (TextView)findViewById(R.id.smartliveTxt);
+        smarthealthTxt = (TextView)findViewById(R.id.smarthealthTxt);
         FoodClass = (Spinner) findViewById(R.id.spinner_fclass);
 //        FoodName = (Spinner) findViewById(R.id.spinner_fname);
 //        fPrice = (EditText) findViewById(R.id.inputPrice);
@@ -119,24 +121,16 @@ public class FoodActivity extends SmartbutlerActivity implements OnClickListener
     @Override
     public void onClick(View v) {
 
-
+        Intent ProposalIntent;
             switch(v.getId()) {
                 case R.id.setGPSBtn:
                     Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                     startActivity(intent);
                     break;
-//                case R.id.GPSBtn:
-//                    Intent GPSIntent = new Intent(this, FoodListActivity.class);
-//                    Bundle GPSBundle = new Bundle();
-//                    GPSBundle.putString("whatBtn?", "isGPS");
-//                    GPSBundle.putDouble("latitude", latitude);
-//                    GPSBundle.putDouble("longitude", longitude);
-//                    GPSIntent.putExtras(GPSBundle);
-//                    startActivity(GPSIntent);
-//                    break;
-                case R.id.ProposalBtn:
+
+                case R.id.smartbutlerTxt:
 //                    if (fPrice.length() == 0) break;
-                    Intent ProposalIntent = new Intent(this, FoodListActivity.class);
+                    ProposalIntent = new Intent(this, FoodListActivity.class);
                     Bundle SelectBundle = new Bundle();
                     SelectBundle.putString("SpinnerClassPos", FoodClassName[FoodClass.getSelectedItemPosition()]);
 //                    SelectBundle.putString("SpinnerNamePos", fName_put[FoodName.getSelectedItemPosition()]);
@@ -147,108 +141,37 @@ public class FoodActivity extends SmartbutlerActivity implements OnClickListener
                     ProposalIntent.putExtras(SelectBundle);
                     startActivity(ProposalIntent);
                     break;
+
+                case R.id.smartliveTxt:
+                    ProposalIntent = new Intent(this,LiveListActivity.class);
+                    SelectBundle = new Bundle();
+                    SelectBundle.putString("SpinnerClassPos", FoodClassName[FoodClass.getSelectedItemPosition()]);
+//                    SelectBundle.putString("SpinnerNamePos", fName_put[FoodName.getSelectedItemPosition()]);
+//                    SelectBundle.putString("InputPrice", fPrice.getText().toString());
+                    SelectBundle.putDouble("latitude", latitude);
+                    SelectBundle.putDouble("longitude", longitude);
+                    SelectBundle.putString("whatBtn?", "isProposal");
+                    ProposalIntent.putExtras(SelectBundle);
+                    startActivity(ProposalIntent);
+                    break;
+
+                case R.id.smarthealthTxt:
+                    ProposalIntent = new Intent(this,HealthListActivity.class);
+                    SelectBundle = new Bundle();
+                    SelectBundle.putString("SpinnerClassPos", FoodClassName[FoodClass.getSelectedItemPosition()]);
+//                    SelectBundle.putString("SpinnerNamePos", fName_put[FoodName.getSelectedItemPosition()]);
+//                    SelectBundle.putString("InputPrice", fPrice.getText().toString());
+                    SelectBundle.putDouble("latitude", latitude);
+                    SelectBundle.putDouble("longitude", longitude);
+                    SelectBundle.putString("whatBtn?", "isProposal");
+                    ProposalIntent.putExtras(SelectBundle);
+                    startActivity(ProposalIntent);
+                    break;
+
+
                 }
             }
-//        else{
-//                Toast.makeText(this, "請輸入金額 ", Toast.LENGTH_LONG).show();
-//        }
-//
-//        }
 
-////        spin_sel_fclass = FoodClass.getSelectedItemPosition();
-////        spin_sel_fname = FoodName.getSelectedItemPosition();
-//        Price = fPrice.getText().toString();
-//
-//        Intent intent = new Intent();
-//
-//        int g;
-//
-//        if(v.getId() == R.id.GPSBtn){
-//            g = 3;
-//            intent.putExtra("g", g);
-//            intent.putExtra("latitude", latitude);
-//            intent.putExtra("longitude", longitude);
-//            intent.setClass(getApplicationContext(), GPSActivity.class);
-//
-//            startActivity(intent);
-//        }
-//        else{
-//
-//            if(Price.length() != 0 && ((v.getId() == R.id.button1) ||( v.getId() == R.id.button2))){
-//
-//                intent.setClass(getApplicationContext(), ListViewShowData.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putString("spin_sel_fclass", FoodClassName[FoodClass.getSelectedItemPosition()]);
-//                bundle.putString("spin_sel_fname", fName_put[FoodName.getSelectedItemPosition()]);
-//                bundle.putString("input_fprice", Price);
-//                intent.putExtras(bundle);
-//
-//                switch(v.getId()) {
-//                    case R.id.button1:
-//                        g = 1;
-//                        intent.putExtra("g", g);
-//                        break;
-//                    case R.id.button2:
-//                        g = 2;
-//                        intent.putExtra("g", g);
-//                        intent.putExtra("latitude", latitude);
-//                        intent.putExtra("longitude", longitude);
-//                        break;
-//                }
-//                startActivity(intent);
-//            }
-//            else{
-//                Toast.makeText(this, "請輸入金額 "
-//                        , Toast.LENGTH_LONG).show();
-//            }
-//
-//        }
-
-
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int pos,
-                               long id) {
-        // TODO Auto-generated method stub
-//        if(spinnerItemSelect) {
-//            Toast.makeText(parent.getContext(), "你選擇了  " +
-//                    parent.getItemAtPosition(pos).toString(), Toast.LENGTH_LONG).show();
-//        }
-//
-//        switch(pos){
-//            case 0:
-//                fName_name = BreakTypeName;
-//                fName_put = BreakTypeSelect;
-//                spinnerItemSelect = true;
-//                break;
-//            case 1:
-//                fName_name = BreakLunchTypeName;
-//                fName_put = BreakLunchTypeSelect;
-//                spinnerItemSelect = true;
-//                break;
-//            case 4:
-//                fName_name = DrinkTypeName;
-//                fName_put = DrinkTypeSelect;
-//                spinnerItemSelect = true;
-//                break;
-//            default:
-//                fName_name = LunchDinnerTypeName;
-//                fName_put = LunchDinnerTypeSelect;
-//                spinnerItemSelect = true;
-//                break;
-//        }
-//        ArrayAdapter<String> fNameAd =
-//                new ArrayAdapter<String>(this,
-//                        android.R.layout.simple_spinner_item, fName_name);
-//
-//        fNameAd.setDropDownViewResource(
-//                android.R.layout.simple_spinner_dropdown_item);
-//
-//        fNameAd.setDropDownViewResource(R.layout.sql_spinner_item);
-//
-//        FoodName.setAdapter(fNameAd);
-
-    }
 
     @Override
     public void onResume(){
@@ -268,10 +191,6 @@ public class FoodActivity extends SmartbutlerActivity implements OnClickListener
         mgr.removeUpdates(this);//取消註冊
     }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        // TODO Auto-generated method stub
-    }
 
     @Override
     public void onLocationChanged(Location location) {

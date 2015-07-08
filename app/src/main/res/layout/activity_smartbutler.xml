@@ -5,19 +5,27 @@
     android:orientation="vertical"
 
     tools:context=".MainActivity">
-
-    <TextView
+    <TableRow
         android:layout_width="match_parent"
         android:layout_height="0sp"
         android:layout_weight="1"
-        android:textColor="#2828FF"
-        android:background="#66B3FF"
-        android:layout_gravity="center_horizontal"
-        android:text="智能管家"
-        android:gravity="center"
-        android:textSize="48sp"
-        android:id="@+id/smartbutlerTxt"
-        android:onClick="onClick"></TextView>
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textColor="#2828FF"
+            android:background="#66B3FF"
+            android:layout_gravity="center_horizontal"
+            android:text="智能管家"
+            android:gravity="center"
+            android:textSize="48sp"
+            android:id="@+id/smartbutlerTxt"
+            android:onClick="onClick"/>
+
+    </TableRow>
+
 
     <TextView
         android:layout_width="match_parent"

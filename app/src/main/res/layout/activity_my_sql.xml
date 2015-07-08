@@ -24,6 +24,49 @@
         android:layout_weight="2"
         android:textSize="18sp"/>
 
+    <TableRow
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="3">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textColor="#2828FF"
+            android:background="#66B3FF"
+            android:layout_gravity="center_horizontal"
+            android:text="想吃什麼"
+            android:gravity="center"
+            android:textSize="48sp"
+            android:id="@+id/smartbutlerTxt"
+            android:onClick="onClick"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textColor="#2828FF"
+            android:background="#46A3FF"
+            android:layout_gravity="center_horizontal"
+            android:text="想住哪裡"
+            android:gravity="center"
+            android:textSize="48sp"
+            android:id="@+id/smartliveTxt"
+            android:onClick="onClick"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textColor="#2828FF"
+            android:background="#66B3FF"
+            android:layout_gravity="center_horizontal"
+            android:text="掛號看診"
+            android:gravity="center"
+            android:textSize="48sp"
+            android:id="@+id/smarthealthTxt"
+            android:onClick="onClick"/>
+    </TableRow>
     <Button
         android:id="@+id/ProposalBtn"
         android:layout_width="match_parent"
@@ -33,7 +76,7 @@
         android:textSize="36sp"
         android:textColor="#2828FF"
         android:background="#84C1FF"
-        android:layout_weight="3"/>
+        android:layout_weight="0"/>
 
 
     <TableRow
@@ -79,33 +122,7 @@
             android:textColor="#2828FF"
             android:background="#66B3FF"/>
 
-
-       <!--<Spinner-->
-            <!--android:id="@+id/spinner_fname"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_weight="1"-->
-            <!--android:textColor="#842B00"-->
-            <!--android:drawSelectorOnTop="true"-->
-            <!--android:background="#FF9D6F"/>-->
     </TableRow>
-
-    <!--<EditText-->
-        <!--android:id="@+id/inputPrice"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="0dp"-->
-        <!--android:layout_weight="1"-->
-        <!--android:layout_marginTop="5dp"-->
-        <!--android:ems="10"-->
-        <!--android:hint="請輸入金額"-->
-        <!--android:gravity="center"-->
-        <!--android:textSize="18sp"-->
-        <!--android:singleLine="true"-->
-        <!--android:inputType="number"-->
-        <!--android:background="#FFAD86"/>-->
-
-
-
 
     <Button
         android:layout_width="match_parent"

@@ -24,47 +24,29 @@ public class SmartbutlerActivity extends MenuActivity implements View.OnClickLis
     }
 
     private void initView(){
-        TextView smartbutlerTxt = (TextView)findViewById(R.id.smartbutlerTxt);
+        TextView smartbutlertxt = (TextView)findViewById(R.id.smartbutlerTxt);
         TextView ControlTxt = (TextView)findViewById(R.id.ControlTxt);
-        TextView easyCompute = (TextView)findViewById(R.id.easyComputeTxt);
+        TextView easyComputeTxt = (TextView)findViewById(R.id.easyComputeTxt);
 
-        smartbutlerTxt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SmartbutlerActivity.this,FoodActivity.class);
-                startActivity(intent);
-            }
-        });
+        smartbutlertxt.setOnClickListener(this);
+        ControlTxt.setOnClickListener(this);
+        easyComputeTxt.setOnClickListener(this);
 
-        ControlTxt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SmartbutlerActivity.this,OptionActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        easyCompute.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SmartbutlerActivity.this, ComputerActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override
     public void onClick(View v){
+        Intent intent;
         switch (v.getId()){
-            case R.id.smartbutlerTxt :   Intent intent = new Intent(SmartbutlerActivity.this,FoodActivity.class);
+            case R.id.smartbutlerTxt:    intent = new Intent(this,FoodActivity.class);
                                          startActivity(intent);
                                          break;
 
-            case R.id.ControlTxt :       intent = new Intent(SmartbutlerActivity.this,OptionActivity.class);
+            case R.id.ControlTxt :       intent = new Intent(this,OptionActivity.class);
                                          startActivity(intent);
                                          break;
 
-            case R.id.easyComputeTxt :   intent = new Intent(SmartbutlerActivity.this, ComputerActivity.class);
+            case R.id.easyComputeTxt :   intent = new Intent(this, ComputerActivity.class);
                                          startActivity(intent);
                                          break;
 

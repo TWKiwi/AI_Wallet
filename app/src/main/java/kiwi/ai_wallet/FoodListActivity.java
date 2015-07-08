@@ -98,7 +98,7 @@ public class FoodListActivity extends FoodActivity implements AdapterView.OnItem
     private void getBundle(){
         Log.d("FoodListActivity","getBundle()");
         Intent intent = getIntent();
-        whatBtn = intent.getStringExtra("whatBtn?");
+//        whatBtn = intent.getStringExtra("whatBtn?");
         latitude = intent.getDoubleExtra("latitude", 0);
         longitude = intent.getDoubleExtra("longitude",0);
         SpinnerClass = intent.getStringExtra("SpinnerClassPos");
@@ -154,7 +154,7 @@ public class FoodListActivity extends FoodActivity implements AdapterView.OnItem
 //        return StoreList;
 
 
-        if(whatBtn.equals("isProposal")){
+//        if(whatBtn.equals("isProposal")){
             Intent intent = getIntent();
             latitude = intent.getDoubleExtra("latitude", 0);
             longitude = intent.getDoubleExtra("longitude", 0);
@@ -225,7 +225,7 @@ public class FoodListActivity extends FoodActivity implements AdapterView.OnItem
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
+//    }
 
     return StoreList;
     }
